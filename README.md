@@ -28,7 +28,8 @@ Lampad Torch does not place a block or emit light.
 
 All three are in the Lunatic creative tab and search. Inventory icons retain the
 original 32×32 textures. Held, dropped, and flying orbs use a generated 32³ voxel
-sphere, with longitude/latitude (equirectangular) UVs over the original orb texture.
+sphere, with longitude/latitude (equirectangular) UVs repeating the original orb
+texture twice: one complete yin-yang face on each front/back hemisphere.
 A white inner shell fills the source sprite's transparent padding without editing
 its pixels. `python3 tools/generate_orbs.py` reproduces the model.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the exposed shell of a 32³ voxel sphere with longitude/latitude UVs."""
+"""Generate the exposed shell of a 32³ voxel sphere with longitude/latitude UVs repeated on both vertical hemispheres."""
 import json
 import math
 from pathlib import Path
@@ -15,9 +15,12 @@ def occupied(x,y,z):
 def uv(point, center):
     x,y,z = (v-8 for v in point)
     length = math.sqrt(x*x+y*y+z*z)
-    u = 0.5 + math.atan2(x,z)/(2*math.pi) if x or z else center
-    while u-center > 0.5: u-=1
-    while u-center < -0.5: u+=1
+    # Each front/back hemisphere spans one complete copy. Keep the seam at
+    # z=0 on its own side so a voxel face never stretches across the repeat.
+    u = 0.5 + math.atan2(x,z)/math.pi if x or z else center
+    while u-center > 1: u-=2
+    while u-center < -1: u+=2
+    u -= math.floor(center)
     return max(0,min(1,u))*16, math.acos(max(-1,min(1,y/length)))/math.pi*16
 
 def generate():
@@ -37,7 +40,7 @@ def generate():
                         p=list(low);p[axis]=(high if d[axis]>0 else low)[axis]
                         p[a]=(high if av else low)[a];p[b]=(high if bv else low)[b];points.append(p)
                     cx,cz=(low[0]+high[0])/2-8,(low[2]+high[2])/2-8
-                    center=0.5+math.atan2(cx,cz)/(2*math.pi)
+                    center=0.5+math.atan2(cx,cz)/math.pi
                     coords=[uv(p,center) for p in points]
                     us,vs=zip(*coords)
                     bounds=[min(us),min(vs),max(us),max(vs)]
