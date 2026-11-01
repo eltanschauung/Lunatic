@@ -233,6 +233,7 @@ impl Game<'_> {
         for (player, line) in STATE.with_borrow_mut(|s| std::mem::take(&mut s.notices)) {
             self.native_tell(player, line);
         }
+        self.lunatic_flush_bursts();
         let host = self.lan.as_ref().expect("hub checked");
         let sounds = STATE.with_borrow_mut(|s| std::mem::take(&mut s.sounds));
         for sound in sounds {
@@ -406,6 +407,7 @@ impl Game<'_> {
     }
     pub(super) fn lunatic_post(&mut self) {
         for event in motion::finish() {
+            self.lunatic_queue_burst(&event);
             let (name, gain) = match event.sound {
                 motion::Sound::Bounce => ("entity.yin_yang_orb.bounce", 0.4),
                 motion::Sound::Impact => ("entity.yin_yang_orb.impact", 0.9),
@@ -444,6 +446,7 @@ impl Game<'_> {
         }
     }
     pub(super) fn lunatic_stop(&mut self) {
+        self.lunatic_clear_bursts();
         STATE.with_borrow_mut(|s| *s = State::default());
         motion::reset();
     }

@@ -41,6 +41,14 @@ The nearest eight loaded sources within 32 blocks are submitted to Horizon's
 native visual lighting. These lights affect terrain and entity appearance, not
 mob spawning or saved block light. Held and dropped orbs do not emit colored light.
 
+Orb explosions use Luanti's eight original particle sprites: 24 particles over
+0.1 seconds on detonation and eight smaller particles over 0.08 seconds on bounce.
+They live for one second, drift without gravity/collision, and retain glow level 8.
+Precision uses the original red sprites; Homing and Bouncing use Luanti's
+purple/lime colorize blend. Velocities and sizes are converted to Minecraft ticks
+and blocks. The server batches burst events for clients within 32 blocks in the
+same dimension; clients create all particles locally, with no per-particle packets.
+
 Right-click the Purification Rod to cycle through ammo types currently in your
 main inventory. Chat says `Selected ammo: Precision`, `Selected ammo: Homing`,
 or `Selected ammo: Bouncing`. With no ammo it says `No Yin-Yang Orbs available.`

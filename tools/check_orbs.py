@@ -41,6 +41,16 @@ def main():
     spec=importlib.util.spec_from_file_location('generator',ROOT/'tools/generate_orbs.py')
     generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
     assert sphere==generator.generate()
+    # Original explosion sprites plus Luanti's two derived colorize palettes.
+    particle_files=[]
+    atlas=json.loads((ROOT/'assets/lunatic/atlases/orb_particles.json').read_text())
+    expected={f'lunatic:particle/yin_yang_orb/{kind}_{i}'
+              for kind in ('precision','homing','bouncing') for i in range(1,9)}
+    assert {r['sprite'] for s in atlas['sources'] for r in s['regions']}==expected
+    for sprite in expected:
+        path=ROOT/('assets/lunatic/textures/'+sprite.split(':',1)[1]+'.png')
+        assert path.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+        particle_files.append(path)
     sound_paths={
         'item/purification_rod/activate':'se_option.ogg',
         'item/purification_rod/no_target':'se_ophide.ogg',
@@ -57,6 +67,9 @@ def main():
             file=ROOT/('assets/lunatic/sounds/'+sound['name'].split(':',1)[1]+'.ogg')
             assert file.read_bytes().startswith(b'OggS')
     if args.luanti:
+        for i in range(1,9):
+            original=args.luanti/f'lunatic_textures/mods/mcl_lun_items/textures/touhou_particle_red_32x_{i}.png'
+            assert (ROOT/f'assets/lunatic/textures/particle/yin_yang_orb/precision_{i}.png').read_bytes()==original.read_bytes()
         source=args.luanti/'Mineclonia-Lunatic/mods/mcl_lun_sounds/sounds'
         for target,original in sound_paths.items():
             assert (ROOT/('assets/lunatic/sounds/'+target+'.ogg')).read_bytes()==(source/original).read_bytes()
@@ -65,6 +78,8 @@ def main():
     package=ROOT/'target/horizon-mod/lunatic.hmod'
     if package.exists():
         with zipfile.ZipFile(package) as archive:
+            for path in particle_files:
+                assert archive.read(path.relative_to(ROOT).as_posix())==path.read_bytes()
             for path in (ROOT/'assets/lunatic/sounds').rglob('*.ogg'):
                 assert archive.read(path.relative_to(ROOT).as_posix())==path.read_bytes()
     print('PASS: original names/colors, stack size 16, creative entries, sphere geometry/UVs, original textures and all six sound files/events')

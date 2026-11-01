@@ -48,6 +48,7 @@ pub struct Event {
     pub sound: Sound,
     pub projectile: Projectile,
     pub position: Vec3,
+    pub normal: [i8; 3],
 }
 struct Flight {
     bounces: u8,
@@ -89,6 +90,9 @@ pub fn reset() {
     STATE.with_borrow_mut(|s| *s = State::default());
 }
 fn event(s: &mut State, p: &Projectile, sound: Sound) {
+    event_normal(s, p, sound, [0, 1, 0]);
+}
+fn event_normal(s: &mut State, p: &Projectile, sound: Sound, normal: [i8; 3]) {
     if s.server {
         let mut projectile = p.clone();
         // Horizon temporarily substitutes the shooter entity in the collision world.
@@ -99,6 +103,7 @@ fn event(s: &mut State, p: &Projectile, sound: Sound) {
             sound,
             projectile,
             position: p.position,
+            normal,
         });
     }
 }
@@ -239,7 +244,7 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
         if let Some((at, pos, face)) = block {
             p.position = at;
             if flight.bounces == 0 {
-                event(s, p, Sound::Impact);
+                event_normal(s, p, Sound::Impact, face.map(|v| v as i8));
                 return (false, Hit::Block { pos, at, face });
             }
             flight.bounces -= 1;
@@ -252,7 +257,7 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
             }
             p.position = plus(at, scale(n, 0.05));
             p.needs_sync = true;
-            event(s, p, Sound::Bounce);
+            event_normal(s, p, Sound::Bounce, face.map(|v| v as i8));
         } else {
             p.position = to;
         }

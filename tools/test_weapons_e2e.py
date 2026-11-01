@@ -104,6 +104,10 @@ def main():
             assert sound(alice,'entity.yin_yang_orb.shoot')==before[str(alice)]+3
             until(lambda:sound(alice,'entity.yin_yang_orb.bounce'),lambda n:n>=1)
             until(lambda:sound(alice,'entity.yin_yang_orb.impact'),lambda n:n>=1)
+            for p in (alice,bob):
+                until(lambda:ctl(p,'status')['particles'].get('lunatic:orb_bounce',0),lambda n:n>=8)
+                until(lambda:ctl(p,'status')['particles'].get('lunatic:orb_impact',0),lambda n:n>=24)
+            print('PASS: original bounce and explosion sprites delivered to both clients',flush=True)
             print('PASS: one ammo for three shots, cooldown, swept wall bounce/impact, original firing/bounce/impact sounds heard by second client 20 blocks away',flush=True)
             time.sleep(1)
             console(f'fill -4 {ground} 6 4 {ground+4} 6 minecraft:air');console('kill @e[type=minecraft:pig]');time.sleep(.5)

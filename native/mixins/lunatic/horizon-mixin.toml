@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.6.3"
+version = "0.6.4"
 priority = 100
 
 [compatibility]
@@ -133,4 +133,48 @@ bindings = [
  {name="game",ty="&crate::game::Game<'_>",value="&*self"},
  {name="stack",ty="&ItemStack",value="stack"},
  {name="lines",ty="&mut Vec<(Text,u32)>",value="&mut *lines"},
+]
+
+[[module]]
+id = "effects"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_effects"
+source = "effects.rs"
+
+[[module]]
+id = "particle-factory"
+file = "crates/horizon-client-render/src/particles.rs"
+name = "lunatic_particles"
+source = "particle-factory.rs"
+visibility = "pub"
+
+[[injection]]
+id = "particle-tick"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_render::particles::ParticleEngine::tick_particle"
+helper = "particle-tick.rs"
+bindings = [{name="p",ty="&mut crate::particles::Particle",value="&mut *p"}]
+
+[[injection]]
+id = "particle-light"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_render::particles::Particle::light_coords"
+helper = "particle-light.rs"
+bindings = [
+ {name="p",ty="&crate::particles::Particle",value="&*self"},
+ {name="sky",ty="u32",value="sky"},
+ {name="block",ty="u32",value="block"},
+]
+
+[[injection]]
+id = "receive-effects"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_net_from_server"
+helper = "receive-effects.rs"
+bindings = [
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="channel",ty="&str",value="channel"},
+ {name="data",ty="&[u8]",value="data"},
 ]

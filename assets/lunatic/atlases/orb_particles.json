@@ -1,0 +1,364 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_1",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_1",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_2",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_2",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_3",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_3",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_4",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_4",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_5",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_5",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_6",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_6",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_7",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_7",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/precision_8",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/precision_8",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_1",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_1",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_2",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_2",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_3",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_3",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_4",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_4",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_5",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_5",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_6",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_6",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_7",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_7",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/homing_8",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/homing_8",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_1",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_1",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_2",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_2",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_3",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_3",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_4",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_4",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_5",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_5",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_6",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_6",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_7",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_7",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lunatic:particle/yin_yang_orb/bouncing_8",
+      "divisor_x": 1,
+      "divisor_y": 1,
+      "regions": [
+        {
+          "sprite": "lunatic:particle/yin_yang_orb/bouncing_8",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    }
+  ]
+}
