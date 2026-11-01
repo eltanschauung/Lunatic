@@ -32,6 +32,8 @@ Your choice is saved for this instance and used for your player model. Steve
 is only a fallback for an appearance that fails to load; he is not a choice.
 Requires the Horizon fork's Character Select support.
 
+All eleven characters use the slim player model.
+
 The original 64×32 skins from `mcl_lun_races/textures/` are packaged unchanged;
 Horizon converts their legacy layout in memory when loading them. The roster
 is declared in `assets/lunatic/horizon/characters.json`.

@@ -3,57 +3,68 @@
     {
       "id": "lunatic:hakurei_reimu",
       "name": "Reimu Hakurei",
-      "texture": "lunatic:entity/character/hakurei_reimu"
+      "texture": "lunatic:entity/character/hakurei_reimu",
+      "model": "slim"
     },
     {
       "id": "lunatic:kirisame_marisa",
       "name": "Marisa Kirisame",
-      "texture": "lunatic:entity/character/kirisame_marisa"
+      "texture": "lunatic:entity/character/kirisame_marisa",
+      "model": "slim"
     },
     {
       "id": "lunatic:reisen_udongein_inaba",
       "name": "Reisen Udongein Inaba",
-      "texture": "lunatic:entity/character/reisen_udongein_inaba"
+      "texture": "lunatic:entity/character/reisen_udongein_inaba",
+      "model": "slim"
     },
     {
       "id": "lunatic:fujiwara_no_mokou",
       "name": "Fujiwara no Mokou",
-      "texture": "lunatic:entity/character/fujiwara_no_mokou"
+      "texture": "lunatic:entity/character/fujiwara_no_mokou",
+      "model": "slim"
     },
     {
       "id": "lunatic:houraisan_kaguya",
       "name": "Kaguya Houraisan",
-      "texture": "lunatic:entity/character/houraisan_kaguya"
+      "texture": "lunatic:entity/character/houraisan_kaguya",
+      "model": "slim"
     },
     {
       "id": "lunatic:kochiya_sanae",
       "name": "Sanae Kochiya",
-      "texture": "lunatic:entity/character/kochiya_sanae"
+      "texture": "lunatic:entity/character/kochiya_sanae",
+      "model": "slim"
     },
     {
       "id": "lunatic:shameimaru_aya",
       "name": "Aya Shameimaru",
-      "texture": "lunatic:entity/character/shameimaru_aya"
+      "texture": "lunatic:entity/character/shameimaru_aya",
+      "model": "slim"
     },
     {
       "id": "lunatic:inaba_tewi",
       "name": "Tewi Inaba",
-      "texture": "lunatic:entity/character/inaba_tewi"
+      "texture": "lunatic:entity/character/inaba_tewi",
+      "model": "slim"
     },
     {
       "id": "lunatic:cirno",
       "name": "Cirno",
-      "texture": "lunatic:entity/character/cirno"
+      "texture": "lunatic:entity/character/cirno",
+      "model": "slim"
     },
     {
       "id": "lunatic:daiyousei",
       "name": "Daiyousei",
-      "texture": "lunatic:entity/character/daiyousei"
+      "texture": "lunatic:entity/character/daiyousei",
+      "model": "slim"
     },
     {
       "id": "lunatic:wriggle_nightbug",
       "name": "Wriggle Nightbug",
-      "texture": "lunatic:entity/character/wriggle_nightbug"
+      "texture": "lunatic:entity/character/wriggle_nightbug",
+      "model": "slim"
     }
   ]
 }
