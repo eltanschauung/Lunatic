@@ -1,5 +1,10 @@
 {
   "title": "itemGroup.lunatic.lunatic",
   "icon": "lunatic:purification_rod",
-  "items": ["lunatic:purification_rod"]
+  "items": [
+    "lunatic:purification_rod",
+    "lunatic:miko_stick",
+    "lunatic:lampad_torch",
+    "lunatic:hauchiwa_fan"
+  ]
 }

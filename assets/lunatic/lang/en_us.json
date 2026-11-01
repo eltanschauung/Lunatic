@@ -1,4 +1,7 @@
 {
   "item.lunatic.purification_rod": "\u00a7cPurification Rod\u00a7r",
+  "item.lunatic.miko_stick": "\u00a7aMiko Stick\u00a7r",
+  "item.lunatic.lampad_torch": "\u00a75Lampad Torch\u00a7r",
+  "item.lunatic.hauchiwa_fan": "\u00a76Hauchiwa Fan\u00a7r",
   "itemGroup.lunatic.lunatic": "Lunatic"
 }

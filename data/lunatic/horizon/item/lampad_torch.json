@@ -1,0 +1,11 @@
+{
+  "template": "minecraft:stick",
+  "components": {
+    "!minecraft:cooking_fuel": {},
+    "minecraft:item_name": {
+      "translate": "item.lunatic.lampad_torch",
+      "color": "dark_purple",
+      "italic": false
+    }
+  }
+}

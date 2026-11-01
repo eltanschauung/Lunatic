@@ -1,0 +1,11 @@
+{
+  "template": "minecraft:stick",
+  "components": {
+    "!minecraft:cooking_fuel": {},
+    "minecraft:item_name": {
+      "translate": "item.lunatic.hauchiwa_fan",
+      "color": "gold",
+      "italic": false
+    }
+  }
+}
