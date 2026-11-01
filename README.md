@@ -59,7 +59,13 @@ Your choice is saved for this instance and used for your player model. Steve
 is only a fallback for an appearance that fails to load; he is not a choice.
 Requires the Horizon fork's Character Select support.
 
-All 29 characters use the slim player model.
+All 29 characters use the slim player model. Each sets `character_chat: true`:
+with the fork's character-chat support, your ordinary chat is displayed locally as
+`Selected Character Name : message`. The same name appears on your own visible
+nametag. Optional `color` uses Minecraft text colors (for example `"red"` or
+`"#ff5555"`) for the name in both places; Reimu is red. Account identity, signed messages, commands,
+and private-message formatting are preserved. Remote players' character choices
+are not yet synchronized; other clients keep their normal chat presentation.
 
 The original 64×32 and 64×64 skins from `mcl_lun_races/textures/` are packaged unchanged;
 Horizon converts their legacy layout in memory when loading them. The roster
