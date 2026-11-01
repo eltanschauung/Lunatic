@@ -1,0 +1,8 @@
+id = "lunatic"
+name = "Lunatic"
+version = "0.1.0"
+description = "Content from the Lunatic Luanti game, brought to Horizon. Adds the Purification Rod."
+authors = ["eltanschauung"]
+api = "0.2"
+side = "both"
+capabilities = ["registries"]
