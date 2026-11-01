@@ -1,7 +1,7 @@
 id = "lunatic"
 name = "Lunatic"
-version = "0.5.0"
-description = "Content from the Lunatic Luanti game, brought to Horizon. Adds Lunatic's handheld items and selectable characters."
+version = "0.6.0"
+description = "Content from the Lunatic Luanti game, brought to Horizon. Adds Lunatic's items, yin-yang orb weapons and selectable characters."
 authors = ["eltanschauung"]
 api = "0.2"
 side = "both"

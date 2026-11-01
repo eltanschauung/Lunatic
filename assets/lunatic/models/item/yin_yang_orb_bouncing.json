@@ -1,0 +1,6 @@
+{
+  "parent": "lunatic:item/yin_yang_orb_sphere",
+  "textures": {
+    "orb": "lunatic:item/yin_yang_orb_green"
+  }
+}

@@ -15,9 +15,48 @@ The items appear in the **Lunatic** creative tab and creative search:
 Their original 32×32 textures use Minecraft's handheld model, including
 extruded pixel edges and sword-style holding transforms.
 
-All four items are inert: they have no special attacks, spells, projectiles,
-crafting recipes, durability, use actions, or fuel behavior. The Lampad Torch
-is a handheld item and does not place a block or emit light.
+Miko Stick, Lampad Torch, and Hauchiwa Fan remain inert handheld items. The
+Lampad Torch does not place a block or emit light.
+
+## Yin Yang Orbs and Purification Rod
+
+| Item | ID | Name color | Stack size |
+| --- | --- | --- | --- |
+| Yin Yang Orb - Precision | `lunatic:yin_yang_orb_precision` | Crimson (`#dc143c`) | 16 |
+| Yin Yang Orb - Homing | `lunatic:yin_yang_orb_homing` | Purple (`#800080`) | 16 |
+| Yin Yang Orb - Bouncing | `lunatic:yin_yang_orb_bouncing` | Lime (`#00ff00`) | 16 |
+
+All three are in the Lunatic creative tab and search. Inventory icons retain the
+original 32×32 textures. Held, dropped, and flying orbs use a generated 32³ voxel
+sphere, with longitude/latitude (equirectangular) UVs over the original orb texture.
+A white inner shell fills the source sprite's transparent padding without editing
+its pixels. `python3 tools/generate_orbs.py` reproduces the model.
+
+Right-click the Purification Rod to cycle through ammo types currently in your
+main inventory. Chat says `Selected ammo: Precision`, `Selected ammo: Homing`,
+or `Selected ammo: Bouncing`. With no ammo it says `No Yin-Yang Orbs available.`
+Left-click fires three orbs, 0.15 seconds apart, for one ammo item; the cooldown is
+0.8 seconds. Creative still requires an orb, but keeps it. A depleted selection
+falls back to the original Precision → Homing → Bouncing priority. With no ammo,
+chat says `No Yin-Yang orbs available.` and the rod keeps its ordinary stick swing.
+
+Flight and hits are authoritative on the server. Precision flies straight, Homing
+tracks a visible target, and Bouncing uses gravity and damped reflections. The
+native behavior uses Horizon's ordinary projectile entities, collision geometry,
+damage, PvP rules, and entity networking. There is one compact fire request per
+click; idle players send no weapon messages.
+
+### Sounds
+
+The original Ogg files are kept byte-for-byte in Minecraft-style asset directories:
+
+- `assets/lunatic/sounds/item/purification_rod/`: activation and failed homing lock.
+- `assets/lunatic/sounds/entity/yin_yang_orb/`: each shot, bounce, impact, and close-range detonation.
+
+`assets/lunatic/sounds.json` registers the events and their original hearing ranges.
+The server triggers spatial sounds at the matching action, preserving the Luanti
+volumes and volley spacing; nearby clients resolve the cached sound assets locally.
+Ammo cycling and an empty rod add no invented sound. Subtitles have translations.
 
 ## Characters
 
@@ -80,10 +119,14 @@ python3 tools/build.py
 ```
 
 The script uses the fork's Rust setup when available and Horizon's official
-content packager/validator. The output is `target/horizon-mod/lunatic.hmod`.
-Copy it into the instance's `horizon-mods/` directory, turn **Lunatic** on in
+content packager/validator. The outputs are `target/horizon-mod/lunatic.hmod` (content) and
+`target/horizon-mod/lunatic.hnmod` (native rod/orb behavior).
+Copy `lunatic.hmod` into the instance's `horizon-mods/` directory, turn **Lunatic** on in
 **Options → Horizon Settings → Mods**, and restart the game. A native game
-rebuild is not required.
+rebuild is not required for texture-only changes. Install `lunatic.hnmod` in the
+instance's `horizon-native-mods/` directory and use launcher **Build** to enable
+weapon behavior. Clients and servers need both matching bundles. Rebuild and
+install the native game when the Rust behavior changes.
 
 Texture source: `luanti/lunatic_textures/mods/mcl_lun_items/textures/`
 (`gohei.png`, `mcl_lun_items_miko_stick.png`,

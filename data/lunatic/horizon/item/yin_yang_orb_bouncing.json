@@ -1,0 +1,12 @@
+{
+  "template": "minecraft:stick",
+  "components": {
+    "minecraft:item_name": {
+      "translate": "item.lunatic.yin_yang_orb_bouncing",
+      "color": "#00ff00",
+      "italic": false
+    },
+    "!minecraft:cooking_fuel": {}
+  },
+  "max_stack_size": 16
+}

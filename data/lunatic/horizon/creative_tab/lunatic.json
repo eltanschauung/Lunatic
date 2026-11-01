@@ -5,6 +5,9 @@
     "lunatic:purification_rod",
     "lunatic:miko_stick",
     "lunatic:lampad_torch",
-    "lunatic:hauchiwa_fan"
+    "lunatic:hauchiwa_fan",
+    "lunatic:yin_yang_orb_precision",
+    "lunatic:yin_yang_orb_homing",
+    "lunatic:yin_yang_orb_bouncing"
   ]
 }

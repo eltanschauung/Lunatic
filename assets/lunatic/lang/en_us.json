@@ -3,5 +3,14 @@
   "item.lunatic.miko_stick": "\u00a7aMiko Stick\u00a7r",
   "item.lunatic.lampad_torch": "\u00a75Lampad Torch\u00a7r",
   "item.lunatic.hauchiwa_fan": "\u00a76Hauchiwa Fan\u00a7r",
-  "itemGroup.lunatic.lunatic": "Lunatic"
+  "itemGroup.lunatic.lunatic": "Lunatic",
+  "item.lunatic.yin_yang_orb_precision": "Yin Yang Orb - Precision",
+  "item.lunatic.yin_yang_orb_homing": "Yin Yang Orb - Homing",
+  "item.lunatic.yin_yang_orb_bouncing": "Yin Yang Orb - Bouncing",
+  "subtitles.lunatic.item.purification_rod.activate": "Purification Rod activates",
+  "subtitles.lunatic.item.purification_rod.no_target": "Purification Rod finds no target",
+  "subtitles.lunatic.entity.yin_yang_orb.shoot": "Yin Yang Orb fires",
+  "subtitles.lunatic.entity.yin_yang_orb.bounce": "Yin Yang Orb bounces",
+  "subtitles.lunatic.entity.yin_yang_orb.impact": "Yin Yang Orb bursts",
+  "subtitles.lunatic.entity.yin_yang_orb.close_detonation": "Yin Yang Orb detonates"
 }

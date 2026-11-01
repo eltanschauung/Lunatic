@@ -1,0 +1,56 @@
+{
+  "item.purification_rod.activate": {
+    "subtitle": "subtitles.lunatic.item.purification_rod.activate",
+    "sounds": [
+      {
+        "name": "lunatic:item/purification_rod/activate",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "item.purification_rod.no_target": {
+    "subtitle": "subtitles.lunatic.item.purification_rod.no_target",
+    "sounds": [
+      {
+        "name": "lunatic:item/purification_rod/no_target",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "entity.yin_yang_orb.shoot": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.shoot",
+    "sounds": [
+      {
+        "name": "lunatic:entity/yin_yang_orb/shoot",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.bounce": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.bounce",
+    "sounds": [
+      {
+        "name": "lunatic:entity/yin_yang_orb/bounce",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.impact": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.impact",
+    "sounds": [
+      {
+        "name": "lunatic:entity/yin_yang_orb/impact",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.close_detonation": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.close_detonation",
+    "sounds": [
+      {
+        "name": "lunatic:entity/yin_yang_orb/close_detonation",
+        "attenuation_distance": 64
+      }
+    ]
+  }
+}
