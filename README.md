@@ -33,6 +33,14 @@ texture twice: one complete yin-yang face on each front/back hemisphere.
 A white inner shell fills the source sprite's transparent padding without editing
 its pixels. `python3 tools/generate_orbs.py` reproduces the model.
 
+Fired orbs preserve Luanti's six-block light radius and 0.5 intensity, tinted to
+their inventory colors: crimson (`#dc143c`), purple (`#800080`), and lime (`#00ff00`).
+Lighting follows the interpolated projectile
+on each client, using existing entity updates with no extra network messages.
+The nearest eight loaded sources within 32 blocks are submitted to Horizon's
+native visual lighting. These lights affect terrain and entity appearance, not
+mob spawning or saved block light. Held and dropped orbs do not emit colored light.
+
 Right-click the Purification Rod to cycle through ammo types currently in your
 main inventory. Chat says `Selected ammo: Precision`, `Selected ammo: Homing`,
 or `Selected ammo: Bouncing`. With no ammo it says `No Yin-Yang Orbs available.`

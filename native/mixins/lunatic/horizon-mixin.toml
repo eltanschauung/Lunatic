@@ -1,10 +1,26 @@
 [mod]
 id = "lunatic"
-version = "0.6.1"
+version = "0.6.3"
 priority = 100
 
 [compatibility]
-horizon_revision = "c8bcd11b3a3b75ab1713466c96b606159fcc3aa9"
+horizon_revision = "b1f7b7b9814deada2ee3616faba5174f4beadaa6"
+
+[[module]]
+id = "visuals"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_visuals"
+source = "visuals.rs"
+
+[[injection]]
+id = "colored-orb-lights"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_visuals"
+helper = "visual-hook.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="lights",ty="&mut Vec<crate::game::native_hooks::NativeColoredLight>",value="&mut *lights"},
+]
 
 [[module]]
 id = "game"
