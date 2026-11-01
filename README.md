@@ -21,10 +21,37 @@ is a handheld item and does not place a block or emit light.
 
 ## Characters
 
-Lunatic supplies eleven appearances for Horizon's **Character Select** menu:
-Reimu Hakurei, Marisa Kirisame, Reisen Udongein Inaba, Fujiwara no Mokou,
-Kaguya Houraisan, Sanae Kochiya, Aya Shameimaru, Tewi Inaba, Cirno,
-Daiyousei, and Wriggle Nightbug.
+Lunatic supplies 29 appearances for Horizon's **Character Select** menu, in this order:
+
+1. Hakurei Reimu
+2. Kirisame Marisa
+3. Kazami Yuuka
+4. Alice Margatroid
+5. Daiyousei
+6. Cirno
+7. Hong Meiling
+8. Patchouli Knowledge
+9. Izayoi Sakuya
+10. Remilia Scarlet
+11. Flandre Scarlet
+12. Konpaku Youmu
+13. Saigyouji Yuyuko
+14. Wriggle Nightbug
+15. Inaba Tewi
+16. Reisen Udongein Inaba
+17. Houraisan Kaguya
+18. Fujiwara no Mokou
+19. Ibuki Suika
+20. Shameimaru Aya
+21. Kawashiro Nitori
+22. Inubashiri Momiji
+23. Kochiya Sanae
+24. Nagae Iku
+25. Hinanawi Tenshi
+26. Komeiji Satori
+27. Komeiji Koishi
+28. Houjuu Nue
+29. Minamitsu Murasa
 
 Browse a character to see its idle 3D preview, then press **Select Character**.
 Singleplayer and Multiplayer remain disabled until a choice is confirmed.
@@ -32,9 +59,9 @@ Your choice is saved for this instance and used for your player model. Steve
 is only a fallback for an appearance that fails to load; he is not a choice.
 Requires the Horizon fork's Character Select support.
 
-All eleven characters use the slim player model.
+All 29 characters use the slim player model.
 
-The original 64×32 skins from `mcl_lun_races/textures/` are packaged unchanged;
+The original 64×32 and 64×64 skins from `mcl_lun_races/textures/` are packaged unchanged;
 Horizon converts their legacy layout in memory when loading them. The roster
 is declared in `assets/lunatic/horizon/characters.json`.
 
