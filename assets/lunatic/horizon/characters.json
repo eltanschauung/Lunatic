@@ -1,0 +1,59 @@
+{
+  "characters": [
+    {
+      "id": "lunatic:hakurei_reimu",
+      "name": "Reimu Hakurei",
+      "texture": "lunatic:entity/character/hakurei_reimu"
+    },
+    {
+      "id": "lunatic:kirisame_marisa",
+      "name": "Marisa Kirisame",
+      "texture": "lunatic:entity/character/kirisame_marisa"
+    },
+    {
+      "id": "lunatic:reisen_udongein_inaba",
+      "name": "Reisen Udongein Inaba",
+      "texture": "lunatic:entity/character/reisen_udongein_inaba"
+    },
+    {
+      "id": "lunatic:fujiwara_no_mokou",
+      "name": "Fujiwara no Mokou",
+      "texture": "lunatic:entity/character/fujiwara_no_mokou"
+    },
+    {
+      "id": "lunatic:houraisan_kaguya",
+      "name": "Kaguya Houraisan",
+      "texture": "lunatic:entity/character/houraisan_kaguya"
+    },
+    {
+      "id": "lunatic:kochiya_sanae",
+      "name": "Sanae Kochiya",
+      "texture": "lunatic:entity/character/kochiya_sanae"
+    },
+    {
+      "id": "lunatic:shameimaru_aya",
+      "name": "Aya Shameimaru",
+      "texture": "lunatic:entity/character/shameimaru_aya"
+    },
+    {
+      "id": "lunatic:inaba_tewi",
+      "name": "Tewi Inaba",
+      "texture": "lunatic:entity/character/inaba_tewi"
+    },
+    {
+      "id": "lunatic:cirno",
+      "name": "Cirno",
+      "texture": "lunatic:entity/character/cirno"
+    },
+    {
+      "id": "lunatic:daiyousei",
+      "name": "Daiyousei",
+      "texture": "lunatic:entity/character/daiyousei"
+    },
+    {
+      "id": "lunatic:wriggle_nightbug",
+      "name": "Wriggle Nightbug",
+      "texture": "lunatic:entity/character/wriggle_nightbug"
+    }
+  ]
+}
