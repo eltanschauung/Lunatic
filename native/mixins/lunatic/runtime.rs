@@ -153,16 +153,10 @@ impl Game<'_> {
             return;
         }
         let yaw = (yaw + 180.0).rem_euclid(360.0) - 180.0;
-        self.lunatic_as_player(player, |g| {
-            // Aim belongs to this click, even before the next movement packet arrives.
-            g.yaw = yaw;
-            g.pitch = pitch;
-            if let Some(p) = &mut g.player {
-                p.yaw = yaw;
-                p.pitch = pitch;
-            }
-            g.lunatic_fire();
-        });
+        // The click's aim is projectile input, not a change to the player's pose.
+        // Mutating player rotation here makes leave_guest send a teleport and clear momentum.
+        let direction = super::view_vector(yaw, pitch);
+        self.lunatic_as_player(player, |g| g.lunatic_fire(direction));
     }
 
     fn lunatic_as_player(&mut self, uuid: u128, run: impl FnOnce(&mut Self)) {
@@ -267,7 +261,7 @@ impl Game<'_> {
         }
     }
 
-    fn lunatic_fire(&mut self) {
+    fn lunatic_fire(&mut self, direction: [f64; 3]) {
         if self.held().is_none_or(|s| s.item.as_ref() != ROD) || self.spectator() {
             return;
         }
@@ -296,7 +290,7 @@ impl Game<'_> {
             self.lunatic_notice("No Yin-Yang orbs available.");
             return;
         };
-        let Some((eye, direction)) = self.aim() else {
+        let Some((eye, _)) = self.aim() else {
             return;
         };
         if !self.creative {
@@ -318,7 +312,7 @@ impl Game<'_> {
             return;
         }
         self.lunatic_sound("item.purification_rod.activate", vec(eye), 0.6);
-        self.lunatic_spawn(kind);
+        self.lunatic_spawn(kind, Some(direction));
         let now = self.world.game_time;
         let dimension = self.dim.id().to_owned();
         STATE.with_borrow_mut(|s| {
@@ -358,13 +352,14 @@ impl Game<'_> {
                 })
             })
     }
-    fn lunatic_spawn(&mut self, kind: usize) {
+    fn lunatic_spawn(&mut self, kind: usize, direction: Option<[f64; 3]>) {
         let Some(t) = thrown_type(motion::ITEMS[kind]) else {
             return;
         };
         let Some((eye, dir)) = self.aim() else {
             return;
         };
+        let dir = direction.unwrap_or(dir);
         let at = Vec3::new(
             eye[0] + dir[0] * 0.8,
             eye[1] + dir[1] * 0.8,
@@ -393,7 +388,7 @@ impl Game<'_> {
             due
         });
         for shot in shots {
-            self.lunatic_as_player(shot.owner, |g| g.lunatic_spawn(shot.kind));
+            self.lunatic_as_player(shot.owner, |g| g.lunatic_spawn(shot.kind, None));
         }
         let mut h = std::collections::hash_map::DefaultHasher::new();
         world.hash(&mut h);

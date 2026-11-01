@@ -44,7 +44,8 @@ Flight and hits are authoritative on the server. Precision flies straight, Homin
 tracks a visible target, and Bouncing uses gravity and damped reflections. The
 native behavior uses Horizon's ordinary projectile entities, collision geometry,
 damage, PvP rules, and entity networking. There is one compact fire request per
-click; idle players send no weapon messages.
+click; idle players send no weapon messages. Aiming while firing preserves movement
+and sprint momentum: shot direction never changes the server player's pose.
 
 ### Sounds
 

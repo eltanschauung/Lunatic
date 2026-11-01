@@ -130,8 +130,32 @@ def main():
             until(lambda:sound(alice,'entity.yin_yang_orb.shoot'),lambda n:n>=baseline+3)
             assert count(alice,'yin_yang_orb_bouncing')==kept
             print('PASS: creative requires but preserves ammo, bouncing variant fires',flush=True)
+            # Turn only pitch while sprinting so changing aim cannot alter horizontal speed.
+            for kind in ('precision','homing','bouncing'):console(f'kill @e[type=lunatic:yin_yang_orb_{kind}]')
+            console('clear Alice');console('give Alice lunatic:purification_rod 1');console('give Alice lunatic:yin_yang_orb_precision 16')
+            until(lambda:count(alice,'yin_yang_orb_precision'),lambda n:n==16)
+            console(f'tp Alice 0.5 {ground} 0.5 33.3333 -45');time.sleep(.5)
+            ctl(alice,'hotbar','1');ctl(alice,'key','w','down');ctl(alice,'key','ctrl','down');time.sleep(1)
+            def speed():
+                v=ctl(alice,'status')['player']['velocity']
+                return (v[0]*v[0]+v[2]*v[2])**.5
+            baseline=min(speed() for _ in range(4));assert baseline>.05, 'Fixture did not start moving'
+            shots_before=sound(alice,'entity.yin_yang_orb.shoot')
+            samples=[]
+            for pitch in (-20,-60,-35,-75):
+                ctl(alice,'look','33.3333',str(pitch));ctl(alice,'mouse','left','click')
+                end=time.monotonic()+.9
+                while time.monotonic()<end:
+                    samples.append(speed());time.sleep(.01)
+            ctl(alice,'release')
+            until(lambda:sound(alice,'entity.yin_yang_orb.shoot'),lambda n:n>=shots_before+12)
+            assert min(samples)>baseline*.75, f'Firing interrupted sprint momentum: baseline={baseline:.4f}, minimum={min(samples):.4f}'
+            print('PASS: sprint momentum preserved across four aiming/firing volleys',flush=True)
             print('PASS: real dedicated server plus two clients; all weapon and sound checks isolated from production',flush=True)
         finally:
+            for sock in root.glob('*/c.sock'):
+                try:ctl(sock.parent,'quit')
+                except (OSError,ValueError,subprocess.SubprocessError):pass
             for process in children:
                 if process.poll() is None:
                     try:process.stdin.write(b'stop\n');process.stdin.flush()
