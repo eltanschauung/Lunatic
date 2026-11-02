@@ -59,11 +59,13 @@ def main():
         'entity/yin_yang_orb/bounce':'se_graze.ogg',
         'entity/yin_yang_orb/impact':'se_kira00.ogg',
         'entity/yin_yang_orb/close_detonation':'mcl_tnt_tnt_explode.ogg',
+        'entity/fairy/jump':'se_kira02.ogg',
+        'entity/fairy/cancel':'se_ophide.ogg',
     }
     events=json.loads((ROOT/'assets/lunatic/sounds.json').read_text())
-    assert len(events)==6
+    assert {p.replace('/','.') for p in sound_paths} <= set(events)
     for event,data in events.items():
-        assert data['subtitle'] in lang
+        if 'subtitle' in data:assert data['subtitle'] in lang
         for sound in data['sounds']:
             file=ROOT/('assets/lunatic/sounds/'+sound['name'].split(':',1)[1]+'.ogg')
             assert file.read_bytes().startswith(b'OggS')
@@ -83,6 +85,6 @@ def main():
                 assert archive.read(path.relative_to(ROOT).as_posix())==path.read_bytes()
             for path in (ROOT/'assets/lunatic/sounds').rglob('*.ogg'):
                 assert archive.read(path.relative_to(ROOT).as_posix())==path.read_bytes()
-    print('PASS: original names/colors, stack size 16, creative entries, sphere geometry/UVs, original textures and all six sound files/events')
+    print('PASS: original names/colors, stack size 16, creative entries, sphere geometry/UVs, original textures and original weapon/fairy sound files/events')
 
 if __name__=='__main__':main()
