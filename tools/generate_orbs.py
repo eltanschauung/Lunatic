@@ -61,8 +61,8 @@ def generate():
             'gui_light':'front','display':{
                 'firstperson_righthand':{'rotation':[0,-90,25],'translation':[1.13,3.2,1.13],'scale':[0.35]*3},
                 'firstperson_lefthand':{'rotation':[0,90,-25],'translation':[1.13,3.2,1.13],'scale':[0.35]*3},
-                'thirdperson_righthand':{'rotation':[0,0,0],'translation':[0,3,1],'scale':[0.35]*3},
-                'thirdperson_lefthand':{'rotation':[0,0,0],'translation':[0,3,1],'scale':[0.35]*3},
+                'thirdperson_righthand':{'rotation':[90,0,0],'translation':[0,3,1],'scale':[0.35]*3},
+                'thirdperson_lefthand':{'rotation':[90,0,0],'translation':[0,3,1],'scale':[0.35]*3},
                 'ground':{'translation':[0,2,0],'scale':[0.3]*3},
                 'fixed':{'rotation':[0,0,0],'translation':[0,0,0],'scale':[1]*3}},
             'elements':elements}
