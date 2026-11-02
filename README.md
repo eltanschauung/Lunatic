@@ -33,13 +33,17 @@ texture twice: one complete yin-yang face on each front/back hemisphere.
 A white inner shell fills the source sprite's transparent padding without editing
 its pixels. `python3 tools/generate_orbs.py` reproduces the model.
 
-Fired orbs preserve Luanti's six-block light radius and 0.5 intensity, tinted to
-their inventory colors: crimson (`#dc143c`), purple (`#800080`), and lime (`#00ff00`).
+Fired and held orbs use a six-block light radius and 0.25 intensity, tinted to
+their inventory hues with saturation reduced by 50% (HSV value preserved):
+soft crimson (`#dc788c`), purple (`#804080`), and lime (`#80ff80`).
 Lighting follows the interpolated projectile
 on each client, using existing entity updates with no extra network messages.
 The nearest eight loaded sources within 32 blocks are submitted to Horizon's
 native visual lighting. These lights affect terrain and entity appearance, not
-mob spawning or saved block light. Held and dropped orbs do not emit colored light.
+mob spawning or saved block light. Held lights support either hand and other
+players/mobs. Sphere models have maximum light emission (15), so they stay lit
+in darkness. Particle burst origins cast the same color at 0.125 intensity until
+their particles expire; the drifting sprites share one light at their origin.
 
 Orb explosions use Luanti's eight original particle sprites: 24 particles over
 0.1 seconds on detonation and eight smaller particles over 0.08 seconds on bounce.

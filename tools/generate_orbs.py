@@ -55,7 +55,9 @@ def generate():
                         'to':[round(8+(v-8)*0.998,6) for v in high],
                         'faces':{f:{'uv':[0,0,16,16],'texture':'#core'} for f in faces}})
                     elements.append({'from':low,'to':high,'faces':faces})
-    return {'textures':{'core':'minecraft:block/white_concrete','particle':'#orb'},
+    for element in elements:
+        element['light_emission']=15
+    return {'ambientocclusion':False,'textures':{'core':'minecraft:block/white_concrete','particle':'#orb'},
             'gui_light':'front','display':{
                 'firstperson_righthand':{'rotation':[0,-90,25],'translation':[1.13,3.2,1.13],'scale':[0.35]*3},
                 'firstperson_lefthand':{'rotation':[0,90,-25],'translation':[1.13,3.2,1.13],'scale':[0.35]*3},

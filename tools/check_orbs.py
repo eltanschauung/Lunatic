@@ -28,6 +28,7 @@ def main():
         assert model['cases'][0]['when']=='gui'
     sphere=json.loads((ROOT/'assets/lunatic/models/item/yin_yang_orb_sphere.json').read_text())
     assert 1000<len(sphere['elements'])<10000
+    assert all(e['light_emission']==15 for e in sphere['elements'])
     spans=[[],[],[]]
     for element in sphere['elements']:
         assert all(math.isfinite(v) for v in element['from']+element['to'])

@@ -31,6 +31,38 @@ pub fn light(p: &Particle, sky: u32, block: u32) -> Option<(u32, u32)> {
     ours(p).then_some((sky, block.max(8 * 16)))
 }
 impl ParticleEngine {
+    /// Recover the fixed burst origin from its live particles' linear motion.
+    /// Deduplicate all 8/24 sprites into one light, with no retained world state.
+    pub fn lunatic_orb_origins(&self) -> Vec<([f64; 3], u8)> {
+        let mut origins = std::collections::BTreeMap::new();
+        for p in self.particles.iter().chain(&self.pending) {
+            if p.removed || p.age >= p.lifetime {
+                continue;
+            }
+            let Sprite::Named(name) = &p.sprite else {
+                continue;
+            };
+            let Some(name) = name.strip_prefix(PREFIX) else {
+                continue;
+            };
+            let Some(variant) = ["precision_", "homing_", "bouncing_"]
+                .iter()
+                .position(|prefix| name.starts_with(prefix))
+            else {
+                continue;
+            };
+            let at: [f64; 3] =
+                std::array::from_fn(|i| p.position[i] - p.velocity[i] * f64::from(p.age.max(0)));
+            let key = (
+                variant,
+                (at[0] * 4096.0).round() as i64,
+                (at[1] * 4096.0).round() as i64,
+                (at[2] * 4096.0).round() as i64,
+            );
+            origins.entry(key).or_insert((at, variant as u8));
+        }
+        origins.into_values().collect()
+    }
     /// One server-approved burst; randomized locally, never one packet per particle.
     pub fn lunatic_orb_burst(
         &mut self,
@@ -93,6 +125,37 @@ impl ParticleEngine {
 mod tests {
     use super::*;
     use std::collections::{HashMap, HashSet};
+    #[test]
+    fn one_light_stays_at_origin_until_its_last_particle_expires() {
+        let mut e = ParticleEngine::new(
+            std::path::Path::new("/nonexistent"),
+            &HashMap::new(),
+            &HashSet::new(),
+        );
+        e.lunatic_orb_burst([1.5, 70.0, 2.5], [0.0, 0.0, 1.0], [0, 1, 0], 2, false);
+        assert_eq!(e.lunatic_orb_origins(), vec![([1.5, 70.5, 2.5], 2)]);
+        for p in &mut e.pending {
+            while p.age < 0 {
+                tick(p);
+            }
+            for _ in 0..8 {
+                tick(p);
+            }
+        }
+        let origins = e.lunatic_orb_origins();
+        assert_eq!(origins.len(), 1);
+        for (actual, expected) in origins[0].0.into_iter().zip([1.5, 70.5, 2.5]) {
+            assert!((actual - expected).abs() < 1e-9);
+        }
+        for p in &mut e.pending {
+            for _ in 0..20 {
+                tick(p);
+            }
+        }
+        assert!(e.lunatic_orb_origins().is_empty());
+        e.clear();
+        assert!(e.lunatic_orb_origins().is_empty());
+    }
     #[test]
     fn luanti_burst_counts_sizes_lifetime_and_motion() {
         let mut e = ParticleEngine::new(
