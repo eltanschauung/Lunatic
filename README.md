@@ -80,6 +80,8 @@ The server triggers spatial sounds at the matching action, preserving the Luanti
 volumes and volley spacing; nearby clients resolve the cached sound assets locally.
 Ammo cycling and an empty rod add no invented sound. Subtitles have translations.
 
+Ammo selection messages and held orb names use each variant's inventory color.
+
 ## Characters
 
 Lunatic supplies 29 appearances for Horizon's **Character Select** menu, in this order:

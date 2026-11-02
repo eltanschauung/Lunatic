@@ -91,8 +91,17 @@ def main():
             until(lambda:count(alice,'yin_yang_orb_precision'),lambda n:n==0)
             for kind in ('precision','homing','bouncing'):console(f'give Alice lunatic:yin_yang_orb_{kind} 2')
             until(lambda:counts(alice),lambda c:all(c.get('lunatic:yin_yang_orb_'+k)==2 for k in ('precision','homing','bouncing')))
-            for label in ('Precision','Homing','Bouncing','Precision'):
+            for label,color in [('Precision','#dc143c'),('Homing','#800080'),('Bouncing','#00ff00'),('Precision','#dc143c')]:
                 ctl(alice,'mouse','right','click');until(lambda:message(alice,'Selected ammo: '+label),bool);time.sleep(.3)
+                def styled_selection():
+                    components=ctl(alice,'messages')['styled']
+                    def matches(c):
+                        return isinstance(c,dict) and ((c.get('text')=='Selected ammo: ' and c.get('color') is None
+                            and any(child.get('text')==label and str(child.get('color')).lower()==color for child in c.get('extra',[])))
+                            or any(matches(child) for child in c.get('extra',[])))
+                    return any(matches(c) for c in components)
+                until(styled_selection,bool)
+            print('PASS: ammo selection names retain exact inventory colors through server chat',flush=True)
             assert count(alice,'yin_yang_orb_precision')==2
             console(f'fill -4 {ground} 6 4 {ground+4} 6 minecraft:stone');time.sleep(.5)
             before={str(p):sound(p,'entity.yin_yang_orb.shoot') for p in (alice,bob)}

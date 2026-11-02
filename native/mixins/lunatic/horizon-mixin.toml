@@ -1,7 +1,15 @@
 [mod]
 id = "lunatic"
-version = "0.6.5"
+version = "0.6.6"
 priority = 100
+
+[[injection]]
+id = "held-orb-name-colors"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::titles::Game<'_>::held_name"
+helper = "held-name.rs"
+bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
 
 [compatibility]
 horizon_revision = "b1f7b7b9814deada2ee3616faba5174f4beadaa6"

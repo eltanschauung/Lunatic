@@ -16,6 +16,14 @@ use std::{
 };
 const ROD: &str = "lunatic:purification_rod";
 const CHANNEL: &str = "lunatic:rod_fire";
+const ITEM_COLORS: [u32; 3] = [0xdc143c, 0x800080, 0x00ff00];
+fn ammo_notice(selected: Option<usize>) -> Text {
+    match selected {
+        Some(i) => Text::literal("Selected ammo: ")
+            .append(Text::colored(motion::LABELS[i], ITEM_COLORS[i])),
+        None => Text::literal("No Yin-Yang Orbs available."),
+    }
+}
 #[derive(Default)]
 struct Preference {
     selected: Option<usize>,
@@ -50,6 +58,27 @@ fn vec(v: [f64; 3]) -> Vec3 {
     Vec3::new(v[0], v[1], v[2])
 }
 impl Game<'_> {
+    pub(super) fn lunatic_held_name(&self) -> Option<horizon_client::hud_overlays::HeldName> {
+        if !self.native_on("lunatic") {
+            return None;
+        }
+        let stack = self.held()?;
+        if stack.custom_name().is_some() {
+            return None;
+        }
+        let index = motion::ITEMS
+            .iter()
+            .position(|id| *id == stack.item.as_ref())?;
+        let name = horizon_client::item_tooltip::styled_name(stack, || {
+            horizon_client::item_tooltip::name_line(stack, &|key| self.pack.names.display_get(key))
+        });
+        Some(horizon_client::hud_overlays::HeldName {
+            item: stack.item.to_string(),
+            hover_name: Text::colored(name.plain(), ITEM_COLORS[index]),
+            rarity_color: ITEM_COLORS[index],
+            custom_name: false,
+        })
+    }
     pub(super) fn lunatic_tooltip(&self, stack: &ItemStack, lines: &mut Vec<(Text, u32)>) {
         if !self.native_on("lunatic") || stack.custom_name().is_some() {
             return;
@@ -63,7 +92,7 @@ impl Game<'_> {
         if let Some((name, base)) = lines.first_mut() {
             *base = u32::MAX;
             for span in &mut name.spans {
-                span.style.color = Some([0xdc143c, 0x800080, 0x00ff00][index]);
+                span.style.color = Some(ITEM_COLORS[index]);
             }
         }
     }
@@ -132,11 +161,7 @@ impl Game<'_> {
             }
             selected
         });
-        let message = selected.map_or_else(
-            || "No Yin-Yang Orbs available.".to_owned(),
-            |i| format!("Selected ammo: {}", motion::LABELS[i]),
-        );
-        self.lunatic_notice(&message);
+        self.lunatic_notice_text(ammo_notice(selected));
     }
     pub(super) fn lunatic_message(&mut self, player: u128, channel: &str, data: &[u8]) {
         if channel != CHANNEL
@@ -204,8 +229,11 @@ impl Game<'_> {
         self.lan = Some(host);
     }
     fn lunatic_notice(&mut self, message: &str) {
+        self.lunatic_notice_text(Text::literal(message));
+    }
+    fn lunatic_notice_text(&mut self, message: Text) {
         let player = self.native_acting_id();
-        STATE.with_borrow_mut(|s| s.notices.push((player, Text::literal(message))));
+        STATE.with_borrow_mut(|s| s.notices.push((player, message)));
     }
     fn lunatic_sound(&mut self, event: &str, at: Vec3, gain: f32) {
         let range = if event.ends_with("close_detonation") {
@@ -349,7 +377,11 @@ impl Game<'_> {
                         && !g.spectator()
                         && Some(g.conn) != self.lan_acting
                         && g.dimension == self.dim.id()
-                        && valid(Vec3::new(g.position[0], g.position[1] + 0.9, g.position[2]))
+                        && valid(Vec3::new(
+                            g.position[0],
+                            g.position[1] + 0.9,
+                            g.position[2],
+                        ))
                 })
             })
     }
