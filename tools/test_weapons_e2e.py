@@ -71,10 +71,11 @@ def main():
                 until(lambda:ctl(p,'status'),lambda s:(s.get('server') or {}).get('loaded'))
                 return p
             alice=client('Alice');bob=client('Bob')
+            for path in (alice,bob):until(lambda:count(path,'purification_rod'),lambda n:n==1)
             ground=round(ctl(alice,'status')['player']['position'][1])
             console('gamemode survival Alice');console('gamemode creative Bob')
             console(f'tp Alice 0.5 {ground} 0.5 0 0');console(f'tp Bob 20.5 {ground} 0.5')
-            console('give Alice lunatic:purification_rod 1')
+            console('clear Alice');console('clear Bob');console('give Alice lunatic:purification_rod 1')
             until(lambda:count(alice,'purification_rod'),lambda n:n==1)
             ctl(alice,'hotbar','1');ctl(alice,'look','0','0');time.sleep(.5)
             ctl(alice,'mouse','right','click');until(lambda:message(alice,'No Yin-Yang Orbs available.'),bool)

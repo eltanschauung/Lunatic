@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.6.6"
+version = "0.7.0"
 priority = 100
 
 [[injection]]
@@ -12,7 +12,7 @@ helper = "held-name.rs"
 bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
 
 [compatibility]
-horizon_revision = "b1f7b7b9814deada2ee3616faba5174f4beadaa6"
+horizon_revision = "d813f63a99978186b127ea14efe5d8603ac2ed4f"
 
 [[module]]
 id = "visuals"
@@ -186,3 +186,78 @@ bindings = [
  {name="channel",ty="&str",value="channel"},
  {name="data",ty="&[u8]",value="data"},
 ]
+
+[[module]]
+id = "races"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_races"
+source = "races.rs"
+
+[[module]]
+id = "fairy-motion"
+file = "crates/horizon-client/src/motion.rs"
+name = "lunatic_fairy"
+source = "fairy-motion.rs"
+visibility = "pub"
+
+[[state]]
+id = "fairy"
+target = "horizon_client_lib::motion::PlayerMotion"
+ty = "crate::motion::lunatic_fairy::Fairy"
+initial = "::core::default::Default::default()"
+[[state.constructor]]
+target = "horizon_client_lib::motion::PlayerMotion::from_attribute_state"
+selector = "Self"
+require = 1
+
+[[injection]]
+id = "fairy-predicted-input"
+kind = "HEAD"
+target = "horizon_client_lib::motion::MotionWorld<'_,'_,'_>::player_movement_tick_with_fluids"
+helper = "fairy-step.rs"
+bindings = [
+ {name="world",ty="&mut crate::motion::MotionWorld<'_, '_, '_>",value="&mut *self"},
+ {name="jump",ty="bool",value="jumping"},
+]
+
+[[injection]]
+id = "character-body-before-input"
+kind = "HEAD"
+target = "horizon_client::game::Game<'_>::sync_player_body"
+helper = "race-body.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id = "fairy-server-input"
+kind = "HEAD"
+target = "horizon_client::game::lan_actions::Game<'_>::guest_server_tick"
+helper = "race-guest.rs"
+bindings = [
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="host",ty="&mut crate::game::lan::LanHost",value="&mut *host"},
+ {name="conn",ty="u32",value="conn"},
+]
+
+[[injection]]
+id = "races-server-tick"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_player_tick"
+helper = "race-tick.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id = "fairy-movement-replay"
+kind = "HEAD"
+target = "horizon_client_lib::lan::prediction::sync"
+helper = "fairy-sync.rs"
+bindings = [
+ {name="body",ty="&mut PlayerMotion",value="&mut *body"},
+ {name="server",ty="&PlayerMotion",value="server"},
+]
+
+[[injection]]
+id = "fairy-server-gravity"
+kind = "HEAD"
+target = "horizon_client_lib::motion::MotionWorld<'_,'_,'_>::server_travel"
+helper = "fairy-gravity.rs"
+bindings = [{name="world",ty="&mut crate::motion::MotionWorld<'_, '_, '_>",value="&mut *self"}]

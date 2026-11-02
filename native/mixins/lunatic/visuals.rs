@@ -104,7 +104,7 @@ impl Game<'_> {
                 .previous_position
                 .lerp(player.position, self.clock.camera_fraction());
             sources.extend(held(
-                Vec3::new(at.x, at.y + 1.2, at.z),
+                Vec3::new(at.x, at.y + 1.2 * f64::from(player.scale), at.z),
                 self.held().map(|s| s.item.as_ref()),
                 self.offhand.as_ref().map(|s| s.item.as_ref()),
             ));

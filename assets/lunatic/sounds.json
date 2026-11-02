@@ -52,5 +52,21 @@
         "attenuation_distance": 64
       }
     ]
+  },
+  "entity.fairy.jump": {
+    "sounds": [
+      {
+        "name": "lunatic:entity/fairy/jump",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "entity.fairy.cancel": {
+    "sounds": [
+      {
+        "name": "lunatic:entity/fairy/cancel",
+        "attenuation_distance": 24
+      }
+    ]
   }
 }

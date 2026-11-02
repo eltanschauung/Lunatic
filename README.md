@@ -55,7 +55,8 @@ same dimension; clients create all particles locally, with no per-particle packe
 
 Right-click the Purification Rod to cycle through ammo types currently in your
 main inventory. Chat says `Selected ammo: Precision`, `Selected ammo: Homing`,
-or `Selected ammo: Bouncing`. With no ammo it says `No Yin-Yang Orbs available.`
+or `Selected ammo: Bouncing`; only the ammo name uses its inventory color, as does the held-item HUD name. With no
+ammo it says `No Yin-Yang Orbs available.`
 Left-click fires three orbs, 0.15 seconds apart, for one ammo item; the cooldown is
 0.8 seconds. Creative still requires an orb, but keeps it. A depleted selection
 falls back to the original Precision → Homing → Bouncing priority. With no ammo,
@@ -80,11 +81,9 @@ The server triggers spatial sounds at the matching action, preserving the Luanti
 volumes and volley spacing; nearby clients resolve the cached sound assets locally.
 Ammo cycling and an empty rod add no invented sound. Subtitles have translations.
 
-Ammo selection messages and held orb names use each variant's inventory color.
-
 ## Characters
 
-Lunatic supplies 29 appearances for Horizon's **Character Select** menu, in this order:
+Lunatic supplies 36 appearances for Horizon's **Character Select** menu, in this order:
 
 1. Hakurei Reimu
 2. Kirisame Marisa
@@ -97,24 +96,31 @@ Lunatic supplies 29 appearances for Horizon's **Character Select** menu, in this
 9. Izayoi Sakuya
 10. Remilia Scarlet
 11. Flandre Scarlet
-12. Konpaku Youmu
-13. Saigyouji Yuyuko
-14. Wriggle Nightbug
-15. Inaba Tewi
-16. Reisen Udongein Inaba
-17. Houraisan Kaguya
-18. Fujiwara no Mokou
-19. Ibuki Suika
-20. Shameimaru Aya
-21. Kawashiro Nitori
-22. Inubashiri Momiji
-23. Kochiya Sanae
-24. Nagae Iku
-25. Hinanawi Tenshi
-26. Komeiji Satori
-27. Komeiji Koishi
-28. Houjuu Nue
-29. Minamitsu Murasa
+12. Chen
+13. Konpaku Youmu
+14. Saigyouji Yuyuko
+15. Yakumo Ran
+16. Yakumo Yukari
+17. Wriggle Nightbug
+18. Inaba Tewi
+19. Reisen Udongein Inaba
+20. Houraisan Kaguya
+21. Fujiwara no Mokou
+22. Ibuki Suika
+23. Shameimaru Aya
+24. Kawashiro Nitori
+25. Inubashiri Momiji
+26. Kochiya Sanae
+27. Nagae Iku
+28. Hinanawi Tenshi
+29. Komeiji Satori
+30. Komeiji Koishi
+31. Houjuu Nue
+32. Minamitsu Murasa
+33. Yorigami Shion
+34. Yorigami Jo'on
+35. Clownpiece
+36. Kudamaki Tsukasa
 
 Browse a character to see its idle 3D preview, then press **Select Character**.
 Singleplayer and Multiplayer remain disabled until a choice is confirmed.
@@ -122,17 +128,62 @@ Your choice is saved for this instance and used for your player model. Steve
 is only a fallback for an appearance that fails to load; he is not a choice.
 Requires the Horizon fork's Character Select support.
 
-All 29 characters use the slim player model. Each sets `character_chat: true`:
+All characters use the slim player model. Each sets `character_chat: true`:
 with the fork's character-chat support, your ordinary chat is displayed locally as
 `Selected Character Name : message`. The same name appears on your own visible
 nametag. Optional `color` uses Minecraft text colors (for example `"red"` or
 `"#ff5555"`) for the name in both places; Reimu is red. Account identity, signed messages, commands,
-and private-message formatting are preserved. Remote players' character choices
-are not yet synchronized; other clients keep their normal chat presentation.
+and private-message formatting are preserved. Matching Horizon servers validate character choices and synchronize their appearances,
+names and colors to other clients.
 
 The original 64×32 and 64×64 skins from `mcl_lun_races/textures/` are packaged unchanged;
 Horizon converts their legacy layout in memory when loading them. The roster
 is declared in `assets/lunatic/horizon/characters.json`.
+
+
+### Races, size and starting items
+
+`assets/lunatic/horizon/characters.json` is the source of character traits:
+
+```json
+{
+  "race": "fairy,ice_fairy,youkai",
+  "size": 0.7,
+  "starting_items": [
+    {"item": "minecraft:cookie", "count": 16},
+    {"choices": ["minecraft:poppy", "minecraft:dandelion"],
+     "min_count": 1, "max_count": 4, "rolls": 3}
+  ]
+}
+```
+
+`race` accepts comma-separated tags, with surrounding spaces ignored. `size`
+defaults to `1.0` and is clamped to `0.7`–`1.2`. It uses Minecraft's scale
+attribute for the model, collision and selection boxes, pose dimensions,
+first-person eyes, targeting and projectile origins. Other attribute modifiers
+continue to compose normally. Cirno, Daiyousei and Clownpiece are `0.7`.
+
+Each `fairy` gets Luanti's one extra jump while airborne. Release jump after the
+normal jump and press it again to boost. Slow falling follows the boost; another
+press cancels it. Landing resets the ability. Water, riding, sleep, death, creative
+flight and elytra flight disable it. Float uses Horizon's vanilla Slow Falling
+status and gravity/fall-damage pipeline; cancelling it preserves a potion's effect.
+The original jump and cancellation sounds live in `sounds/entity/fairy/`.
+Normal player input also drives the server and movement replay, without a second
+input channel or per-tick ability packets.
+
+Kits use existing Minecraft/Lunatic items, preserving Luanti's counts and random
+flower/ammo draws. Unported items are omitted. `starting_items` defaults to an
+empty list; entries support `item`, `count`, `choices`, `min_count`, `max_count`
+and `rolls` (one by default). The server grants each character's kit once per
+player per world. Grants and pending items are saved with inventory in player
+NBT. Reconnecting, dying or switching back never duplicates a kit. A full inventory
+keeps its rolled remainder pending until room is available. Unknown items are
+skipped.
+
+Client and server need matching content catalogs and native builds. To update
+race, size or kit definitions, rebuild and install the content package on both;
+Rust changes require a native rebuild.
 
 ## Build and install
 

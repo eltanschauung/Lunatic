@@ -235,10 +235,10 @@ impl Game<'_> {
         let player = self.native_acting_id();
         STATE.with_borrow_mut(|s| s.notices.push((player, message)));
     }
-    fn lunatic_sound(&mut self, event: &str, at: Vec3, gain: f32) {
+    pub(super) fn lunatic_sound(&mut self, event: &str, at: Vec3, gain: f32) {
         let range = if event.ends_with("close_detonation") {
             64.0
-        } else if event.ends_with("no_target") {
+        } else if event.ends_with("no_target") || event.starts_with("entity.fairy.") {
             24.0
         } else {
             32.0
@@ -379,7 +379,7 @@ impl Game<'_> {
                         && g.dimension == self.dim.id()
                         && valid(Vec3::new(
                             g.position[0],
-                            g.position[1] + 0.9,
+                            g.position[1] + f64::from(g.dimensions().height) * 0.5,
                             g.position[2],
                         ))
                 })
@@ -393,10 +393,14 @@ impl Game<'_> {
             return;
         };
         let dir = direction.unwrap_or(dir);
+        let offset = self
+            .player
+            .as_ref()
+            .map_or(0.8, |p| 0.8 * f64::from(p.scale));
         let at = Vec3::new(
-            eye[0] + dir[0] * 0.8,
-            eye[1] + dir[1] * 0.8,
-            eye[2] + dir[2] * 0.8,
+            eye[0] + dir[0] * offset,
+            eye[1] + dir[1] * offset,
+            eye[2] + dir[2] * offset,
         );
         let mut p = Projectile::new(ProjectileKind::Thrown(t), at, Some(Who::Player));
         p.guest = self.lan_acting;
