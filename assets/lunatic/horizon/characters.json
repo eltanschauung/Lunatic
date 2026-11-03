@@ -365,7 +365,12 @@
       "race": "youkai,hermit,seiga",
       "color": "blue",
       "size": 0.92,
-      "starting_items": []
+      "starting_items": [
+        {
+          "item": "arcadiandream:wall_passing_chisel",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "lunatic:ibaraki_kasen",
