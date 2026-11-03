@@ -445,6 +445,39 @@
       "starting_items": []
     },
     {
+      "id": "lunatic:miyako_yoshika",
+      "name": "Miyako Yoshika",
+      "texture": "lunatic:entity/character/miyako_yoshika",
+      "race": "youkai,jiangshi",
+      "model": "slim",
+      "character_chat": true,
+      "color": "dark_blue",
+      "size": 0.85,
+      "starting_items": []
+    },
+    {
+      "id": "lunatic:kaku_seiga",
+      "name": "Kaku Seiga",
+      "texture": "lunatic:entity/character/kaku_seiga",
+      "race": "youkai,hermit,seiga",
+      "model": "slim",
+      "character_chat": true,
+      "color": "blue",
+      "size": 0.92,
+      "starting_items": []
+    },
+    {
+      "id": "lunatic:ibaraki_kasen",
+      "name": "Ibaraki Kasen",
+      "texture": "lunatic:entity/character/ibaraki_kasen",
+      "race": "youkai,oni,hermit,kasen",
+      "model": "slim",
+      "character_chat": true,
+      "color": "#ffc0cb",
+      "size": 0.94,
+      "starting_items": []
+    },
+    {
       "id": "lunatic:houjuu_nue",
       "name": "Houjuu Nue",
       "texture": "lunatic:entity/character/houjuu_nue",

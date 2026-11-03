@@ -85,7 +85,7 @@ Ammo cycling and an empty rod add no invented sound. Subtitles have translations
 
 ## Characters
 
-Lunatic supplies 38 appearances for Horizon's **Character Select** menu, in this order:
+Lunatic supplies 41 appearances for Horizon's **Character Select** menu, in this order:
 
 1. Hakurei Reimu
 2. Kirisame Marisa
@@ -118,13 +118,16 @@ Lunatic supplies 38 appearances for Horizon's **Character Select** menu, in this
 29. Hinanawi Tenshi
 30. Komeiji Satori
 31. Komeiji Koishi
-32. Houjuu Nue
-33. Minamitsu Murasa
-34. Yorigami Shion
-35. Yorigami Jo'on
-36. Clownpiece
-37. Junko
-38. Kudamaki Tsukasa
+32. Miyako Yoshika
+33. Kaku Seiga
+34. Ibaraki Kasen
+35. Houjuu Nue
+36. Minamitsu Murasa
+37. Yorigami Shion
+38. Yorigami Jo'on
+39. Clownpiece
+40. Junko
+41. Kudamaki Tsukasa
 
 Browse a character to see its idle 3D preview, then press **Select Character**.
 Singleplayer and Multiplayer remain disabled until a choice is confirmed.
