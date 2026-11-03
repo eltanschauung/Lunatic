@@ -135,7 +135,7 @@ Your choice is saved for this instance and used for your player model. Steve
 is only a fallback for an appearance that fails to load; he is not a choice.
 Requires the Horizon fork's Character Select support.
 
-All characters use the slim player model. Each sets `character_chat: true`:
+Character definitions default to the slim player model and `character_chat: true`; either can be overridden explicitly. When `texture` is omitted, `lunatic:NAME` resolves to `lunatic:entity/character/NAME`:
 with the fork's character-chat support, your ordinary chat is displayed locally as
 `Selected Character Name : message`. The same name appears on your own visible
 nametag. Optional `color` uses Minecraft text colors (for example `"red"` or

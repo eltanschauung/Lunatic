@@ -3,10 +3,7 @@
     {
       "id": "lunatic:hakurei_reimu",
       "name": "Hakurei Reimu",
-      "texture": "lunatic:entity/character/hakurei_reimu",
       "race": "human,miko,reimu",
-      "model": "slim",
-      "character_chat": true,
       "color": "red",
       "size": 0.9,
       "starting_items": [
@@ -33,10 +30,7 @@
     {
       "id": "lunatic:kirisame_marisa",
       "name": "Kirisame Marisa",
-      "texture": "lunatic:entity/character/kirisame_marisa",
       "race": "human,magician",
-      "model": "slim",
-      "character_chat": true,
       "color": "yellow",
       "size": 0.8,
       "starting_items": [
@@ -49,10 +43,7 @@
     {
       "id": "lunatic:kazami_yuuka",
       "name": "Kazami Yuuka",
-      "texture": "lunatic:entity/character/kazami_yuuka",
       "race": "youkai,yuuka",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_green",
       "size": 1.0,
       "starting_items": []
@@ -60,10 +51,7 @@
     {
       "id": "lunatic:alice_margatroid",
       "name": "Alice Margatroid",
-      "texture": "lunatic:entity/character/alice_margatroid",
       "race": "magician,youkai,puppeteer,former_human",
-      "model": "slim",
-      "character_chat": true,
       "color": "gold",
       "size": 0.9,
       "starting_items": []
@@ -71,10 +59,7 @@
     {
       "id": "lunatic:daiyousei",
       "name": "Daiyousei",
-      "texture": "lunatic:entity/character/daiyousei",
       "race": "fairy,flower_fairy,youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "green",
       "size": 0.75,
       "starting_items": [
@@ -109,10 +94,7 @@
     {
       "id": "lunatic:cirno",
       "name": "Cirno",
-      "texture": "lunatic:entity/character/cirno",
       "race": "fairy,ice_fairy,youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "aqua",
       "size": 0.8,
       "starting_items": [
@@ -147,10 +129,7 @@
     {
       "id": "lunatic:hong_meiling",
       "name": "Hong Meiling",
-      "texture": "lunatic:entity/character/hong_meiling",
       "race": "youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_green",
       "size": 0.95,
       "starting_items": []
@@ -158,10 +137,7 @@
     {
       "id": "lunatic:koakuma",
       "name": "Koakuma",
-      "texture": "lunatic:entity/character/koakuma",
       "race": "youkai,devil,magician",
-      "model": "slim",
-      "character_chat": true,
       "color": "red",
       "size": 0.9,
       "starting_items": []
@@ -169,10 +145,7 @@
     {
       "id": "lunatic:patchouli_knowledge",
       "name": "Patchouli Knowledge",
-      "texture": "lunatic:entity/character/patchouli_knowledge",
       "race": "youkai,magician",
-      "model": "slim",
-      "character_chat": true,
       "color": "light_purple",
       "size": 0.9,
       "starting_items": []
@@ -180,10 +153,7 @@
     {
       "id": "lunatic:izayoi_sakuya",
       "name": "Izayoi Sakuya",
-      "texture": "lunatic:entity/character/izayoi_sakuya",
       "race": "human",
-      "model": "slim",
-      "character_chat": true,
       "color": "gray",
       "size": 0.9,
       "starting_items": []
@@ -191,10 +161,7 @@
     {
       "id": "lunatic:remilia_scarlet",
       "name": "Remilia Scarlet",
-      "texture": "lunatic:entity/character/remilia_scarlet",
       "race": "vampire,youkai,remilia",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_red",
       "size": 0.75,
       "starting_items": []
@@ -202,10 +169,7 @@
     {
       "id": "lunatic:flandre_scarlet",
       "name": "Flandre Scarlet",
-      "texture": "lunatic:entity/character/flandre_scarlet",
       "race": "vampire,youkai,flandre",
-      "model": "slim",
-      "character_chat": true,
       "color": "red",
       "size": 0.75,
       "starting_items": []
@@ -213,10 +177,7 @@
     {
       "id": "lunatic:chen",
       "name": "Chen",
-      "texture": "lunatic:entity/character/chen",
       "race": "youkai,nekomata,shikigami",
-      "model": "slim",
-      "character_chat": true,
       "color": "green",
       "size": 0.75,
       "starting_items": []
@@ -224,10 +185,7 @@
     {
       "id": "lunatic:konpaku_youmu",
       "name": "Konpaku Youmu",
-      "texture": "lunatic:entity/character/konpaku_youmu",
       "race": "half_phantom",
-      "model": "slim",
-      "character_chat": true,
       "color": "green",
       "size": 0.75,
       "starting_items": []
@@ -235,10 +193,7 @@
     {
       "id": "lunatic:saigyouji_yuyuko",
       "name": "Saigyouji Yuyuko",
-      "texture": "lunatic:entity/character/saigyouji_yuyuko",
       "race": "ghost,yuyuko",
-      "model": "slim",
-      "character_chat": true,
       "color": "light_purple",
       "size": 0.95,
       "starting_items": []
@@ -246,10 +201,7 @@
     {
       "id": "lunatic:yakumo_ran",
       "name": "Yakumo Ran",
-      "texture": "lunatic:entity/character/yakumo_ran",
       "race": "shikigami,youkai,",
-      "model": "slim",
-      "character_chat": true,
       "color": "yellow",
       "size": 1.0,
       "starting_items": []
@@ -257,10 +209,7 @@
     {
       "id": "lunatic:yakumo_yukari",
       "name": "Yakumo Yukari",
-      "texture": "lunatic:entity/character/yakumo_yukari",
       "race": "youkai,yukari",
-      "model": "slim",
-      "character_chat": true,
       "color": "#800080",
       "size": 1.0,
       "starting_items": []
@@ -268,10 +217,7 @@
     {
       "id": "lunatic:wriggle_nightbug",
       "name": "Wriggle Nightbug",
-      "texture": "lunatic:entity/character/wriggle_nightbug",
       "race": "youkai,nightbug",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_green",
       "size": 0.75,
       "starting_items": []
@@ -279,10 +225,7 @@
     {
       "id": "lunatic:inaba_tewi",
       "name": "Inaba Tewi",
-      "texture": "lunatic:entity/character/inaba_tewi",
       "race": "earth_rabbit,youkai,tewi",
-      "model": "slim",
-      "character_chat": true,
       "color": "light_purple",
       "size": 0.8,
       "starting_items": [
@@ -295,10 +238,7 @@
     {
       "id": "lunatic:reisen_udongein_inaba",
       "name": "Reisen Udongein Inaba",
-      "texture": "lunatic:entity/character/reisen_udongein_inaba",
       "race": "earth_rabbit,former_moon_rabbit",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_purple",
       "size": 0.9,
       "starting_items": [
@@ -311,10 +251,7 @@
     {
       "id": "lunatic:houraisan_kaguya",
       "name": "Houraisan Kaguya",
-      "texture": "lunatic:entity/character/houraisan_kaguya",
       "race": "hourai_immortal,kaguya",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_purple",
       "size": 0.9,
       "starting_items": []
@@ -322,10 +259,7 @@
     {
       "id": "lunatic:fujiwara_no_mokou",
       "name": "Fujiwara no Mokou",
-      "texture": "lunatic:entity/character/fujiwara_no_mokou",
       "race": "hourai_immortal,mokou",
-      "model": "slim",
-      "character_chat": true,
       "color": "red",
       "size": 0.9,
       "starting_items": []
@@ -333,10 +267,7 @@
     {
       "id": "lunatic:ibuki_suika",
       "name": "Ibuki Suika",
-      "texture": "lunatic:entity/character/ibuki_suika",
       "race": "youkai,oni",
-      "model": "slim",
-      "character_chat": true,
       "color": "gold",
       "size": 0.8,
       "starting_items": []
@@ -344,10 +275,7 @@
     {
       "id": "lunatic:shameimaru_aya",
       "name": "Shameimaru Aya",
-      "texture": "lunatic:entity/character/shameimaru_aya",
       "race": "youkai,tengu,crow_tengu",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_red",
       "size": 0.9,
       "starting_items": [
@@ -366,10 +294,7 @@
     {
       "id": "lunatic:kawashiro_nitori",
       "name": "Kawashiro Nitori",
-      "texture": "lunatic:entity/character/kawashiro_nitori",
       "race": "youkai,kappa",
-      "model": "slim",
-      "character_chat": true,
       "color": "aqua",
       "size": 0.75,
       "starting_items": []
@@ -377,10 +302,7 @@
     {
       "id": "lunatic:inubashiri_momiji",
       "name": "Inubashiri Momiji",
-      "texture": "lunatic:entity/character/inubashiri_momiji",
       "race": "youkai,tengu,wolf_tengu",
-      "model": "slim",
-      "character_chat": true,
       "color": "white",
       "size": 1.0,
       "starting_items": []
@@ -388,10 +310,7 @@
     {
       "id": "lunatic:kochiya_sanae",
       "name": "Kochiya Sanae",
-      "texture": "lunatic:entity/character/kochiya_sanae",
       "race": "human,living_god,miko",
-      "model": "slim",
-      "character_chat": true,
       "color": "green",
       "size": 0.9,
       "starting_items": [
@@ -403,10 +322,7 @@
     {
       "id": "lunatic:nagae_iku",
       "name": "Nagae Iku",
-      "texture": "lunatic:entity/character/nagae_iku",
       "race": "youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_purple",
       "size": 0.95,
       "starting_items": []
@@ -414,10 +330,7 @@
     {
       "id": "lunatic:hinanawi_tenshi",
       "name": "Hinanawi Tenshi",
-      "texture": "lunatic:entity/character/hinanawi_tenshi",
       "race": "celestial",
-      "model": "slim",
-      "character_chat": true,
       "color": "blue",
       "size": 0.8,
       "starting_items": []
@@ -425,10 +338,7 @@
     {
       "id": "lunatic:komeiji_satori",
       "name": "Komeiji Satori",
-      "texture": "lunatic:entity/character/komeiji_satori",
       "race": "satori,youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "light_purple",
       "size": 0.8,
       "starting_items": []
@@ -436,10 +346,7 @@
     {
       "id": "lunatic:komeiji_koishi",
       "name": "Komeiji Koishi",
-      "texture": "lunatic:entity/character/komeiji_koishi",
       "race": "satori,youkai,koishi",
-      "model": "slim",
-      "character_chat": true,
       "color": "green",
       "size": 0.8,
       "starting_items": []
@@ -447,10 +354,7 @@
     {
       "id": "lunatic:miyako_yoshika",
       "name": "Miyako Yoshika",
-      "texture": "lunatic:entity/character/miyako_yoshika",
       "race": "youkai,jiangshi",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_blue",
       "size": 0.85,
       "starting_items": []
@@ -458,10 +362,7 @@
     {
       "id": "lunatic:kaku_seiga",
       "name": "Kaku Seiga",
-      "texture": "lunatic:entity/character/kaku_seiga",
       "race": "youkai,hermit,seiga",
-      "model": "slim",
-      "character_chat": true,
       "color": "blue",
       "size": 0.92,
       "starting_items": []
@@ -469,10 +370,7 @@
     {
       "id": "lunatic:ibaraki_kasen",
       "name": "Ibaraki Kasen",
-      "texture": "lunatic:entity/character/ibaraki_kasen",
       "race": "youkai,oni,hermit,kasen",
-      "model": "slim",
-      "character_chat": true,
       "color": "#ffc0cb",
       "size": 0.94,
       "starting_items": []
@@ -480,10 +378,7 @@
     {
       "id": "lunatic:houjuu_nue",
       "name": "Houjuu Nue",
-      "texture": "lunatic:entity/character/houjuu_nue",
       "race": "youkai,nue",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_red",
       "size": 0.9,
       "starting_items": []
@@ -491,10 +386,7 @@
     {
       "id": "lunatic:minamitsu_murasa",
       "name": "Minamitsu Murasa",
-      "texture": "lunatic:entity/character/minamitsu_murasa",
       "race": "ship_phantom,youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_blue",
       "size": 0.9,
       "starting_items": []
@@ -502,10 +394,7 @@
     {
       "id": "lunatic:yorigami_shion",
       "name": "Yorigami Shion",
-      "texture": "lunatic:entity/character/yorigami_shion",
       "race": "youkai,poverty_god",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_blue",
       "size": 0.85,
       "starting_items": []
@@ -513,10 +402,7 @@
     {
       "id": "lunatic:yorigami_joon",
       "name": "Yorigami Jo'on",
-      "texture": "lunatic:entity/character/yorigami_joon",
       "race": "youkai,pestilence_god",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_blue",
       "size": 0.85,
       "starting_items": []
@@ -524,10 +410,7 @@
     {
       "id": "lunatic:clownpiece",
       "name": "Clownpiece",
-      "texture": "lunatic:entity/character/clownpiece",
       "race": "fairy,lampad_fairy,youkai",
-      "model": "slim",
-      "character_chat": true,
       "color": "dark_blue",
       "size": 0.75,
       "starting_items": [
@@ -562,22 +445,16 @@
     {
       "id": "lunatic:junko",
       "name": "Junko",
-      "texture": "lunatic:entity/character/junko",
       "race": "divine_spirit",
-      "model": "slim",
-      "character_chat": true,
-      "color": "orange",
+      "color": "#ffa500",
       "size": 1.0,
       "starting_items": []
     },
     {
       "id": "lunatic:kudamaki_tsukasa",
       "name": "Kudamaki Tsukasa",
-      "texture": "lunatic:entity/character/kudamaki_tsukasa",
       "race": "tube_fox,youkai,",
-      "model": "slim",
-      "character_chat": true,
-      "color": "teal",
+      "color": "#008080",
       "size": 0.85,
       "starting_items": []
     }
