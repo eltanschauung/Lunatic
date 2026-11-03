@@ -6,6 +6,8 @@
       "translate": "item.lunatic.purification_rod",
       "color": "red",
       "italic": false
-    }
-  }
+    },
+    "minecraft:max_damage": 250
+  },
+  "max_stack_size": 1
 }

@@ -59,7 +59,8 @@ main inventory. Chat says `Selected ammo: Precision`, `Selected ammo: Homing`,
 or `Selected ammo: Bouncing`; only the ammo name uses its inventory color, as does the held-item HUD name. With no
 ammo it says `No Yin-Yang Orbs available.`
 Left-click fires three orbs, 0.15 seconds apart, for one ammo item; the cooldown is
-0.8 seconds. Creative still requires an orb, but keeps it. A depleted selection
+0.8 seconds. The rod has 250 uses and spends one durability per successful volley.
+Creative still requires an orb, but keeps it and spends no durability. A depleted selection
 falls back to the original Precision → Homing → Bouncing priority. With no ammo,
 chat says `No Yin-Yang orbs available.` and the rod keeps its ordinary stick swing.
 

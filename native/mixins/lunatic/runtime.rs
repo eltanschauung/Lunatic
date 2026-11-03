@@ -356,6 +356,13 @@ impl Game<'_> {
             return;
         }
         self.lunatic_sound("item.purification_rod.activate", vec(eye), 0.6);
+        if !self.creative {
+            let held = self.held_mut();
+            if let Some(stack) = held {
+                stack.damage += 1;
+                if stack.damage >= 250 { *held = None; }
+            }
+        }
         self.lunatic_spawn(kind, Some(direction));
         let now = self.world.game_time;
         let dimension = self.dim.id().to_owned();
