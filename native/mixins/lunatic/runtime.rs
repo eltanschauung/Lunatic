@@ -96,7 +96,7 @@ impl Game<'_> {
             }
         }
     }
-    fn lunatic_world_key(&self) -> u64 {
+    pub(super) fn lunatic_world_key(&self) -> u64 {
         let mut h = std::collections::hash_map::DefaultHasher::new();
         self.native_world_dir().hash(&mut h);
         h.finish()
@@ -114,6 +114,7 @@ impl Game<'_> {
         counts
     }
     pub(super) fn lunatic_input(&mut self) -> bool {
+        if self.lampad_input(false) { return true; }
         if !self.native_on("lunatic")
             || self.spectator()
             || self.held().is_none_or(|s| s.item.as_ref() != ROD)
@@ -135,6 +136,7 @@ impl Game<'_> {
         has_ammo
     }
     pub(super) fn lunatic_continue(&self) -> bool {
+        if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()=="lunatic:lampad_torch") {return true;}
         self.native_on("lunatic")
             && self.held().is_some_and(|s| s.item.as_ref() == ROD)
             && self.lunatic_counts().iter().any(|n| *n > 0)
@@ -147,6 +149,13 @@ impl Game<'_> {
             *claimed = true;
             return;
         } // Ammunition does not throw on right click.
+        if !*claimed && stack.item.as_ref() == "lunatic:lampad_torch" {
+            *claimed = true;
+            // Item use already runs as the authenticated server-side player.
+            // Sending another client packet here drops integrated-server uses.
+            if let Some((_, dir)) = self.aim() { self.lampad_fire(true, dir); }
+            return;
+        }
         if stack.item.as_ref() != ROD || *claimed || self.spectator() {
             return;
         }
@@ -166,7 +175,7 @@ impl Game<'_> {
     pub(super) fn lunatic_message(&mut self, player: u128, channel: &str, data: &[u8]) {
         if channel != CHANNEL
             || data.len() != 9
-            || data[0] != 0
+            || data[0] > 2
             || !self.native_on("lunatic")
             || self.remote.is_some()
         {
@@ -181,10 +190,10 @@ impl Game<'_> {
         // The click's aim is projectile input, not a change to the player's pose.
         // Mutating player rotation here makes leave_guest send a teleport and clear momentum.
         let direction = super::view_vector(yaw, pitch);
-        self.lunatic_as_player(player, |g| g.lunatic_fire(direction));
+        self.lunatic_as_player(player, |g| if data[0]==0 {g.lunatic_fire(direction)}else{g.lampad_fire(data[0]==2,direction)});
     }
 
-    fn lunatic_as_player(&mut self, uuid: u128, run: impl FnOnce(&mut Self)) {
+    pub(super) fn lunatic_as_player(&mut self, uuid: u128, run: impl FnOnce(&mut Self)) {
         let Some(mut host) = self.lan.take() else {
             return;
         };
@@ -290,6 +299,12 @@ impl Game<'_> {
         }
     }
 
+    pub(super) fn lunatic_weapon_ready(&mut self)->bool {
+        let key=(self.lunatic_world_key(),self.native_acting_id());
+        STATE.with_borrow_mut(|s|{let p=s.preferences.entry(key).or_default();
+            if p.last_fire.is_some_and(|t|t.elapsed()<Duration::from_millis(800)){return false;}
+            p.last_fire=Some(Instant::now());true})
+    }
     fn lunatic_fire(&mut self, direction: [f64; 3]) {
         if self.held().is_none_or(|s| s.item.as_ref() != ROD) || self.spectator() {
             return;
@@ -424,6 +439,7 @@ impl Game<'_> {
         if !self.native_on("lunatic") {
             return;
         }
+        self.lampad_pre();
         let world = self.lunatic_world_key();
         let dim = self.dim.id();
         let now = self.world.game_time;
@@ -453,6 +469,7 @@ impl Game<'_> {
         );
     }
     pub(super) fn lunatic_post(&mut self) {
+        self.lampad_post();
         for event in motion::finish() {
             self.lunatic_queue_burst(&event);
             let (name, gain) = match event.sound {
@@ -494,6 +511,7 @@ impl Game<'_> {
         }
     }
     pub(super) fn lunatic_stop(&mut self) {
+        self.lampad_stop();
         self.lunatic_clear_bursts();
         STATE.with_borrow_mut(|s| *s = State::default());
         motion::reset();

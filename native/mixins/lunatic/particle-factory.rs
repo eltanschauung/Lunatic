@@ -8,6 +8,11 @@ fn ours(p: &Particle) -> bool {
     matches!(&p.sprite, Sprite::Named(name) if name.starts_with(PREFIX))
 }
 pub fn tick(p: &mut Particle) -> bool {
+    if matches!(&p.sprite,Sprite::Named(n)if n.starts_with("lunatic:particle/lampad_")) {
+        p.previous=p.position;p.age+=1;if p.age>=p.lifetime{p.removed=true;return true;}
+        if matches!(&p.sprite,Sprite::Named(n)if n.contains("lampad_ring_")){for i in 0..3{p.position[i]+=p.velocity[i]*((60.0-f64::from(p.age)+0.5)/60.0);}return true;}
+        for i in 0..3{p.position[i]+=p.velocity[i];}return true;
+    }
     if !ours(p) {
         return false;
     }
@@ -28,6 +33,7 @@ pub fn tick(p: &mut Particle) -> bool {
     true
 }
 pub fn light(p: &Particle, sky: u32, block: u32) -> Option<(u32, u32)> {
+    if matches!(&p.sprite,Sprite::Named(n)if n.starts_with("lunatic:particle/lampad_")){return Some((240,240));}
     ours(p).then_some((sky, block.max(8 * 16)))
 }
 impl ParticleEngine {
@@ -192,4 +198,11 @@ mod tests {
         assert!(!tick(&mut vanilla));
         assert_eq!(light(&vanilla, 0, 0), None);
     }
+}
+
+pub fn lampad_particle(o:&super::ParticleOptions,at:[f64;3],v:[f64;3])->Option<Particle>{
+ let name=o.mod_particle.as_deref()?.strip_prefix("lunatic:lampad_")?;
+ let color=if name.ends_with("red"){[1.0,0.1,0.1,1.0]}else if name.ends_with("blue"){[0.1,0.2,1.0,1.0]}else{[1.0;4]};
+ let mut p=Particle::blank(ParticleType::EndRod,at);p.sprite=Sprite::Named(format!("lunatic:particle/lampad_{name}"));
+ p.rgba=color;p.lifetime=if name.starts_with("ring_"){60}else if name.starts_with("flag_"){40}else{16};p.size=0.18;p.velocity=if name.starts_with("ring_"){v.map(|n|n/20.0)}else{v};p.gravity=0.0;Some(p)
 }

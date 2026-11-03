@@ -27,6 +27,7 @@ fn held(at: Vec3, main: Option<&str>, off: Option<&str>) -> Vec<NativeColoredLig
         .into_iter()
         .flatten()
         .filter_map(|item| {
+            if item=="lunatic:lampad_torch" {return Some(NativeColoredLight{at:[at.x,at.y,at.z],rgb:0xffb366,radius:8.0,intensity:0.7});}
             let variant = lunatic_motion::ITEMS.iter().position(|id| *id == item)?;
             if seen == Some(variant) {
                 return None;

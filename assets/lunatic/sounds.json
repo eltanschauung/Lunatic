@@ -68,5 +68,13 @@
         "attenuation_distance": 24
       }
     ]
+  },
+  "item.lampad_torch.shoot": {
+    "sounds": [
+      {
+        "name": "lunatic:item/lampad_torch/shoot",
+        "attenuation_distance": 32
+      }
+    ]
   }
 }

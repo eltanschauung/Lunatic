@@ -314,3 +314,28 @@ bindings = [
  {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
  {name="bypass",ty="&mut bool",value="&mut *bypass"},
 ]
+
+[[module]]
+id="lampad-game"
+file="crates/horizon-client/src/game.rs"
+name="lampad"
+source="lampad.rs"
+
+[[module]]
+id="lampad-motion"
+file="crates/horizon-client/src/projectiles.rs"
+name="lampad_motion"
+source="lampad-motion.rs"
+visibility="pub"
+
+[[injection]]
+id="lampad-particles"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::particles::ParticleEngine::make"
+helper="lampad-particle.rs"
+bindings=[
+ {name="o",ty="&ParticleOptions",value="o"},
+ {name="p",ty="[f64; 3]",value="p"},
+ {name="v",ty="[f64; 3]",value="v"},
+]

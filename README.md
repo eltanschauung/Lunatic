@@ -15,8 +15,9 @@ The items appear in the **Lunatic** creative tab and creative search:
 Their original 32×32 textures use Minecraft's handheld model, including
 extruded pixel edges and sword-style holding transforms.
 
-Miko Stick, Lampad Torch, and Hauchiwa Fan remain inert handheld items. The
-Lampad Torch does not place a block or emit light.
+Miko Stick and Hauchiwa Fan remain inert handheld items. The single Lampad Torch
+now has its Luanti attacks and held light; it does not place a block. See
+[Lampad Torch](docs/lampad-torch.md) for controls, values and native adaptations.
 
 ## Yin Yang Orbs and Purification Rod
 

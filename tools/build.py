@@ -33,6 +33,7 @@ def main():
         "-p", "cargo-horizon-mod", "-j", "2"], env=env, check=True)
     tool = target / "debug/cargo-horizon-mod"
     subprocess.run(["python3", ROOT / "tools/generate_orbs.py"], check=True)
+    subprocess.run(["python3", ROOT / "tools/generate_lampad.py"], check=True)
     subprocess.run([tool, "build"], cwd=ROOT, env=env, check=True)
     subprocess.run([tool, "check", ROOT / "target/horizon-mod/lunatic.hmod", "--json"],
         cwd=ROOT, env=env, check=True)

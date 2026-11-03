@@ -22,6 +22,10 @@ pub fn variant(p: &Projectile) -> Option<usize> {
     };
     ITEMS.iter().position(|id| *id == t.id)
 }
+pub fn lampad_damage_type(base:&'static super::ThrownType, amount:f32)->&'static super::ThrownType {
+    static TYPES: std::sync::OnceLock<std::sync::Mutex<HashMap<(&'static str,u32),&'static super::ThrownType>>>=std::sync::OnceLock::new();
+    *TYPES.get_or_init(Default::default).lock().unwrap().entry((base.id,amount.to_bits())).or_insert_with(||Box::leak(Box::new(super::ThrownType{id:base.id,item:base.item,damage:amount})))
+}
 pub fn choose(current: Option<usize>, counts: [u32; 3], cycle: bool) -> Option<usize> {
     if !cycle {
         if let Some(i) = current.filter(|i| *i < 3 && counts[*i] > 0) {
