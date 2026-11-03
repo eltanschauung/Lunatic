@@ -63,7 +63,7 @@ impl Fairy {
             self.ascending = false;
             self.slowfall = true;
         }
-        self.previous_velocity = input.velocity + if boost { 8.05 / 20.0 } else { 0.0 };
+        self.previous_velocity = input.velocity + if boost { 12.0 / 20.0 } else { 0.0 };
         boost
     }
 }
@@ -143,7 +143,7 @@ impl PlayerMotion {
         }
         let slowfall = state.potion_slowfall || state.slowfall;
         if boost {
-            self.velocity.y += 8.05 / 20.0;
+            self.velocity.y += 12.0 / 20.0;
             self.fall_distance = 0.0;
         }
         // Exactly the status consumed by LivingEntity.calculateEffectiveGravity and
