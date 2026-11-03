@@ -12,5 +12,7 @@
   "subtitles.lunatic.entity.yin_yang_orb.shoot": "Yin Yang Orb fires",
   "subtitles.lunatic.entity.yin_yang_orb.bounce": "Yin Yang Orb bounces",
   "subtitles.lunatic.entity.yin_yang_orb.impact": "Yin Yang Orb bursts",
-  "subtitles.lunatic.entity.yin_yang_orb.close_detonation": "Yin Yang Orb detonates"
+  "subtitles.lunatic.entity.yin_yang_orb.close_detonation": "Yin Yang Orb detonates",
+  "block.lunatic.donation_box": "Donation Box",
+  "tooltip.lunatic.donation_box": "The emptiest thing in the world, the perfect storage..."
 }

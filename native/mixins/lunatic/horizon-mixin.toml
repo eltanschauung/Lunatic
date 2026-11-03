@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.0"
+version = "0.7.1"
 priority = 100
 
 [[injection]]
@@ -12,7 +12,7 @@ helper = "held-name.rs"
 bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
 
 [compatibility]
-horizon_revision = "d813f63a99978186b127ea14efe5d8603ac2ed4f"
+horizon_revision = "b7ce5bd58c877ed2a0a68a3f1eb4f6366d770632"
 
 [[module]]
 id = "visuals"
@@ -261,3 +261,56 @@ kind = "HEAD"
 target = "horizon_client_lib::motion::MotionWorld<'_,'_,'_>::server_travel"
 helper = "fairy-gravity.rs"
 bindings = [{name="world",ty="&mut crate::motion::MotionWorld<'_, '_, '_>",value="&mut *self"}]
+
+[[injection]]
+id = "donation-box-entity"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_block_entity"
+helper = "donation-entity.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="block",ty="&str",value="block"},
+ {name="entity",ty="&mut Option<(String, Compound)>",value="&mut *entity"},
+]
+
+[[injection]]
+id = "donation-box-container"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_block_entity_container"
+helper = "donation-container.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="block",ty="&str",value="block"},
+ {name="container",ty="&mut Option<ModContainer>",value="&mut *container"},
+]
+
+[[injection]]
+id = "orb-spin"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_projectile_item_pose"
+helper = "orb-spin.rs"
+bindings = [
+ {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
+ {name="partial",ty="f64",value="partial"},
+ {name="pose",ty="&mut glam::Mat4",value="&mut *pose"},
+]
+
+[[injection]]
+id = "orb-fullbright"
+kind = "RETURN"
+target = "horizon_client::game::item_draw::Game<'_>::resolve_item_in_hand"
+helper = "orb-fullbright.rs"
+bindings = [
+ {name="state",ty="ItemRenderState",value="$value"},
+ {name="stack",ty="&ItemStack",value="stack"},
+]
+
+[[injection]]
+id = "orb-cooldown"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_projectile_damage_cooldown"
+helper = "orb-cooldown.rs"
+bindings = [
+ {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
+ {name="bypass",ty="&mut bool",value="&mut *bypass"},
+]

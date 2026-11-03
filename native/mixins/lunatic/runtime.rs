@@ -405,7 +405,18 @@ impl Game<'_> {
         let mut p = Projectile::new(ProjectileKind::Thrown(t), at, Some(Who::Player));
         p.guest = self.lan_acting;
         p.no_gravity = true;
-        p.velocity = Vec3::new(dir[0] * 1.25, dir[1] * 1.25, dir[2] * 1.25);
+        use horizon_core::random::RandomSource;
+        let cross = |a:[f64;3], b:[f64;3]| [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+        let unit = |v:[f64;3]| { let n=v.iter().map(|x|x*x).sum::<f64>().sqrt(); v.map(|x|x/n) };
+        let forward=unit(dir);
+        let reference=if forward[1].abs()<0.999 { [0.0,1.0,0.0] } else { [1.0,0.0,0.0] };
+        let right=unit(cross(forward,reference));
+        let up=cross(right,forward);
+        // Uniform disk in the aim's transverse plane: no forward/back random offset.
+        let radius=[1.0_f64,5.0,2.0][kind].to_radians().tan()*self.world.random.next_double().sqrt();
+        let angle=self.world.random.next_double()*std::f64::consts::TAU;
+        let spread=unit(std::array::from_fn(|i|forward[i]+radius*(right[i]*angle.cos()+up[i]*angle.sin())));
+        p.velocity=Vec3::new(spread[0]*1.25,spread[1]*1.25,spread[2]*1.25);
         self.add_projectile(p);
         self.lunatic_sound("entity.yin_yang_orb.shoot", at, 0.4);
     }
@@ -456,6 +467,7 @@ impl Game<'_> {
         }
     }
     fn lunatic_area_damage(&mut self, p: &Projectile, at: Vec3) {
+        let _cooldown = horizon_client::health::ProjectileCooldownGuard::new(motion::variant(p).is_some());
         let damage = match p.kind {
             ProjectileKind::Thrown(t) => t.damage,
             _ => return,

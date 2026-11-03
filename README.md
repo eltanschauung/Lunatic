@@ -83,7 +83,7 @@ Ammo cycling and an empty rod add no invented sound. Subtitles have translations
 
 ## Characters
 
-Lunatic supplies 36 appearances for Horizon's **Character Select** menu, in this order:
+Lunatic supplies 38 appearances for Horizon's **Character Select** menu, in this order:
 
 1. Hakurei Reimu
 2. Kirisame Marisa
@@ -92,35 +92,37 @@ Lunatic supplies 36 appearances for Horizon's **Character Select** menu, in this
 5. Daiyousei
 6. Cirno
 7. Hong Meiling
-8. Patchouli Knowledge
-9. Izayoi Sakuya
-10. Remilia Scarlet
-11. Flandre Scarlet
-12. Chen
-13. Konpaku Youmu
-14. Saigyouji Yuyuko
-15. Yakumo Ran
-16. Yakumo Yukari
-17. Wriggle Nightbug
-18. Inaba Tewi
-19. Reisen Udongein Inaba
-20. Houraisan Kaguya
-21. Fujiwara no Mokou
-22. Ibuki Suika
-23. Shameimaru Aya
-24. Kawashiro Nitori
-25. Inubashiri Momiji
-26. Kochiya Sanae
-27. Nagae Iku
-28. Hinanawi Tenshi
-29. Komeiji Satori
-30. Komeiji Koishi
-31. Houjuu Nue
-32. Minamitsu Murasa
-33. Yorigami Shion
-34. Yorigami Jo'on
-35. Clownpiece
-36. Kudamaki Tsukasa
+8. Koakuma
+9. Patchouli Knowledge
+10. Izayoi Sakuya
+11. Remilia Scarlet
+12. Flandre Scarlet
+13. Chen
+14. Konpaku Youmu
+15. Saigyouji Yuyuko
+16. Yakumo Ran
+17. Yakumo Yukari
+18. Wriggle Nightbug
+19. Inaba Tewi
+20. Reisen Udongein Inaba
+21. Houraisan Kaguya
+22. Fujiwara no Mokou
+23. Ibuki Suika
+24. Shameimaru Aya
+25. Kawashiro Nitori
+26. Inubashiri Momiji
+27. Kochiya Sanae
+28. Nagae Iku
+29. Hinanawi Tenshi
+30. Komeiji Satori
+31. Komeiji Koishi
+32. Houjuu Nue
+33. Minamitsu Murasa
+34. Yorigami Shion
+35. Yorigami Jo'on
+36. Clownpiece
+37. Junko
+38. Kudamaki Tsukasa
 
 Browse a character to see its idle 3D preview, then press **Select Character**.
 Singleplayer and Multiplayer remain disabled until a choice is confirmed.

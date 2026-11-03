@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "PIP",
+    "PPP"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "P": "#minecraft:planks",
+    "I": "minecraft:ink_sac"
+  },
+  "result": {
+    "id": "lunatic:donation_box",
+    "count": 1
+  }
+}

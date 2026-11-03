@@ -38,8 +38,8 @@ def main():
         cwd=ROOT, env=env, check=True)
 
     manifest = {
-        "hooks": 46, "schema": 1, "id": "lunatic", "version": "0.7.0", "game": "26.3",
-        "horizon": "d813f63a99978186b127ea14efe5d8603ac2ed4f",
+        "hooks": 155, "schema": 1, "id": "lunatic", "version": "0.7.1", "game": "26.3",
+        "horizon": "b7ce5bd58c877ed2a0a68a3f1eb4f6366d770632",
         "mixins": "3f99a5c60dfa311cc365524c44ae2fd799bfa1de",
     }
     output = ROOT / "target/horizon-mod/lunatic.hnmod"
