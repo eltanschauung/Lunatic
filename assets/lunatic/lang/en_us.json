@@ -1,8 +1,8 @@
 {
-  "item.lunatic.purification_rod": "\u00a7cPurification Rod\u00a7r",
-  "item.lunatic.miko_stick": "\u00a7aMiko Stick\u00a7r",
-  "item.lunatic.lampad_torch": "\u00a75Lampad Torch\u00a7r",
-  "item.lunatic.hauchiwa_fan": "\u00a76Hauchiwa Fan\u00a7r",
+  "item.lunatic.purification_rod": "§cPurification Rod§r",
+  "item.lunatic.miko_stick": "§aMiko Stick§r",
+  "item.lunatic.lampad_torch": "§5Lampad Torch§r",
+  "item.lunatic.hauchiwa_fan": "§6Hauchiwa Fan§r",
   "itemGroup.lunatic.lunatic": "Lunatic",
   "item.lunatic.yin_yang_orb_precision": "Yin Yang Orb - Precision",
   "item.lunatic.yin_yang_orb_homing": "Yin Yang Orb - Homing",
@@ -14,5 +14,7 @@
   "subtitles.lunatic.entity.yin_yang_orb.impact": "Yin Yang Orb bursts",
   "subtitles.lunatic.entity.yin_yang_orb.close_detonation": "Yin Yang Orb detonates",
   "block.lunatic.donation_box": "Donation Box",
-  "tooltip.lunatic.donation_box": "The emptiest thing in the world, the perfect storage..."
+  "tooltip.lunatic.donation_box": "The emptiest thing in the world, the perfect storage...",
+  "item.lunatic.ibuki_gourd": "§dIbuki Gourd§r",
+  "effect.lunatic.oni": "Oni (鬼)"
 }

@@ -1,0 +1,34 @@
+{
+  "template": "minecraft:glass_bottle",
+  "max_stack_size": 1,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "item.lunatic.ibuki_gourd",
+      "color": "light_purple",
+      "italic": false
+    },
+    "minecraft:consumable": {
+      "consume_seconds": 1.6,
+      "animation": "drink",
+      "sound": "minecraft:entity.generic.drink",
+      "has_consume_particles": false,
+      "on_consume_effects": [
+        {
+          "type": "minecraft:apply_effects",
+          "effects": [
+            {
+              "id": "lunatic:oni",
+              "duration": 300,
+              "amplifier": 0
+            }
+          ],
+          "probability": 1.0
+        }
+      ]
+    },
+    "minecraft:use_cooldown": {
+      "seconds": 240.0,
+      "cooldown_group": "lunatic:ibuki_gourd"
+    }
+  }
+}

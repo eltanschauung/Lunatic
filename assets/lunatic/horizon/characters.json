@@ -270,7 +270,12 @@
       "race": "youkai,oni",
       "color": "gold",
       "size": 0.8,
-      "starting_items": []
+      "starting_items": [
+        {
+          "item": "lunatic:ibuki_gourd",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "lunatic:shameimaru_aya",

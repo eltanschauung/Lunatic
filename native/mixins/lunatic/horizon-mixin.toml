@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.5"
+version = "0.7.6"
 priority = 100
 
 [[injection]]
@@ -416,3 +416,34 @@ kind="HEAD"
 target="horizon_client::game::enchant_effects::Game<'_>::apply_enchantment_attributes"
 helper="crow-equipment.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id="oni-strength"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::effects::effect_modifier"
+helper="oni-modifier.rs"
+bindings=[{name="effect",ty="&str",value="effect"}]
+
+[[injection]]
+id="oni-melee-knockback"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::enchant_effects::Game<'_>::extra_knockback"
+helper="oni-knockback.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="target_kind",ty="&str",value="target_kind"},
+ {name="scale",ty="f32",value="scale"},
+]
+
+[[injection]]
+id="gourd-finish-drinking"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_living_entity_use_item_finish"
+helper="gourd-finish.rs"
+bindings=[
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+ {name="result",ty="&mut Option<ItemStack>",value="&mut *result"},
+]

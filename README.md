@@ -231,6 +231,15 @@ The fan has 250 durability, costs 5 durability per successful boost, has no expl
 The standard item cooldown packet and HUD display the cooldown. Non-crow characters keep their normal equipment-based gliding.
 No additional mod networking is used for the boost.
 
-Native behavior 0.7.5 uses content package 0.7.4 for the fan durability definition. No character JSON schema changes are required.
+Native behavior and content package 0.7.6 include the fan durability definition. No character JSON schema changes are required.
 The isolated multiplayer check is `tools/test_crow_tengu_e2e.py` (`--game`, `--ctl`, `--resources`, `--mod`, `--output`).
 It creates temporary server/client homes and checks armored/empty-chest gliding, level-flight speed and ratio, both-hand durability and cooldown behavior, fan breakage at 250 damage, and normal elytra behavior after switching to a non-crow character.
+
+
+## Ibuki Gourd and Oni (鬼)
+
+Ibuki Suika starts with one light-purple Ibuki Gourd (`lunatic:ibuki_gourd`), also available in the Lunatic creative tab. Hold use for the normal 1.6-second potion-style drink. Completing it keeps the gourd, grants Oni (`lunatic:oni`) for 15 seconds and starts a four-minute cooldown shared by both hands and all copies. Interrupted drinks grant no effect or cooldown. The effect icon uses the gourd texture.
+
+Oni supplies the same +6 attack damage as Strength II and treats every melee attack, including bare hands, as having at least Knockback II. Higher knockback enchantments remain effective, normal sprint and attack-strength rules apply, and projectiles are unchanged. Native potion synchronization, removal, persistence, drinking sounds and cooldown packets handle the effect without custom networking. Existing characters whose starting kit was already granted keep their saved inventory; the kit entry applies when Suika's starting kit is first awarded.
+
+`tools/test_gourd_e2e.py` runs the real drinking, cooldown and melee comparisons in temporary multiplayer homes.
