@@ -76,5 +76,14 @@
         "attenuation_distance": 32
       }
     ]
+  },
+  "entity.player.death": {
+    "subtitle": "subtitles.entity.player.death",
+    "sounds": [
+      {
+        "name": "lunatic:entity/player/pldead00",
+        "volume": 1.0
+      }
+    ]
   }
 }

@@ -215,3 +215,7 @@ Texture source: `luanti/lunatic_textures/mods/mcl_lun_items/textures/`
 `mcl_lun_items_lampad_torch.png`, and `hauchiwa_fan.png`).
 The textures are preserved without modification. This port retains the Luanti
 project's [GPLv3 license](LICENSE), also included in the content archive.
+
+## Player death sound
+
+Lunatic redirects the standard player-death event to `pldead00.ogg` from the Luanti game, stored at `assets/lunatic/sounds/entity/player/pldead00.ogg`. The normal positional player sound pipeline and Players volume category are retained, with sound volume `1.0`. Nearby players hear the death in its dimension, while the dying player hears the normal local death event once. Missing Lunatic sound resources preserve Minecraft's original sound.

@@ -339,3 +339,13 @@ bindings=[
  {name="p",ty="[f64; 3]",value="p"},
  {name="v",ty="[f64; 3]",value="v"},
 ]
+
+[[injection]]
+id = "player-death-sound"
+kind = "HEAD"
+target = "horizon_client_render::audio::Audio::play_seeded"
+helper = "player-death-sound.rs"
+bindings = [
+ {name="audio",ty="&mut Audio",value="&mut *self"},
+ {name="event",ty="&str",value="event"},
+]
