@@ -39,7 +39,7 @@ def main():
         cwd=ROOT, env=env, check=True)
 
     manifest = {
-        "hooks": 155, "schema": 1, "id": "lunatic", "version": "0.7.1", "game": "26.3",
+        "hooks": 155, "schema": 1, "id": "lunatic", "version": "0.7.2", "game": "26.3",
         "horizon": "b7ce5bd58c877ed2a0a68a3f1eb4f6366d770632",
         "mixins": "3f99a5c60dfa311cc365524c44ae2fd799bfa1de",
     }

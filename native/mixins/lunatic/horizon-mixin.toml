@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.1"
+version = "0.7.2"
 priority = 100
 
 [[injection]]
@@ -52,6 +52,17 @@ helper = "flight.rs"
 bindings = [
  {name="projectile",ty="&mut Projectile",value="&mut *self"},
  {name="world",ty="&dyn ProjectileWorld",value="w"},
+]
+
+[[injection]]
+id = "lampad-remote-flight"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::remote_projectiles::remote_projectile_tick"
+helper = "lampad-remote.rs"
+bindings = [
+ {name="p",ty="&mut horizon_client::projectiles::Projectile",value="&mut *p"},
+ {name="world",ty="&dyn horizon_client::projectiles::ProjectileWorld",value="w"},
 ]
 
 [[injection]]

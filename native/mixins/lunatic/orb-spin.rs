@@ -5,6 +5,17 @@ fn hook(
     partial: f64,
     pose: &mut glam::Mat4,
 ) {
+    if p.kind.id().starts_with("lunatic:lampad_star_") {
+        // The star's broad faces are in XY. Replace the camera billboard with
+        // a world-space XZ pose, retaining the renderer's position and scale.
+        let (scale, _, position) = pose.to_scale_rotation_translation();
+        *pose = glam::Mat4::from_scale_rotation_translation(
+            scale,
+            glam::Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2),
+            position,
+        );
+        return;
+    }
     if horizon_client::projectiles::lunatic_motion::variant(p).is_none() { return; }
     // Camera-local -Z roll is clockwise on screen. 40 game ticks = two seconds.
     let angle = -((p.age % 40) as f32 + partial as f32) * std::f32::consts::TAU / 40.0;

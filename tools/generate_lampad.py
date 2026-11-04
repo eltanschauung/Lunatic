@@ -35,13 +35,23 @@ def generate():
   return [(x+1)*3.2,(z+1)*3.2]
  occupied={(x,y,k)for x in range(32)for y in range(32)for k in range(3)if inside((x+0.5)/16-1,1-(y+0.5)/16)}
  elements=[]
- for x,y,k in sorted(occupied):
-  fs={};u,v=tex((x+0.5)/16-1,1-(y+0.5)/16)
-  for name,(dx,dy,dz)in {'east':(1,0,0),'west':(-1,0,0),'up':(0,1,0),'down':(0,-1,0),'north':(0,0,-1),'south':(0,0,1)}.items():
-   if (x+dx,y+dy,k+dz)in occupied:continue
-   bounds=[u-.04,v-.04,u+.04,v+.04]if dz else[7.3+(k/3),1,7.3+((k+1)/3),1.2]
-   fs[name]={'texture':'#star','uv':bounds}
-  if fs:elements.append({'from':[x-8,y-8,k+6.5],'to':[x-7,y-7,k+7.5],'shade':False,'light_emission':15,'faces':fs})
+ # Merge each solid horizontal run through the full thickness. The renderer
+ # visits every element every frame: hundreds of tiny cubes made bursts costly.
+ # Keep the exact voxel silhouette and sample the original OBJ's texture mapping.
+ for y in range(32):
+  x=0
+  while x<32:
+   if (x,y,0)not in occupied:x+=1;continue
+   start=x
+   while x<32 and (x,y,0)in occupied:x+=1
+   u0,v0=tex((start+0.5)/16-1,1-(y+0.5)/16)
+   u1,v1=tex((x-0.5)/16-1,1-(y+0.5)/16)
+   # The broad faces use the same UV orientation, with a horizontal span
+   # instead of repeating a single texel on each voxel.
+   bounds=[u0-.04,min(v0,v1)-.04,u1+.04,max(v0,v1)+.04]
+   fs={name:{'texture':'#star','uv':bounds if name in ('north','south')else[7.3,1,8.3,1.2]}
+       for name in ('east','west','up','down','north','south')}
+   elements.append({'from':[start-8,y-8,6.5],'to':[x-8,y-7,9.5],'shade':False,'light_emission':15,'faces':fs})
  model={'ambientocclusion':False,'textures':{'particle':'#star'},'display':{'ground':{'scale':[1.2]*3}},'elements':elements}
  p=ROOT/'assets/lunatic/models/item/lampad_star_voxel.json';p.write_text(json.dumps(model,separators=(',',':'))+'\n')
  for color in ['red','white','blue']:
