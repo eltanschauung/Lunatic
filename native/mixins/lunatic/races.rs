@@ -48,7 +48,7 @@ impl Game<'_> {
             return false;
         }
         // The normal duration-1, explosion-free rocket, attached to this player.
-        // Item use owns the arm swing; the fan itself is never consumed.
+        // Item use owns the arm swing; normal item damage handles fan wear/breakage.
         let at = self.player.as_ref().unwrap().position;
         let at = horizon_core::geometry::Vec3::new(at.x, at.y, at.z);
         let item = crate::items::ItemStack::new("minecraft:firework_rocket", 1);
@@ -57,6 +57,38 @@ impl Game<'_> {
         rocket.guest = self.lan_acting;
         self.rockets.push(rocket);
         self.add_cooldown(std::sync::Arc::from(FAN), 160);
+        if !self.creative {
+            let loss = self.wear(stack, 5);
+            let max = self.items().get(FAN).map_or(250, |i| i.max_damage);
+            let slot = self.held_slot();
+            let broken = if let Some(held) = self.held_mut().as_mut() {
+                held.damage = held.damage.saturating_add(loss);
+                if held.damage >= max {
+                    let mut gone = held.clone();
+                    gone.count = 1;
+                    if held.count > 1 {
+                        held.count -= 1;
+                        held.damage = 0;
+                    } else {
+                        *self.held_mut() = None;
+                    }
+                    Some(gone)
+                } else {
+                    None
+                }
+            } else {
+                None
+            };
+            if let Some(gone) = broken {
+                self.award_stat("broken", &gone.item, 1);
+                let hand = if slot == super::shield::OFFHAND_SLOT {
+                    horizon_world::player_inventory::EquipmentSlot::OffHand
+                } else {
+                    horizon_world::player_inventory::EquipmentSlot::MainHand
+                };
+                self.player_equipment_broke(hand, &gone);
+            }
+        }
         if let (Some(player), Some(name)) = (self.lan_acting_uuid, self.lan_acting_name.clone()) {
             self.native_player_elytra_boost(player, &name);
         }

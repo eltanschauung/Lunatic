@@ -2,6 +2,7 @@
 """Isolated dedicated-server proof of crow tengu gliding and the fan cooldown."""
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -57,14 +58,19 @@ with tempfile.TemporaryDirectory(prefix='lunatic-crow-proof-') as temp:
   until(lambda:player(d),lambda p:p['fall_flying'],seconds=8);evidence['glide_with_armor']=True
   console(f'item replace entity {name} armor.chest with minecraft:air');time.sleep(.5);assert player(d)['fall_flying'];evidence['glide_without_chest_item']=True
   console(f'item replace entity {name} armor.chest with minecraft:diamond_chestplate');time.sleep(.3);assert player(d)['fall_flying']
+  settled=until(lambda:player(d),lambda p:abs(math.hypot(p['velocity'][0],p['velocity'][2])*20-24)<.3 and p['velocity'][1]<0 and abs(math.hypot(p['velocity'][0],p['velocity'][2])/-p['velocity'][1]-7)<.15,seconds=30)
+  evidence['level_flight']={'blocks_per_second':math.hypot(settled['velocity'][0],settled['velocity'][2])*20,'glide_ratio':math.hypot(settled['velocity'][0],settled['velocity'][2])/-settled['velocity'][1]}
   first=launches(d);started=time.monotonic();ctl(d,'use-item')
   until(lambda:launches(d),lambda n:n==first+1,seconds=4);evidence['first_boost']=True
   until(lambda:ctl(d,'status')['rockets'],lambda n:n==0,seconds=3)
-  console(f'item replace entity {name} weapon.mainhand with minecraft:air');console(f'item replace entity {name} weapon.offhand with lunatic:hauchiwa_fan');time.sleep(.4)
+  until(lambda:ctl(d,'inventory')['hotbar'][0],lambda s:s.get('damage')==5);evidence['first_boost_costs_five']=True
+  console(f'item replace entity {name} weapon.offhand from entity {name} weapon.mainhand');console(f'item replace entity {name} weapon.mainhand with minecraft:air');time.sleep(.4)
   ctl(d,'use-item');time.sleep(.5);assert launches(d)==first+1;evidence['early_repeat_blocked_across_hands']=True
-  assert ctl(d,'inventory')['counts'].get('lunatic:hauchiwa_fan')==1;evidence['fan_not_consumed']=True
+  assert ctl(d,'inventory')['counts'].get('lunatic:hauchiwa_fan')==1;assert ctl(d,'inventory')['offhand']['damage']==5;evidence['cooldown_does_not_damage_fan']=True
   time.sleep(max(0,8.6-(time.monotonic()-started)));assert player(d)['fall_flying'];ctl(d,'use-item')
   until(lambda:launches(d),lambda n:n==first+2,seconds=4);evidence['boost_after_eight_seconds']=True
+  until(lambda:ctl(d,'inventory')['offhand'],lambda s:s.get('damage')==10);evidence['offhand_boost_costs_five']=True
+  time.sleep(8.6);console(f'item replace entity {name} weapon.offhand with lunatic:hauchiwa_fan[minecraft:damage=245]');until(lambda:ctl(d,'inventory')['offhand'],lambda s:s.get('damage')==245);ctl(d,'use-item');until(lambda:launches(d),lambda n:n==first+3,seconds=4);until(lambda:ctl(d,'inventory')['counts'],lambda c:c.get('lunatic:hauchiwa_fan',0)==0);evidence['fan_breaks_at_250']=True
   ctl(d,'quit');client.wait(timeout=20)
   client,name=connect(d,'hakurei_reimu','non-crow');console(f'clear {name}');console(f'item replace entity {name} armor.chest with minecraft:diamond_chestplate');console(f'item replace entity {name} weapon.mainhand with lunatic:hauchiwa_fan');time.sleep(.5)
   ready_to_glide(d,name);time.sleep(.5);assert not player(d)['fall_flying'];before=launches(d);ctl(d,'use-item');time.sleep(.5);assert launches(d)==before;evidence['non_crow_has_no_virtual_elytra_or_fan_boost']=True

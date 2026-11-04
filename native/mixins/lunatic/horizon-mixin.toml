@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.3"
+version = "0.7.4"
 priority = 100
 
 [[injection]]
@@ -376,3 +376,36 @@ cancellable=true
 target="horizon_client::game::Game<'_>::wear_glider"
 helper="crow-wear.rs"
 bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[module]]
+id="crow-physics"
+file="crates/horizon-client/src/motion.rs"
+name="lunatic_crow_physics"
+visibility="pub"
+source="crow-physics.rs"
+
+[[injection]]
+id="crow-lift"
+kind="MODIFY_VARIABLE"
+target="horizon_client_lib::motion::MotionWorld<'_,'_,'_>::travel_fall_flying"
+variable={name="m",ordinal=0,at="STORE"}
+ordinal=0
+require=4
+helper="crow-lift.rs"
+bindings=[
+ {name="value",ty="Vec3",value="$value"},
+ {name="world",ty="&mut MotionWorld<'_, '_, '_>",value="&mut *self"},
+]
+
+[[injection]]
+id="crow-drag"
+kind="MODIFY_VARIABLE"
+target="horizon_client_lib::motion::MotionWorld<'_,'_,'_>::travel_fall_flying"
+variable={name="movement",ordinal=0,at="STORE"}
+ordinal=0
+require=1
+helper="crow-drag.rs"
+bindings=[
+ {name="value",ty="Vec3",value="$value"},
+ {name="world",ty="&mut MotionWorld<'_, '_, '_>",value="&mut *self"},
+]

@@ -6,6 +6,8 @@
       "translate": "item.lunatic.hauchiwa_fan",
       "color": "gold",
       "italic": false
-    }
-  }
+    },
+    "minecraft:max_damage": 250
+  },
+  "max_stack_size": 1
 }
