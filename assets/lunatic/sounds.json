@@ -82,7 +82,7 @@
     "sounds": [
       {
         "name": "lunatic:entity/player/pldead00",
-        "volume": 1.0
+        "volume": 0.5
       }
     ]
   }

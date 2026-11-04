@@ -218,7 +218,7 @@ project's [GPLv3 license](LICENSE), also included in the content archive.
 
 ## Player death sound
 
-Lunatic redirects the standard player-death event to `pldead00.ogg` from the Luanti game, stored at `assets/lunatic/sounds/entity/player/pldead00.ogg`. The normal positional player sound pipeline and Players volume category are retained, with sound volume `1.0`. Nearby players hear the death in its dimension, while the dying player hears the normal local death event once. Missing Lunatic sound resources preserve Minecraft's original sound.
+Lunatic redirects the standard player-death event to `pldead00.ogg` from the Luanti game, stored at `assets/lunatic/sounds/entity/player/pldead00.ogg`. The normal positional player sound pipeline and Players volume category are retained, with sound volume `0.5` and fixed original pitch `1.0` (no Minecraft pitch randomization). Nearby players hear the death in its dimension, while the dying player hears the normal local death event once. Missing Lunatic sound resources preserve Minecraft's original sound.
 
 ## Crow tengu flight and Hauchiwa Fan
 
@@ -231,7 +231,7 @@ The fan has 250 durability, costs 5 durability per successful boost, has no expl
 The standard item cooldown packet and HUD display the cooldown. Non-crow characters keep their normal equipment-based gliding.
 No additional mod networking is used for the boost.
 
-Native behavior and content package 0.7.6 include the fan durability definition. No character JSON schema changes are required.
+Native behavior and content package 0.7.7 include the fan durability definition. No character JSON schema changes are required.
 The isolated multiplayer check is `tools/test_crow_tengu_e2e.py` (`--game`, `--ctl`, `--resources`, `--mod`, `--output`).
 It creates temporary server/client homes and checks armored/empty-chest gliding, level-flight speed and ratio, both-hand durability and cooldown behavior, fan breakage at 250 damage, and normal elytra behavior after switching to a non-crow character.
 

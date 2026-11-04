@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.6"
+version = "0.7.7"
 priority = 100
 
 [[injection]]
@@ -446,4 +446,32 @@ bindings=[
  {name="game",ty="&crate::game::Game<'_>",value="&*self"},
  {name="stack",ty="&ItemStack",value="stack"},
  {name="result",ty="&mut Option<ItemStack>",value="&mut *result"},
+]
+
+[[injection]]
+id="player-death-pitch-1"
+kind="MODIFY_VARIABLE"
+target="horizon_client_render::audio::Audio::play_seeded"
+variable={name="pitch",parameter=true,ordinal=0,at="LOAD"}
+ordinal=1
+require=3
+helper="player-death-pitch.rs"
+bindings=[
+ {name="value",ty="f32",value="$value"},
+ {name="audio",ty="&Audio",value="&*self"},
+ {name="event",ty="&str",value="$local_ref:event:0"},
+]
+
+[[injection]]
+id="player-death-pitch-2"
+kind="MODIFY_VARIABLE"
+target="horizon_client_render::audio::Audio::play_seeded"
+variable={name="pitch",parameter=true,ordinal=0,at="LOAD"}
+ordinal=2
+require=3
+helper="player-death-pitch.rs"
+bindings=[
+ {name="value",ty="f32",value="$value"},
+ {name="audio",ty="&Audio",value="&*self"},
+ {name="event",ty="&str",value="$local_ref:event:0"},
 ]
