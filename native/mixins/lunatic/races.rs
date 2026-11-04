@@ -39,10 +39,11 @@ impl Game<'_> {
             || self.remote.is_some()
             || !self.lunatic_crow_tengu()
             || self.spectator()
-            || !self
-                .player
-                .as_ref()
-                .is_some_and(|p| p.fall_flying && !p.health.dead_or_dying())
+            || !self.player.as_ref().is_some_and(|p| {
+                p.fall_flying
+                    && !p.__horizon_mixins_lunatic_fairy().crow_armor_blocked
+                    && !p.health.dead_or_dying()
+            })
             || self.cooldowns.is_on_cooldown(FAN)
         {
             return false;
@@ -56,7 +57,7 @@ impl Game<'_> {
         rocket.owner = Some(crate::mobs::Who::Player);
         rocket.guest = self.lan_acting;
         self.rockets.push(rocket);
-        self.add_cooldown(std::sync::Arc::from(FAN), 160);
+        self.add_cooldown(std::sync::Arc::from(FAN), 200);
         if !self.creative {
             let loss = self.wear(stack, 5);
             let max = self.items().get(FAN).map_or(250, |i| i.max_damage);

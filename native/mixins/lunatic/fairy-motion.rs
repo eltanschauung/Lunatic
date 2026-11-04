@@ -6,6 +6,7 @@ use super::PlayerMotion;
 pub struct Fairy {
     pub enabled: bool,
     pub crow_tengu: bool,
+    pub crow_armor_blocked: bool,
     used: bool,
     previous_jump: bool,
     ascending: bool,
@@ -21,6 +22,7 @@ impl Default for Fairy {
         Self {
             enabled: false,
             crow_tengu: false,
+            crow_armor_blocked: false,
             used: false,
             previous_jump: false,
             ascending: false,
@@ -70,6 +72,19 @@ impl Fairy {
     }
 }
 impl PlayerMotion {
+    /// Reuse the native attribute instance's dirty/computed cache. No equipment
+    /// traversal, extra packets, or separately invalidated armor-value cache.
+    pub fn lunatic_crow_glide(&mut self) {
+        let crow = self.__horizon_mixins_lunatic_fairy().crow_tengu;
+        let blocked = crow && self.attribute("minecraft:armor").map_or(true, |v| v > 11.0);
+        self.__horizon_mixins_lunatic_fairy_mut().crow_armor_blocked = blocked;
+        if crow {
+            self.glider = !blocked;
+            if blocked {
+                self.fall_flying = false;
+            }
+        }
+    }
     pub fn lunatic_character_body(
         &mut self,
         size: f32,
@@ -84,6 +99,7 @@ impl PlayerMotion {
         };
         let state = self.__horizon_mixins_lunatic_fairy();
         let changed = state.size != size;
+        let crow_changed = state.crow_tengu != crow_tengu;
         let has = self
             .attributes
             .key("minecraft:scale")
@@ -115,6 +131,9 @@ impl PlayerMotion {
         }
         self.status.slow_falling =
             potion_slowfall || self.__horizon_mixins_lunatic_fairy().slowfall;
+        if crow_changed {
+            self.lunatic_crow_glide();
+        }
     }
     pub fn lunatic_fairy_sync(&mut self, server: &Self) {
         let enabled = server.__horizon_mixins_lunatic_fairy().enabled;
@@ -131,8 +150,7 @@ impl PlayerMotion {
         }
     }
     pub fn lunatic_fairy_step(&mut self, jump: bool, grounded: bool) {
-        let crow_tengu = self.__horizon_mixins_lunatic_fairy().crow_tengu;
-        self.glider |= crow_tengu;
+        self.lunatic_crow_glide();
         let input = Input {
             jump,
             grounded,
@@ -208,7 +226,7 @@ mod tests {
         let assets = Assets::load(&root).unwrap();
         let resources = MotionResources::load(&root, &assets).unwrap();
         let mut p = PlayerMotion::new(&resources, Vec3::ZERO).unwrap();
-        p.lunatic_character_body(0.7, true, false);
+        p.lunatic_character_body(0.7, true, false, false);
         assert!((p.scale - 0.7).abs() < 1e-6);
         for pose in [
             Pose::Standing,
@@ -230,18 +248,18 @@ mod tests {
         p.velocity.y -= 0.08;
         p.lunatic_fairy_step(false, false);
         assert!(p.status.slow_falling);
-        p.lunatic_character_body(0.7, true, true);
+        p.lunatic_character_body(0.7, true, true, false);
         p.lunatic_fairy_step(true, false);
         assert!(!p.__horizon_mixins_lunatic_fairy().slowfall);
         assert!(
             p.status.slow_falling,
             "a potion survives race float cancellation"
         );
-        p.lunatic_character_body(1.0, false, false);
+        p.lunatic_character_body(1.0, false, false, false);
         assert!(!p.status.slow_falling);
         assert_eq!(p.scale, 1.0);
         assert_eq!(p.dimensions.eye_height, 1.62);
-        p.lunatic_character_body(4.0, false, false);
+        p.lunatic_character_body(4.0, false, false, false);
         assert!((p.scale - 1.2).abs() < 1e-6);
     }
     #[test]

@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.4"
+version = "0.7.5"
 priority = 100
 
 [[injection]]
@@ -409,3 +409,10 @@ bindings=[
  {name="value",ty="Vec3",value="$value"},
  {name="world",ty="&mut MotionWorld<'_, '_, '_>",value="&mut *self"},
 ]
+
+[[injection]]
+id="crow-armor-equipment"
+kind="HEAD"
+target="horizon_client::game::enchant_effects::Game<'_>::apply_enchantment_attributes"
+helper="crow-equipment.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
