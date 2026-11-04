@@ -46,7 +46,12 @@
       "race": "youkai,yuuka",
       "color": "dark_green",
       "size": 1.0,
-      "starting_items": []
+      "starting_items": [
+        {
+          "item": "lunatic:yuuka_parasol",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "lunatic:alice_margatroid",

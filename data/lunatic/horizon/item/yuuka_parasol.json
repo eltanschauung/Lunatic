@@ -1,0 +1,12 @@
+{
+  "template": "minecraft:stick",
+  "max_stack_size": 1,
+  "components": {
+    "!minecraft:cooking_fuel": {},
+    "minecraft:item_name": {
+      "translate": "item.lunatic.yuuka_parasol",
+      "color": "green",
+      "italic": false
+    }
+  }
+}
