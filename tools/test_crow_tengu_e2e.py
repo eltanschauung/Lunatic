@@ -52,6 +52,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-crow-proof-') as temp:
   server=launch(srv,['--dedicated','--nogui'],'server')
   until(lambda:socket.create_connection(('127.0.0.1',port),1).close(),lambda _:True,seconds=90)
   d=home('client');client,name=connect(d,'shameimaru_aya','crow')
+  until(lambda:ctl(d,'inventory')['counts'],lambda c:bool(c));time.sleep(.3) # Let the initial character kit arrive before clearing it.
   console(f'clear {name}');console(f'item replace entity {name} armor.chest with minecraft:diamond_chestplate');console(f'item replace entity {name} weapon.mainhand with lunatic:hauchiwa_fan')
   until(lambda:ctl(d,'inventory')['counts'],lambda c:c.get('lunatic:hauchiwa_fan')==1)
   ready_to_glide(d,name)
