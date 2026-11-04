@@ -47,12 +47,13 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
  try:
   server=launch(srv,['--dedicated','--nogui'],'server')
   until(lambda:socket.create_connection(('127.0.0.1',port),1).close(),lambda _:True,seconds=90)
+  console('gamerule spawn_mobs false');console('gamerule spawn_monsters false')
   d=home('client');client,name=connect(d,'ibuki_suika','gourd')
   until(lambda:ctl(d,'inventory')['counts'],lambda c:c.get('lunatic:ibuki_gourd')==1);evidence['suika_starting_gourd']=True
   console(f'gamemode survival {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'clear {name}');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
   ctl(d,'mouse','right','down');until(lambda:ctl(d,'status')['using'],lambda x:x is not None,seconds=4);time.sleep(.4);assert oni(d) is None;ctl(d,'mouse','right','up');until(lambda:ctl(d,'status')['using'],lambda x:x is None,seconds=4);assert oni(d) is None;evidence['interrupted_drink_grants_nothing']=True
   ctl(d,'mouse','right','down');time.sleep(.5);assert oni(d) is None;evidence['effect_waits_for_completion']=True
-  e=until(lambda:oni(d),lambda x:x is not None,seconds=4);ctl(d,'mouse','right','up');assert 250<=e['duration_ticks']<=300 and e['amplifier']==0;evidence['completed_drink_grants_fifteen_seconds']=True
+  e=until(lambda:oni(d),lambda x:x is not None,seconds=4);ctl(d,'mouse','right','up');assert 235<=e['duration_ticks']<=400 and e['amplifier']==0;evidence['completed_drink_grants_random_twelve_to_twenty_seconds']=True
   assert ctl(d,'inventory')['counts'].get('lunatic:ibuki_gourd')==1;evidence['gourd_retained_without_bottle']=True;assert not ctl(d,'inventory')['counts'].get('minecraft:glass_bottle',0)
   assert ctl(d,'status')['heard'].get('minecraft:entity.generic.drink',0)>0;evidence['standard_drinking_sound']=True
   ctl(d,'screenshot',str(a.output/'gourd-and-oni.png'))
@@ -65,13 +66,22 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
    console(f'tp {name} 0.5 -60 0.5 0 0');time.sleep(1);ctl(d,'attack',str(m['id']));m=until(mob,lambda m:m is not None and m['health']<10,seconds=5);health=m['health'];time.sleep(.7);m=mob();return health,m['pos'][2]-2.5
   console(f'item replace entity {name} weapon.offhand with minecraft:air');console(f'effect clear {name}');console(f'item replace entity {name} weapon.mainhand with minecraft:diamond_sword[minecraft:enchantments={{"minecraft:knockback":2}}]');time.sleep(.4);assert 'knockback' in json.dumps(ctl(d,'inventory'));reference=hit();assert abs(reference[0]-3)<.01 and reference[1]>.5
   console(f'item replace entity {name} weapon.mainhand with minecraft:air');console(f'effect give {name} lunatic:oni 15 0 true');until(lambda:oni(d),lambda e:e is not None,seconds=4);boosted=hit();assert abs(boosted[0]-3)<.01;assert abs(boosted[1]-reference[1])<.6,(reference,boosted);evidence['oni_matches_strength_ii_and_knockback_ii']={'vanilla_sword_health_displacement':reference,'oni_unarmed_health_displacement':boosted}
-  console(f'effect clear {name} lunatic:oni');until(lambda:oni(d),lambda e:e is None,seconds=4);plain=hit();assert abs(plain[0]-9)<.01 and plain[1]<boosted[1]*.7;evidence['removal_restores_normal_damage_and_knockback']=True
+  before_clear_burps=ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0);before_clear_food=player(d)['food']
+  console(f'effect clear {name} lunatic:oni');until(lambda:oni(d),lambda e:e is None,seconds=4);time.sleep(.3);assert player(d)['food']==before_clear_food;assert ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0)==before_clear_burps;evidence['early_removal_has_no_expiry_penalty']=True;plain=hit();assert abs(plain[0]-9)<.01 and plain[1]<boosted[1]*.7;evidence['removal_restores_normal_damage_and_knockback']=True
   print('PASS: Oni melee damage/knockback matches vanilla reference; removal restores normal attacks',flush=True)
   # Advance the isolated server's standard ticks, never wall-clock production time.
   console('tick sprint 300');time.sleep(2);console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.3);ctl(d,'mouse','right','down');time.sleep(.5);assert ctl(d,'status')['using'] is None;ctl(d,'mouse','right','up');evidence['cooldown_survives_effect_removal_and_new_copy']=True
   console('tick sprint 4800');time.sleep(2)
   ctl(d,'mouse','right','down');until(lambda:oni(d),lambda e:e is not None,seconds=10);ctl(d,'mouse','right','up');evidence['usable_again_after_four_minute_cooldown']=True
-  until(lambda:oni(d),lambda e:e is None,seconds=18);evidence['oni_expires_naturally']=True
+  console(f'effect give {name} minecraft:saturation 1 0 true');time.sleep(.5);console(f'effect clear {name} minecraft:saturation');until(lambda:player(d)['food'],lambda food:food==20,seconds=4)
+  burps=ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0)
+  until(lambda:oni(d),lambda e:e is None,seconds=23);evidence['oni_expires_naturally']=True
+  after=until(lambda:player(d)['food'],lambda food:15<=food<=18,seconds=4);evidence['expiry_food_loss']=20-after
+  until(lambda:ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0),lambda n:n==burps+1,seconds=4);time.sleep(.3);assert ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0)==burps+1;evidence['one_normal_burp_on_expiry']=True
+  drunk=until(lambda:next((e for e in player(d)['effects'] if e['id']=='lunatic:drunk'),None),lambda e:e is not None,seconds=4);assert 110<=drunk['duration_ticks']<=200 and drunk['amplifier']==0;evidence['drunk_for_random_six_to_ten_seconds']=True
+  assert not any(e['id'] in ['darkness','nausea'] for e in player(d)['effects']);evidence['drunk_is_one_synchronized_effect']=True
+  time.sleep(2);ctl(d,'screenshot',str(a.output/'drunk-berries.png'));until(lambda:any(e['id']=='lunatic:drunk' for e in player(d)['effects']),lambda active:not active,seconds=12);evidence['drunk_expires_naturally']=True
+  heard=ctl(d,'status')['heard'];deaths=heard.get('minecraft:entity.player.death',0);burps=heard.get('minecraft:entity.player.burp',0);console(f'effect give {name} lunatic:oni 1 0 true');console(f'kill {name}');until(lambda:ctl(d,'status')['heard'].get('minecraft:entity.player.death',0),lambda n:n==deaths+1,seconds=5);time.sleep(.4);assert ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0)==burps;evidence['death_sound_once_without_expiry_burp']=True
   (a.output/'result.json').write_text(json.dumps(evidence,indent=2)+'\n');print(json.dumps({'passed':True,'checks':evidence}),flush=True)
  finally:
   for child in reversed(children):

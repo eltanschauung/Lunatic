@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.7"
+version = "0.7.8"
 priority = 100
 
 [[injection]]
@@ -474,4 +474,50 @@ bindings=[
  {name="value",ty="f32",value="$value"},
  {name="audio",ty="&Audio",value="&*self"},
  {name="event",ty="&str",value="$local_ref:event:0"},
+]
+
+[[injection]]
+id="gourd-random-oni"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_consume_effect"
+helper="gourd-effect.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="kind",ty="&str",value="kind"},
+]
+
+[[injection]]
+id="oni-before-expiry"
+kind="HEAD"
+target="horizon_client::game::potions::Game<'_>::tick_mob_effects"
+helper="oni-before-expiry.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id="oni-after-expiry"
+kind="RETURN"
+target="horizon_client::game::potions::Game<'_>::tick_mob_effects"
+helper="oni-after-expiry.rs"
+bindings=[{name="value",ty="()",value="$value"},{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id="drunk-vanilla-effects"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::effects::PlayerEffects::get"
+helper="drunk-effects.rs"
+bindings=[
+ {name="effects",ty="&PlayerEffects",value="&*self"},
+ {name="id",ty="impl AsRef<str>",value="id"},
+]
+
+[[injection]]
+id="drunk-berry-icon"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::hud::HudAtlas::sprite_or_missing"
+helper="drunk-icon.rs"
+bindings=[
+ {name="atlas",ty="&HudAtlas",value="&*self"},
+ {name="name",ty="&str",value="name"},
 ]
