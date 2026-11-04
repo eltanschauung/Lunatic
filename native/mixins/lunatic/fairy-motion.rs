@@ -5,6 +5,7 @@ use super::PlayerMotion;
 #[derive(Clone, Debug)]
 pub struct Fairy {
     pub enabled: bool,
+    pub crow_tengu: bool,
     used: bool,
     previous_jump: bool,
     ascending: bool,
@@ -19,6 +20,7 @@ impl Default for Fairy {
     fn default() -> Self {
         Self {
             enabled: false,
+            crow_tengu: false,
             used: false,
             previous_jump: false,
             ascending: false,
@@ -68,7 +70,13 @@ impl Fairy {
     }
 }
 impl PlayerMotion {
-    pub fn lunatic_character_body(&mut self, size: f32, fairy: bool, potion_slowfall: bool) {
+    pub fn lunatic_character_body(
+        &mut self,
+        size: f32,
+        fairy: bool,
+        potion_slowfall: bool,
+        crow_tengu: bool,
+    ) {
         let size = if size.is_finite() {
             size.clamp(0.7, 1.2)
         } else {
@@ -98,6 +106,7 @@ impl PlayerMotion {
         let state = self.__horizon_mixins_lunatic_fairy_mut();
         state.size = size;
         state.enabled = fairy;
+        state.crow_tengu = crow_tengu;
         state.potion_slowfall = potion_slowfall;
         if !fairy {
             state.used = false;
@@ -109,9 +118,11 @@ impl PlayerMotion {
     }
     pub fn lunatic_fairy_sync(&mut self, server: &Self) {
         let enabled = server.__horizon_mixins_lunatic_fairy().enabled;
+        let crow_tengu = server.__horizon_mixins_lunatic_fairy().crow_tengu;
         let potion = server.__horizon_mixins_lunatic_fairy().potion_slowfall;
         let state = self.__horizon_mixins_lunatic_fairy_mut();
         state.enabled = enabled;
+        state.crow_tengu = crow_tengu;
         state.potion_slowfall = potion;
         if !enabled {
             state.used = false;
@@ -120,6 +131,8 @@ impl PlayerMotion {
         }
     }
     pub fn lunatic_fairy_step(&mut self, jump: bool, grounded: bool) {
+        let crow_tengu = self.__horizon_mixins_lunatic_fairy().crow_tengu;
+        self.glider |= crow_tengu;
         let input = Input {
             jump,
             grounded,

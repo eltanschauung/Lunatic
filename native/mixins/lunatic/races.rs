@@ -20,6 +20,49 @@ struct Stack {
     count: u32,
 }
 impl Game<'_> {
+    pub(super) fn lunatic_crow_tengu(&self) -> bool {
+        if !self.native_on("lunatic") {
+            return false;
+        }
+        let id = self
+            .lan_acting_uuid
+            .or_else(|| self.remote.as_ref().map(|remote| remote.profile()));
+        let character = match id {
+            Some(uuid) => self.character_for(uuid),
+            None => self.character.as_ref(),
+        };
+        character.is_some_and(|c| c.has_race("crow_tengu"))
+    }
+    pub(super) fn lunatic_fan_boost(&mut self, stack: &crate::items::ItemStack) -> bool {
+        const FAN: &str = "lunatic:hauchiwa_fan";
+        if stack.item.as_ref() != FAN
+            || self.remote.is_some()
+            || !self.lunatic_crow_tengu()
+            || self.spectator()
+            || !self
+                .player
+                .as_ref()
+                .is_some_and(|p| p.fall_flying && !p.health.dead_or_dying())
+            || self.cooldowns.is_on_cooldown(FAN)
+        {
+            return false;
+        }
+        // The normal duration-1, explosion-free rocket, attached to this player.
+        // Item use owns the arm swing; the fan itself is never consumed.
+        let at = self.player.as_ref().unwrap().position;
+        let at = horizon_core::geometry::Vec3::new(at.x, at.y, at.z);
+        let item = crate::items::ItemStack::new("minecraft:firework_rocket", 1);
+        let mut rocket = self.new_rocket(at, &item, true);
+        rocket.owner = Some(crate::mobs::Who::Player);
+        rocket.guest = self.lan_acting;
+        self.rockets.push(rocket);
+        self.add_cooldown(std::sync::Arc::from(FAN), 160);
+        if let (Some(player), Some(name)) = (self.lan_acting_uuid, self.lan_acting_name.clone()) {
+            self.native_player_elytra_boost(player, &name);
+        }
+        true
+    }
+
     fn lunatic_character(&self, id: u128) -> Option<&Character> {
         if !self.native_on("lunatic") {
             return None;
@@ -38,12 +81,13 @@ impl Game<'_> {
             Some(remote) => remote.profile(),
             None => self.native_acting_id(),
         };
-        let (size, fairy) = self
-            .lunatic_character(id)
-            .map_or((1.0, false), |c| (c.size, c.has_race("fairy")));
+        let (size, fairy, crow_tengu) =
+            self.lunatic_character(id).map_or((1.0, false, false), |c| {
+                (c.size, c.has_race("fairy"), c.has_race("crow_tengu"))
+            });
         let potion = self.potions.effects.get("slow_falling").is_some();
         if let Some(p) = self.player.as_mut() {
-            p.lunatic_character_body(size, fairy, potion);
+            p.lunatic_character_body(size, fairy, potion, crow_tengu);
         }
     }
     pub(super) fn lunatic_guest_races(&mut self, host: &mut LanHost, conn: u32) {

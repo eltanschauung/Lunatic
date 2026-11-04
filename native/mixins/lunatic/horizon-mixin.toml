@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.2"
+version = "0.7.3"
 priority = 100
 
 [[injection]]
@@ -12,7 +12,7 @@ helper = "held-name.rs"
 bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
 
 [compatibility]
-horizon_revision = "b7ce5bd58c877ed2a0a68a3f1eb4f6366d770632"
+horizon_revision = "19a7b848958a5cfee957172bad4258750fb47c8b"
 
 [[module]]
 id = "visuals"
@@ -360,3 +360,19 @@ bindings = [
  {name="audio",ty="&mut Audio",value="&mut *self"},
  {name="event",ty="&str",value="event"},
 ]
+
+[[injection]]
+id="crow-tengu-glider"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::Game<'_>::glider_worn"
+helper="crow-glider.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[injection]]
+id="crow-tengu-glider-wear"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::Game<'_>::wear_glider"
+helper="crow-wear.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
