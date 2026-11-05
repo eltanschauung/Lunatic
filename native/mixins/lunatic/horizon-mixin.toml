@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.8.1"
+version = "0.8.2"
 priority = 100
 
 [[injection]]
@@ -595,3 +595,10 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_mob_effect_added"
 helper="oni-application.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="effect",ty="&str",value="effect"},{name="entity",ty="Option<i32>",value="entity"}]
+
+[[injection]]
+id="oni-fov"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_compute_fov_modifier"
+helper="oni-fov.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="player",ty="&horizon_client::camera::FovPlayer",value="player"},{name="base",ty="f32",value="base"},{name="modifier",ty="&mut f32",value="&mut *modifier"}]
