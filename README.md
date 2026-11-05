@@ -254,3 +254,5 @@ Characters with the `yuuka` race permanently receive Strength I and a minimum of
 Applying Oni plays Minecraft's Ender Dragon ambient sound at the affected entity's position at 50% volume and normal pitch. The built-in event selects among its four `growl1–4` clips; no Minecraft audio is bundled. Drinks and command applications share the same server-side application hook, without tick or client-synchronization echoes.
 
 While Oni is active, the camera uses half of Speed I's FOV widening (+5% at normal walking speed with FOV Effects at 100%), through the standard camera modifier before zoom and smoothing. This is visual only: movement speed is unchanged, the FOV Effects slider still scales it, and first-person spyglass zoom stays intact.
+
+Successful Oni/Yuuka explosion punches also emit one vanilla explosion puff at the mob's body center, using normal nearby particle delivery. This is visual only; damage, knockback and blocks are unchanged. Missed, invulnerable and held-weapon hits emit neither the punch sound nor the puff.

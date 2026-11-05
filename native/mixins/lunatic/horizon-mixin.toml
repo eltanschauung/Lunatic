@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.8.2"
+version = "0.8.3"
 priority = 100
 
 [[injection]]
@@ -531,7 +531,7 @@ bindings=[{name="value",ty="f32",value="$value"},{name="game",ty="&crate::game::
 id="punch-explosion"
 kind="HEAD"
 target="horizon_client::game::mace::Game<'_>::weapon_hit"
-helper="punch-sound.rs"
+helper="punch-effects.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="index",ty="usize",value="index"}]
 
 [[module]]

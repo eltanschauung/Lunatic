@@ -52,17 +52,20 @@ with tempfile.TemporaryDirectory(prefix='lunatic-melee-proof-') as temp:
   console(f'gamemode survival {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'clear {name}');time.sleep(.5)
   def mob():return next((m for m in ctl(d,'mobs','32')['near'] if m['kind']=='minecraft:pig'),None)
   def explosions():return ctl(d,'status')['heard'].get('lunatic:entity.explosion_old',0)
+  def particles():
+   made=ctl(d,'status')['particles'];return made.get('minecraft:explosion',made.get('explosion',0))
   def hit(expected, pop, invulnerable=False):
    console('kill @e[type=minecraft:pig]');time.sleep(.3)
    tag='{Silent:1b,PersistenceRequired:1b,Health:100f,attributes:[{id:"minecraft:max_health",base:100.0},{id:"minecraft:movement_speed",base:0.0}]'+(',Invulnerable:1b}' if invulnerable else '}')
    console('summon minecraft:pig 0.5 -60 2.5 '+tag)
    m=until(mob,lambda m:m is not None and m['health']==100,seconds=6)
    console(f'tp {name} 0.5 -60 0.5 0 0');time.sleep(1.2)
-   heard=explosions();ctl(d,'attack',str(m['id']))
+   heard=explosions();before_particles=particles();ctl(d,'attack',str(m['id']))
    if not invulnerable:until(mob,lambda m:m is not None and m['health']<100,seconds=5)
    time.sleep(.7);m=mob();damage=100-m['health'];assert abs(damage-expected)<.02,(expected,m)
    assert explosions()==heard+int(pop),(pop,heard,explosions())
-   return {'damage':damage,'displacement':m['pos'][2]-2.5,'pop':pop}
+   assert particles()==before_particles+int(pop),(pop,before_particles,particles())
+   return {'damage':damage,'displacement':m['pos'][2]-2.5,'pop':pop,'explosion_particles':particles()-before_particles}
   def equip(item):
    console(f'item replace entity {name} weapon.mainhand with {item}');time.sleep(.35)
   equip('minecraft:air');evidence['normal_fist']=hit(1,False)

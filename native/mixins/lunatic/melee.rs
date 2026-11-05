@@ -16,14 +16,25 @@ impl Game<'_> {
             self.potions.effects.amplifier("strength"),
         )
     }
-    pub(super) fn lunatic_punch_sound(&mut self, index: usize) {
+    pub(super) fn lunatic_punch_effects(&mut self, index: usize) {
         if self.held().is_some() || !self.native_on("lunatic")
             || !(self.potions.effects.get("lunatic:oni").is_some() || self.lunatic_has_race("yuuka")) {
             return;
         }
-        if let Some(mob) = self.mobs.get(index).filter(|m| m.kind.id != "minecraft:player") {
-            self.lunatic_sound("entity.explosion_old", mob.position, 0.5);
-        }
+        let Some((origin, height)) = self.mobs.get(index)
+            .filter(|m| m.kind.id != "minecraft:player")
+            .map(|m| (m.position, m.height())) else { return; };
+        self.lunatic_sound("entity.explosion_old", origin, 0.5);
+        // Visual impact only; normal particle dispatch reaches nearby clients.
+        let options = horizon_client::particles::ParticleOptions::simple(
+            horizon_client::particles::ParticleType::Explosion,
+        );
+        let at = [origin.x, origin.y + f64::from(height) * 0.5, origin.z];
+        self.particles.add(&options, at, [0.0; 3]);
+        self.lan_send_particles(super::lan_particles::QueuedParticle {
+            dimension: self.dim.id(), options, state: None, at,
+            spread: [0.0; 3], speed: 0.0, count: 1, randomization: 0,
+        });
     }
 }
 #[cfg(test)]
