@@ -150,6 +150,7 @@ impl Game<'_> {
             return;
         }
         self.lunatic_character_body();
+        self.lunatic_parasol_publish();
         if let Some(event) = self
             .player
             .as_mut()

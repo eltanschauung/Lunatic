@@ -12,6 +12,9 @@ pub struct Fairy {
     previous_jump: bool,
     ascending: bool,
     pub slowfall: bool,
+    pub parasol: bool,
+    pub parasol_sent: Option<bool>,
+    pub parasol_revision: u64,
     potion_slowfall: bool,
     previous_velocity: f64,
     size: f32,
@@ -29,6 +32,9 @@ impl Default for Fairy {
             previous_jump: false,
             ascending: false,
             slowfall: false,
+            parasol: false,
+            parasol_sent: None,
+            parasol_revision: 0,
             potion_slowfall: false,
             previous_velocity: 0.0,
             size: 1.0,
@@ -48,6 +54,13 @@ impl Fairy {
     fn step(&mut self, input: Input) -> bool {
         let pressed = input.jump && !self.previous_jump;
         self.previous_jump = input.jump;
+        if pressed && self.parasol {
+            if input.grounded { self.used = false; }
+            self.parasol = false;
+            self.sound = Some("entity.fairy.cancel");
+            self.previous_velocity = input.velocity;
+            return false;
+        }
         if !self.enabled || input.grounded || input.blocked {
             self.used = false;
             self.ascending = false;
@@ -132,7 +145,8 @@ impl PlayerMotion {
             state.ascending = false;
         }
         self.status.slow_falling =
-            potion_slowfall || self.__horizon_mixins_lunatic_fairy().slowfall;
+            potion_slowfall || self.__horizon_mixins_lunatic_fairy().slowfall
+                || self.__horizon_mixins_lunatic_fairy().parasol;
         if crow_changed {
             self.lunatic_crow_glide();
         }
@@ -141,17 +155,40 @@ impl PlayerMotion {
         let enabled = server.__horizon_mixins_lunatic_fairy().enabled;
         let crow_tengu = server.__horizon_mixins_lunatic_fairy().crow_tengu;
         let potion = server.__horizon_mixins_lunatic_fairy().potion_slowfall;
+        let parasol = server.__horizon_mixins_lunatic_fairy().parasol;
+        let revision = server.__horizon_mixins_lunatic_fairy().parasol_revision;
         let state = self.__horizon_mixins_lunatic_fairy_mut();
         state.enabled = enabled;
         state.crow_tengu = crow_tengu;
         state.potion_slowfall = potion;
+        // Replay derives Space cancellation from the recorded input. Only a
+        // new item toggle/death reset overrides it, not a later input's result.
+        if state.parasol_revision != revision {
+            state.parasol = parasol;
+            state.parasol_revision = revision;
+        }
         if !enabled {
             state.used = false;
             state.slowfall = false;
             state.ascending = false;
         }
     }
+    pub fn lunatic_parasol_set(&mut self, active: bool) {
+        let state = self.__horizon_mixins_lunatic_fairy_mut();
+        if state.parasol != active {
+            state.parasol = active;
+            state.parasol_revision = state.parasol_revision.wrapping_add(1);
+        }
+        if active {
+            state.slowfall = false;
+            state.ascending = false;
+        }
+        self.status.slow_falling = state.potion_slowfall || state.slowfall || state.parasol;
+    }
     pub fn lunatic_fairy_step(&mut self, jump: bool, grounded: bool) {
+        if self.health.dead_or_dying() || self.spectator {
+            self.lunatic_parasol_set(false);
+        }
         self.lunatic_crow_glide();
         let input = Input {
             jump,
@@ -167,14 +204,14 @@ impl PlayerMotion {
                 || self.is_in_lava(),
         };
         let state = self.__horizon_mixins_lunatic_fairy_mut();
-        let enabled = state.enabled;
+        let controlled = state.enabled || state.parasol;
         let boost = state.step(input);
         // An ordinary body keeps every vanilla status flag, including flags
         // supplied directly by the potion/movement pipeline without a Game.
-        if !enabled {
+        if !controlled {
             return;
         }
-        let slowfall = state.potion_slowfall || state.slowfall;
+        let slowfall = state.potion_slowfall || state.slowfall || state.parasol;
         if boost {
             self.velocity.y += 12.0 / 20.0;
             self.fall_distance = 0.0;
@@ -193,6 +230,20 @@ mod tests {
             grounded,
             blocked: false,
             velocity,
+        }
+    }
+    #[test]
+    fn parasol_works_for_nonfairies_and_space_cancels_without_boost() {
+        for fairy in [false, true] {
+            let mut state = Fairy { enabled: fairy, parasol: true, ..Fairy::default() };
+            assert!(!state.step(input(false, true, 0.0)));
+            assert!(state.parasol, "opening on the ground remains armed");
+            assert!(!state.step(input(false, false, -0.1)));
+            assert!(state.parasol);
+            assert!(!state.step(input(true, false, -0.1)));
+            assert!(!state.parasol);
+            assert_eq!(state.sound, Some("entity.fairy.cancel"));
+            assert!(!state.step(input(true, false, -0.2)), "holding Space cannot boost");
         }
     }
     #[test]

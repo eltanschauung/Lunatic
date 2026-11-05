@@ -49,6 +49,7 @@ struct State {
     shots: Vec<Shot>,
     sounds: Vec<QueuedSound>,
     notices: Vec<(u128, Text)>,
+    parasol_updates: Vec<(u128, bool)>,
 }
 thread_local! {static STATE:RefCell<State>=RefCell::new(State::default());}
 fn array(v: Vec3) -> [f64; 3] {
@@ -113,6 +114,16 @@ impl Game<'_> {
         }
         counts
     }
+    pub(super) fn lunatic_parasol_publish(&mut self) {
+        let id = self.native_acting_id();
+        if let Some(player) = self.player.as_mut() {
+            let state = player.__horizon_mixins_lunatic_fairy_mut();
+            if state.parasol_sent != Some(state.parasol) {
+                state.parasol_sent = Some(state.parasol);
+                STATE.with_borrow_mut(|s| s.parasol_updates.push((id, state.parasol)));
+            }
+        }
+    }
     pub(super) fn lunatic_input(&mut self) -> bool {
         if self.lampad_input(false) { return true; }
         if !self.native_on("lunatic")
@@ -173,6 +184,12 @@ impl Game<'_> {
         self.lunatic_notice_text(ammo_notice(selected));
     }
     pub(super) fn lunatic_message(&mut self, player: u128, channel: &str, data: &[u8]) {
+        if channel == super::lunatic_parasol::REQUEST {
+            if data.len() == 1 && data[0] <= 1 && self.native_on("lunatic") && self.remote.is_none() {
+                self.lunatic_as_player(player, |game| game.lunatic_parasol_toggle(data[0]));
+            }
+            return;
+        }
         if channel != CHANNEL
             || data.len() != 9
             || data[0] > 2
@@ -269,6 +286,9 @@ impl Game<'_> {
         }
         for (player, line) in STATE.with_borrow_mut(|s| std::mem::take(&mut s.notices)) {
             self.native_tell(player, line);
+        }
+        for (player, active) in STATE.with_borrow_mut(|s| std::mem::take(&mut s.parasol_updates)) {
+            let _ = self.native_net_send_to_player(player, super::lunatic_parasol::STATE, &[u8::from(active)]);
         }
         self.lunatic_flush_bursts();
         let host = self.lan.as_ref().expect("hub checked");
