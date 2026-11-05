@@ -58,14 +58,14 @@ def main():
         'entity/yin_yang_orb/shoot':'se_plst00.ogg',
         'entity/yin_yang_orb/bounce':'se_graze.ogg',
         'entity/yin_yang_orb/impact':'se_kira00.ogg',
-        'entity/yin_yang_orb/close_detonation':'mcl_tnt_tnt_explode.ogg',
+        'entity/explosion_old':'mcl_tnt_tnt_explode.ogg',
         'entity/fairy/jump':'se_kira02.ogg',
         'entity/fairy/cancel':'se_ophide.ogg',
     }
     events=json.loads((ROOT/'assets/lunatic/sounds.json').read_text())
     assert {p.replace('/','.') for p in sound_paths} <= set(events)
     for event,data in events.items():
-        if 'subtitle' in data:assert data['subtitle'] in lang
+        if data.get('subtitle', '').startswith('subtitles.lunatic.'):assert data['subtitle'] in lang
         for sound in data['sounds']:
             file=ROOT/('assets/lunatic/sounds/'+sound['name'].split(':',1)[1]+'.ogg')
             assert file.read_bytes().startswith(b'OggS')

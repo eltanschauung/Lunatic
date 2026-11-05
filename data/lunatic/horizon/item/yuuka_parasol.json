@@ -1,12 +1,14 @@
 {
-  "template": "minecraft:stick",
+  "template": "minecraft:iron_sword",
   "max_stack_size": 1,
   "components": {
-    "!minecraft:cooking_fuel": {},
     "minecraft:item_name": {
       "translate": "item.lunatic.yuuka_parasol",
       "color": "green",
       "italic": false
+    },
+    "minecraft:enchantments": {
+      "minecraft:knockback": 3
     }
   }
 }

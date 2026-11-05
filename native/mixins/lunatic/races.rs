@@ -20,7 +20,7 @@ struct Stack {
     count: u32,
 }
 impl Game<'_> {
-    pub(super) fn lunatic_crow_tengu(&self) -> bool {
+    pub(super) fn lunatic_has_race(&self, race: &str) -> bool {
         if !self.native_on("lunatic") {
             return false;
         }
@@ -31,7 +31,10 @@ impl Game<'_> {
             Some(uuid) => self.character_for(uuid),
             None => self.character.as_ref(),
         };
-        character.is_some_and(|c| c.has_race("crow_tengu"))
+        character.is_some_and(|c| c.has_race(race))
+    }
+    pub(super) fn lunatic_crow_tengu(&self) -> bool {
+        self.lunatic_has_race("crow_tengu")
     }
     pub(super) fn lunatic_fan_boost(&mut self, stack: &crate::items::ItemStack) -> bool {
         const FAN: &str = "lunatic:hauchiwa_fan";

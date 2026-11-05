@@ -48,7 +48,7 @@
     "subtitle": "subtitles.lunatic.entity.yin_yang_orb.close_detonation",
     "sounds": [
       {
-        "name": "lunatic:entity/yin_yang_orb/close_detonation",
+        "name": "lunatic:entity/explosion_old",
         "attenuation_distance": 64
       }
     ]
@@ -83,6 +83,14 @@
       {
         "name": "lunatic:entity/player/pldead00",
         "volume": 0.5
+      }
+    ]
+  },
+  "entity.explosion_old": {
+    "sounds": [
+      {
+        "name": "lunatic:entity/explosion_old",
+        "attenuation_distance": 64
       }
     ]
   }

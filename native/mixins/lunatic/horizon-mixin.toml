@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.7.8"
+version = "0.8.0"
 priority = 100
 
 [[injection]]
@@ -418,14 +418,6 @@ helper="crow-equipment.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
 
 [[injection]]
-id="oni-strength"
-kind="HEAD"
-cancellable=true
-target="horizon_client_render::effects::effect_modifier"
-helper="oni-modifier.rs"
-bindings=[{name="effect",ty="&str",value="effect"}]
-
-[[injection]]
 id="oni-melee-knockback"
 kind="HEAD"
 cancellable=true
@@ -521,3 +513,78 @@ bindings=[
  {name="atlas",ty="&HudAtlas",value="&*self"},
  {name="name",ty="&str",value="name"},
 ]
+
+[[module]]
+id="melee-traits"
+file="crates/horizon-client/src/game.rs"
+name="lunatic_melee"
+source="melee.rs"
+
+[[injection]]
+id="melee-strength"
+kind="RETURN"
+target="horizon_client::game::hand::Game<'_>::attack_damage"
+helper="melee-damage.rs"
+bindings=[{name="value",ty="f32",value="$value"},{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[injection]]
+id="punch-explosion"
+kind="HEAD"
+target="horizon_client::game::mace::Game<'_>::weapon_hit"
+helper="punch-sound.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="index",ty="usize",value="index"}]
+
+[[module]]
+id="parasol-enchantment"
+file="crates/horizon-items/src/item_data.rs"
+name="lunatic_parasol"
+source="parasol.rs"
+visibility="pub"
+
+[[injection]]
+id="parasol-tidy"
+kind="HEAD"
+target="horizon_items::item_data::ItemStack::tidy"
+helper="parasol-mutation.rs"
+bindings=[{name="stack",ty="&mut ItemStack",value="&mut *self"}]
+
+[[injection]]
+id="parasol-enchant"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_data::ItemStack::enchant"
+helper="parasol-enchant.rs"
+bindings=[{name="stack",ty="&mut ItemStack",value="&mut *self"},{name="id",ty="&str",value="id"}]
+
+[[injection]]
+id="parasol-nbt"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_nbt::item_from_nbt"
+helper="parasol-nbt.rs"
+bindings=[{name="tag",ty="&Tag",value="tag"}]
+
+[[injection]]
+id="parasol-command"
+kind="MODIFY_VARIABLE"
+variable={name="stack",ordinal=0,at="STORE"}
+ordinal=0
+require=1
+target="horizon_client::game::commands::items::Game<'_>::item_from_input"
+helper="parasol-command.rs"
+bindings=[{name="value",ty="ItemStack",value="$value"}]
+
+[[injection]]
+id="parasol-grindstone"
+kind="HEAD"
+cancellable=true
+target="horizon_client_lib::stations::grindstone_result"
+helper="parasol-grindstone.rs"
+bindings=[{name="input",ty="Option<&ItemStack>",value="input"},{name="additional",ty="Option<&ItemStack>",value="additional"}]
+
+[[injection]]
+id="parasol-inventory"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_inventory_tick"
+helper="parasol-inventory.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="slot",ty="i32",value="slot"}]

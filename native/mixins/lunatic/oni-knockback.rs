@@ -4,11 +4,16 @@ fn knockback(
     target_kind: &str,
     scale: f32,
 ) -> core::ops::ControlFlow<(f32, bool)> {
-    if !game.native_on("lunatic") || game.potions.effects.get("lunatic:oni").is_none() {
+    let minimum = if game.potions.effects.get("lunatic:oni").is_some() {
+        2.0
+    } else if game.lunatic_has_race("yuuka") {
+        1.0
+    } else { 0.0 };
+    if !game.native_on("lunatic") || minimum == 0.0 {
         return core::ops::ControlFlow::Continue(());
     }
     // Keep the normal data-driven enchantment evaluation, sprint bonus and
-    // attack-strength rules; Oni supplies a minimum of Knockback II.
+    // attack-strength rules; Oni supplies Knockback II; Yuuka supplies Knockback I.
     let enchanted = match game.held().cloned() {
         Some(held) => {
             let ctx = horizon_client::enchant::EffectContext {
@@ -31,7 +36,7 @@ fn knockback(
     };
     let sprinting = game.player.as_ref().is_some_and(|p| p.sprinting);
     core::ops::ControlFlow::Break(horizon_client::attack_strength::extra_knockback(
-        enchanted.max(2.0),
+        enchanted.max(minimum),
         scale,
         sprinting,
     ))
