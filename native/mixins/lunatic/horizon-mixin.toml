@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.9.0"
+version = "0.9.1"
 priority = 100
 
 [[injection]]
@@ -501,17 +501,6 @@ helper="drunk-effects.rs"
 bindings=[
  {name="effects",ty="&PlayerEffects",value="&*self"},
  {name="id",ty="impl AsRef<str>",value="id"},
-]
-
-[[injection]]
-id="drunk-berry-icon"
-kind="HEAD"
-cancellable=true
-target="horizon_client_render::hud::HudAtlas::sprite_or_missing"
-helper="drunk-icon.rs"
-bindings=[
- {name="atlas",ty="&HudAtlas",value="&*self"},
- {name="name",ty="&str",value="name"},
 ]
 
 [[module]]
