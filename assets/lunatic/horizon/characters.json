@@ -66,7 +66,7 @@
       "name": "Daiyousei",
       "race": "fairy,flower_fairy,youkai",
       "color": "green",
-      "size": 0.75,
+      "size": 0.77,
       "starting_items": [
         {
           "choices": [
@@ -101,7 +101,7 @@
       "name": "Cirno",
       "race": "fairy,ice_fairy,youkai",
       "color": "aqua",
-      "size": 0.8,
+      "size": 0.75,
       "starting_items": [
         {
           "choices": [
@@ -144,7 +144,7 @@
       "name": "Koakuma",
       "race": "youkai,devil,magician",
       "color": "red",
-      "size": 0.9,
+      "size": 0.85,
       "starting_items": []
     },
     {
@@ -160,7 +160,7 @@
       "name": "Izayoi Sakuya",
       "race": "human",
       "color": "gray",
-      "size": 0.9,
+      "size": 0.95,
       "starting_items": []
     },
     {
@@ -168,7 +168,7 @@
       "name": "Remilia Scarlet",
       "race": "vampire,youkai,remilia",
       "color": "dark_red",
-      "size": 0.75,
+      "size": 0.8,
       "starting_items": []
     },
     {
@@ -176,7 +176,15 @@
       "name": "Flandre Scarlet",
       "race": "vampire,youkai,flandre",
       "color": "red",
-      "size": 0.75,
+      "size": 0.8,
+      "starting_items": []
+    },
+    {
+      "id": "lunatic:letty_whiterock",
+      "name": "Letty Whiterock",
+      "race": "youkai,yuki_onna",
+      "color": "light_blue",
+      "size": 0.92,
       "starting_items": []
     },
     {
@@ -192,7 +200,7 @@
       "name": "Konpaku Youmu",
       "race": "half_phantom",
       "color": "green",
-      "size": 0.75,
+      "size": 0.85,
       "starting_items": []
     },
     {
@@ -245,7 +253,7 @@
       "name": "Reisen Udongein Inaba",
       "race": "earth_rabbit,former_moon_rabbit",
       "color": "dark_purple",
-      "size": 0.9,
+      "size": 0.92,
       "starting_items": [
         {
           "item": "minecraft:carrot",
@@ -266,7 +274,7 @@
       "name": "Fujiwara no Mokou",
       "race": "hourai_immortal,mokou",
       "color": "red",
-      "size": 0.9,
+      "size": 0.93,
       "starting_items": []
     },
     {
@@ -274,7 +282,7 @@
       "name": "Ibuki Suika",
       "race": "youkai,oni",
       "color": "gold",
-      "size": 0.8,
+      "size": 0.82,
       "starting_items": [
         {
           "item": "lunatic:ibuki_gourd",
@@ -287,7 +295,7 @@
       "name": "Shameimaru Aya",
       "race": "youkai,tengu,crow_tengu",
       "color": "dark_red",
-      "size": 0.9,
+      "size": 0.88,
       "starting_items": [
         {
           "item": "minecraft:cooked_cod"
@@ -314,7 +322,7 @@
       "name": "Inubashiri Momiji",
       "race": "youkai,tengu,wolf_tengu",
       "color": "white",
-      "size": 1.0,
+      "size": 0.96,
       "starting_items": []
     },
     {
@@ -342,7 +350,7 @@
       "name": "Hinanawi Tenshi",
       "race": "celestial",
       "color": "blue",
-      "size": 0.8,
+      "size": 0.85,
       "starting_items": []
     },
     {
@@ -350,7 +358,7 @@
       "name": "Komeiji Satori",
       "race": "satori,youkai",
       "color": "light_purple",
-      "size": 0.8,
+      "size": 0.82,
       "starting_items": []
     },
     {
@@ -358,7 +366,7 @@
       "name": "Komeiji Koishi",
       "race": "satori,youkai,koishi",
       "color": "green",
-      "size": 0.8,
+      "size": 0.82,
       "starting_items": []
     },
     {
@@ -419,7 +427,7 @@
       "name": "Yorigami Jo'on",
       "race": "youkai,pestilence_god",
       "color": "dark_blue",
-      "size": 0.85,
+      "size": 0.88,
       "starting_items": []
     },
     {
@@ -430,26 +438,7 @@
       "size": 0.75,
       "starting_items": [
         {
-          "choices": [
-            "minecraft:poppy",
-            "minecraft:dandelion",
-            "minecraft:cornflower",
-            "minecraft:blue_orchid",
-            "minecraft:allium",
-            "minecraft:azure_bluet",
-            "minecraft:red_tulip",
-            "minecraft:orange_tulip",
-            "minecraft:white_tulip",
-            "minecraft:pink_tulip",
-            "minecraft:oxeye_daisy",
-            "minecraft:lily_of_the_valley",
-            "minecraft:peony",
-            "minecraft:rose_bush",
-            "minecraft:sunflower"
-          ],
-          "min_count": 1,
-          "max_count": 4,
-          "rolls": 3
+          "item": "lunatic:lampad_torch"
         },
         {
           "item": "minecraft:cookie",
@@ -470,7 +459,7 @@
       "name": "Kudamaki Tsukasa",
       "race": "tube_fox,youkai,",
       "color": "#008080",
-      "size": 0.85,
+      "size": 0.88,
       "starting_items": []
     }
   ]
