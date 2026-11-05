@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.8.0"
+version = "0.8.1"
 priority = 100
 
 [[injection]]
@@ -588,3 +588,10 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_inventory_tick"
 helper="parasol-inventory.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="slot",ty="i32",value="slot"}]
+
+[[injection]]
+id="oni-application-sound"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_mob_effect_added"
+helper="oni-application.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="effect",ty="&str",value="effect"},{name="entity",ty="Option<i32>",value="entity"}]

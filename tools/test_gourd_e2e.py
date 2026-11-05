@@ -51,9 +51,12 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   d=home('client');client,name=connect(d,'ibuki_suika','gourd')
   until(lambda:ctl(d,'inventory')['counts'],lambda c:c.get('lunatic:ibuki_gourd')==1);evidence['suika_starting_gourd']=True
   console(f'gamemode survival {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'clear {name}');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
+  dragon_before=ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0)
   ctl(d,'mouse','right','down');until(lambda:ctl(d,'status')['using'],lambda x:x is not None,seconds=4);time.sleep(.4);assert oni(d) is None;ctl(d,'mouse','right','up');until(lambda:ctl(d,'status')['using'],lambda x:x is None,seconds=4);assert oni(d) is None;evidence['interrupted_drink_grants_nothing']=True
+  assert ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0)==dragon_before;evidence['cancelled_drink_has_no_dragon_sound']=True
   ctl(d,'mouse','right','down');time.sleep(.5);assert oni(d) is None;evidence['effect_waits_for_completion']=True
   e=until(lambda:oni(d),lambda x:x is not None,seconds=4);ctl(d,'mouse','right','up');assert 235<=e['duration_ticks']<=400 and e['amplifier']==0;evidence['completed_drink_grants_random_twelve_to_twenty_seconds']=True
+  until(lambda:ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0),lambda n:n==dragon_before+1,seconds=4);time.sleep(.3);assert ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0)==dragon_before+1;evidence['oni_application_plays_one_dragon_sound']=True
   assert ctl(d,'inventory')['counts'].get('lunatic:ibuki_gourd')==1;evidence['gourd_retained_without_bottle']=True;assert not ctl(d,'inventory')['counts'].get('minecraft:glass_bottle',0)
   assert ctl(d,'status')['heard'].get('minecraft:entity.generic.drink',0)>0;evidence['standard_drinking_sound']=True
   ctl(d,'screenshot',str(a.output/'gourd-and-oni.png'))
