@@ -259,4 +259,6 @@ Successful Oni/Yuuka explosion punches also emit one vanilla explosion puff at t
 
 Right-click Yuuka's Parasol to toggle fairy-style slow falling for any character. Opening plays a random vanilla Ender Dragon wing/flap clip at half volume. Another click or a fresh Space press cancels it with the fairy cancel sound; holding use never repeatedly toggles. It stays armed on the ground and when switching items, uses the same Slow Falling motion flag as fairies/potions, and cancelling does not remove an actual Slow Falling potion. State updates go only to the owner on initialization or when the toggle changes; jump cancellation uses ordinary player input packets.
 
-Default full, half and container hearts use Lunatic’s 17×17 textures in `assets/lunatic/textures/gui/sprites/hud/heart/`. Their complete images are scaled into the usual 9×9 HUD space, keeping heart spacing and bar dimensions intact.
+Default full, half and container hearts, including blinking variants, use Lunatic’s 17×17 textures in `assets/lunatic/textures/gui/sprites/hud/heart/`. Their complete images are scaled into the usual 9×9 HUD space, keeping heart spacing and bar dimensions intact.
+
+Heart sprite overrides are discovered once when the atlas is prepared. Adding or editing matching PNGs in that folder only requires rebuilding the content package.
