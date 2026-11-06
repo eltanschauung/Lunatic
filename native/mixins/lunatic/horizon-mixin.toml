@@ -614,7 +614,7 @@ bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="button
 
 [[injection]]
 id="custom-default-heart-icons"
-kind="RETURN"
-target="horizon_client_render::hud::HudAtlas::pack"
+kind="HEAD"
+target="horizon_client_render::hud::HudAtlas::pack_pixels"
 helper="heart-icons.rs"
-bindings=[{name="value",ty="Result<HudAtlas>",value="$value"}]
+bindings=[{name="atlas",ty="&mut HudAtlas",value="&mut *self"}]
