@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.9.1"
+version = "0.9.2"
 priority = 100
 
 [[injection]]
@@ -611,3 +611,10 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_interaction_key"
 helper="parasol-use.rs"
 bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="button",ty="i32",value="button"},{name="swing",ty="&mut bool",value="&mut *swing_hand"},{name="canceled",ty="&mut bool",value="&mut *canceled"}]
+
+[[injection]]
+id="custom-default-heart-icons"
+kind="RETURN"
+target="horizon_client_render::hud::HudAtlas::pack"
+helper="heart-icons.rs"
+bindings=[{name="value",ty="Result<HudAtlas>",value="$value"}]
