@@ -6,7 +6,7 @@ fn heart_icons(atlas: &mut HudAtlas) {
         return;
     }
     // Keep the complete source UVs; the HUD draws each heart at 9x9.
-    for name in ["full", "half"] {
+    for name in ["full", "half", "container"] {
         let custom = format!("lunatic:gui/sprites/hud/heart/{name}");
         if let Some(rect) = atlas.sprites.get(&custom).copied() {
             atlas.sprites.insert(format!("gui/sprites/hud/heart/{name}"), rect);
