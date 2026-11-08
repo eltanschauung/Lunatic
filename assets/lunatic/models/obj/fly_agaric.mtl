@@ -6,3 +6,6 @@ map_Kd #stem
 
 newmtl veil
 map_Kd #veil
+
+newmtl gills
+map_Kd #gills

@@ -7,6 +7,7 @@
     "particle": "lunatic:block/fly_agaric_cap",
     "cap": "lunatic:block/fly_agaric_cap",
     "stem": "lunatic:block/cubensis_stem",
-    "veil": "lunatic:block/fly_agaric_peeling_veil"
+    "veil": "lunatic:block/fly_agaric_peeling_veil",
+    "gills": "lunatic:block/gills_generic"
   }
 }
