@@ -19,6 +19,7 @@
   "effect.lunatic.oni": "Oni (鬼)",
   "effect.lunatic.drunk": "Drunk",
   "item.lunatic.yuuka_parasol": "§aYuuka's Parasol§r",
-  "block.lunatic.fly_agaric": "Fly Agaric",
-  "block.lunatic.fly_agaric_blue": "Blue Agaric"
+  "block.lunatic.fly_agaric": "§cFly Agaric§r",
+  "block.lunatic.fly_agaric_blue": "§9Blue Agaric§r",
+  "block.lunatic.veiled_lady": "§oVeiled Lady§r"
 }
