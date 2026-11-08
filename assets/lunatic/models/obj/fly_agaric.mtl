@@ -1,42 +1,11 @@
-# Blender 5.2.3 LTS MTL File: 'fly_agaric_blue.blend'
-# www.blender.org
-
 newmtl cap
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 2
-map_Kd /home/xxlib/Desktop/minecraft_mushrooms/mushrooms/fly_agaric_cap_blue.png
-
-newmtl gills
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 2
-map_Kd /home/xxlib/Desktop/minecraft_mushrooms/mushrooms/gills_generic.png
+map_Kd #cap
 
 newmtl stem
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 2
-map_Kd /home/xxlib/Desktop/minecraft_mushrooms/mushrooms/cubensis_stem.png
+map_Kd #stem
 
 newmtl veil
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-illum 2
-map_Kd /home/xxlib/Desktop/minecraft_mushrooms/mushrooms/fly_agaric_peeling_veil.png
-map_d /home/xxlib/Desktop/minecraft_mushrooms/mushrooms/fly_agaric_peeling_veil.png
+map_Kd #veil
+
+newmtl gills
+map_Kd #gills
