@@ -1,0 +1,11 @@
+{
+  "template": "minecraft:red_mushroom",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "text": "Fly Agaric",
+      "color": "red",
+      "italic": false
+    }
+  }
+}

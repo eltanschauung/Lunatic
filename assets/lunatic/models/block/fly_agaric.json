@@ -1,0 +1,12 @@
+{
+  "loader": "neoforge:obj",
+  "model": "lunatic:models/obj/fly_agaric.obj",
+  "flip_v": true,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "lunatic:block/fly_agaric_cap",
+    "cap": "lunatic:block/fly_agaric_cap",
+    "stem": "lunatic:block/cubensis_stem",
+    "veil": "lunatic:block/fly_agaric_peeling_veil"
+  }
+}
