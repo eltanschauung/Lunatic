@@ -18,5 +18,7 @@
   "item.lunatic.ibuki_gourd": "§dIbuki Gourd§r",
   "effect.lunatic.oni": "Oni (鬼)",
   "effect.lunatic.drunk": "Drunk",
-  "item.lunatic.yuuka_parasol": "§aYuuka's Parasol§r"
+  "item.lunatic.yuuka_parasol": "§aYuuka's Parasol§r",
+  "block.lunatic.fly_agaric": "Fly Agaric",
+  "block.lunatic.fly_agaric_blue": "Blue Agaric"
 }

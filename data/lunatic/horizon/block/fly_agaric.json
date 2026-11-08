@@ -3,7 +3,7 @@
   "item": true,
   "components": {
     "minecraft:item_name": {
-      "text": "Fly Agaric",
+      "translate": "block.lunatic.fly_agaric",
       "color": "red",
       "italic": false
     }

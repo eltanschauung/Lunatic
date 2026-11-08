@@ -1,0 +1,11 @@
+{
+  "template": "minecraft:red_mushroom",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.fly_agaric_blue",
+      "color": "blue",
+      "italic": false
+    }
+  }
+}
