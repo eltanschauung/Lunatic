@@ -51,8 +51,7 @@ impl Game<'_> {
         const FAN: &str = "lunatic:hauchiwa_fan";
         if stack.item.as_ref() != FAN
             || self.remote.is_some()
-            || !self.lunatic_crow_tengu()
-            || self.lunatic_has_race("devil")
+            || !self.lunatic_has_race("tengu")
             || self.spectator()
             || !self.player.as_ref().is_some_and(|p| {
                 p.fall_flying
