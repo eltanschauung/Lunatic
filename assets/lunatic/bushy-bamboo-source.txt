@@ -1,0 +1,4 @@
+Bushy Bamboo leaf models and textures adapted from better bamboo lite.zip, supplied by the user.
+Original credit: dronko fire blaster.
+SHA-256: 7940cbdd0d9d10b6bccee3b3b3f17db50f5144398b7fc2acbadeecf9ad3ba20b
+Vanilla bamboo is not overridden.

@@ -1,0 +1,17 @@
+{
+  "template": "minecraft:bamboo",
+  "item": true,
+  "properties": {
+    "occludes": false
+  },
+  "default_state": {
+    "age": "0",
+    "leaves": "large",
+    "stage": "0"
+  },
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.bushy_bamboo"
+    }
+  }
+}

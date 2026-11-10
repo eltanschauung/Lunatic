@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lunatic:block/bushy_bamboo/bamboo_stage0"
+  }
+}
