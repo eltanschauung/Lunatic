@@ -123,13 +123,20 @@ impl Game<'_> {
             Some(remote) => remote.profile(),
             None => self.native_acting_id(),
         };
-        let (size, fairy, crow_tengu) =
-            self.lunatic_character(id).map_or((1.0, false, false), |c| {
-                (c.size, c.has_race("fairy"), c.has_race("crow_tengu"))
+        let (size, health, fairy, crow_tengu) =
+            self.lunatic_character(id).map_or((1.0, 20.0, false, false), |c| {
+                (c.size, c.health, c.has_race("fairy"), c.has_race("crow_tengu"))
             });
         let potion = self.potions.effects.get("slow_falling").is_some();
         if let Some(p) = self.player.as_mut() {
             p.lunatic_character_body(size, fairy, potion, crow_tengu);
+            let has = p.attributes.key("minecraft:max_health").and_then(|key|
+                p.attributes.has_modifier(Some(key), "lunatic:character_health").ok()).unwrap_or(false);
+            if p.__horizon_mixins_lunatic_fairy().character_health != health || has != (health != 20.0) {
+                let _ = p.set_modifier("minecraft:max_health", "lunatic:character_health",
+                    f64::from(health) - 20.0, "add_value", health != 20.0);
+                p.__horizon_mixins_lunatic_fairy_mut().character_health = health;
+            }
         }
     }
     pub(super) fn lunatic_guest_races(&mut self, host: &mut LanHost, conn: u32) {

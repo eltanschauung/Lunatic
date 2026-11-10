@@ -19,6 +19,7 @@ pub struct Fairy {
     previous_velocity: f64,
     size: f32,
     pub sound: Option<&'static str>,
+    pub character_health: f32,
     pub kit_checked: Option<String>,
 }
 impl Default for Fairy {
@@ -39,6 +40,7 @@ impl Default for Fairy {
             previous_velocity: 0.0,
             size: 1.0,
             sound: None,
+            character_health: 20.0,
             kit_checked: None,
         }
     }
