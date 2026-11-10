@@ -85,6 +85,18 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   assert not any(e['id'] in ['darkness','nausea'] for e in player(d)['effects']);evidence['drunk_is_one_synchronized_effect']=True
   time.sleep(2);ctl(d,'screenshot',str(a.output/'drunk-berries.png'));until(lambda:any(e['id']=='lunatic:drunk' for e in player(d)['effects']),lambda active:not active,seconds=12);evidence['drunk_expires_naturally']=True
   heard=ctl(d,'status')['heard'];deaths=heard.get('minecraft:entity.player.death',0);burps=heard.get('minecraft:entity.player.burp',0);console(f'effect give {name} lunatic:oni 1 0 true');console(f'kill {name}');until(lambda:ctl(d,'status')['heard'].get('minecraft:entity.player.death',0),lambda n:n==deaths+1,seconds=5);time.sleep(.4);assert ctl(d,'status')['heard'].get('minecraft:entity.player.burp',0)==burps;evidence['death_sound_once_without_expiry_burp']=True
+  # A fresh non-Oni guest exercises the same authoritative race lookup.
+  client.terminate();client.wait(timeout=10);time.sleep(1)
+  d=home('non-oni');client,name=connect(d,'hakurei_reimu','non-oni')
+  console(f'gamemode survival {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'clear {name}');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
+  dragon_before=ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0)
+  ctl(d,'mouse','right','down')
+  drunk=until(lambda:next((e for e in player(d)['effects'] if e['id']=='lunatic:drunk'),None),lambda e:e is not None,seconds=5)
+  ctl(d,'mouse','right','up');assert oni(d) is None
+  assert 110<=drunk['duration_ticks']<=200
+  assert ctl(d,'status')['heard'].get('minecraft:entity.ender_dragon.ambient',0)==dragon_before
+  assert ctl(d,'inventory')['counts'].get('lunatic:ibuki_gourd')==1
+  evidence['non_oni_gets_drunk_directly_without_oni_or_dragon_sound']=True
   (a.output/'result.json').write_text(json.dumps(evidence,indent=2)+'\n');print(json.dumps({'passed':True,'checks':evidence}),flush=True)
  finally:
   for child in reversed(children):
