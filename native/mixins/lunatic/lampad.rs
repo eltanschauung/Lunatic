@@ -63,7 +63,7 @@ impl Game<'_>{
   self.lunatic_sound("entity.yin_yang_orb.impact",e.at,0.6);
  }}
  fn lampad_send_particles(&mut self,o:&ParticleOptions,_state:Option<horizon_world::registry::BlockStateId>,at:[f64;3],spread:[f64;3],speed:f64,count:i32){
-  self.lan_send_particles(super::lan_particles::QueuedParticle{dimension:self.dim.id(),options:o.clone(),state:None,at,spread,speed,count,randomization:0});
+  self.lan_send_particles(super::lan_particles::QueuedParticle{dimension:self.dim.id(),options:o.clone(),state:None,at,spread,speed:[speed;3],count,randomization:0});
  }
  fn lampad_particle(&mut self,color:&str,ring:bool,at:Vec3,velocity:[f64;3]){let o=ParticleOptions::named(format!("lunatic:lampad_{}_{color}",if ring{"ring"}else{"flag"}));self.lampad_send_particles(&o,None,[at.x,at.y,at.z],velocity,1.0,0);}
  fn lampad_direct(&mut self,p:&Projectile,who:Who,amount:f32,at:Vec3){

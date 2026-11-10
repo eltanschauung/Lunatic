@@ -224,7 +224,7 @@ impl Game<'_> {
             let back = self.dim;
             let target = Dim::from_id(&dimension);
             if target == back || self.enter_level(Some(&mut host), target).is_ok() {
-                if let Some(swap) = self.enter_guest(&mut host, conn) {
+                if let Some(swap) = self.enter_guest(&mut host, conn, back) {
                     // Keep the hub visible for targeting and nested damage helpers.
                     self.lan = Some(host);
                     let outer = self.chat_capture.replace(Vec::new());
@@ -519,6 +519,7 @@ impl Game<'_> {
         let source = Damage {
             kind: DamageKind::Thrown,
             attacker: p.owner,
+            attacker_species: None,
             from: Some(array(p.previous)),
         };
         for m in &mut self.mobs {

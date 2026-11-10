@@ -33,7 +33,7 @@ impl Game<'_> {
         self.particles.add(&options, at, [0.0; 3]);
         self.lan_send_particles(super::lan_particles::QueuedParticle {
             dimension: self.dim.id(), options, state: None, at,
-            spread: [0.0; 3], speed: 0.0, count: 1, randomization: 0,
+            spread: [0.0; 3], speed: [0.0; 3], count: 1, randomization: 0,
         });
     }
 }
