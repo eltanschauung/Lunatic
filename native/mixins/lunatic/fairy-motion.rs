@@ -5,8 +5,8 @@ use super::PlayerMotion;
 #[derive(Clone, Debug)]
 pub struct Fairy {
     pub enabled: bool,
-    pub crow_tengu: bool,
-    pub crow_armor_blocked: bool,
+    pub racial_glider: bool,
+    pub racial_glide_armor_blocked: bool,
     pub oni_ending: bool,
     used: bool,
     previous_jump: bool,
@@ -26,8 +26,8 @@ impl Default for Fairy {
     fn default() -> Self {
         Self {
             enabled: false,
-            crow_tengu: false,
-            crow_armor_blocked: false,
+            racial_glider: false,
+            racial_glide_armor_blocked: false,
             oni_ending: false,
             used: false,
             previous_jump: false,
@@ -91,10 +91,10 @@ impl Fairy {
 impl PlayerMotion {
     /// Reuse the native attribute instance's dirty/computed cache. No equipment
     /// traversal, extra packets, or separately invalidated armor-value cache.
-    pub fn lunatic_crow_glide(&mut self) {
-        let crow = self.__horizon_mixins_lunatic_fairy().crow_tengu;
+    pub fn lunatic_racial_glide(&mut self) {
+        let crow = self.__horizon_mixins_lunatic_fairy().racial_glider;
         let blocked = crow && self.attribute("minecraft:armor").map_or(true, |v| v > 11.0);
-        self.__horizon_mixins_lunatic_fairy_mut().crow_armor_blocked = blocked;
+        self.__horizon_mixins_lunatic_fairy_mut().racial_glide_armor_blocked = blocked;
         if crow {
             self.glider = !blocked;
             if blocked {
@@ -107,7 +107,7 @@ impl PlayerMotion {
         size: f32,
         fairy: bool,
         potion_slowfall: bool,
-        crow_tengu: bool,
+        racial_glider: bool,
     ) {
         let size = if size.is_finite() {
             size.clamp(0.7, 1.2)
@@ -116,7 +116,7 @@ impl PlayerMotion {
         };
         let state = self.__horizon_mixins_lunatic_fairy();
         let changed = state.size != size;
-        let crow_changed = state.crow_tengu != crow_tengu;
+        let crow_changed = state.racial_glider != racial_glider;
         let has = self
             .attributes
             .key("minecraft:scale")
@@ -139,7 +139,7 @@ impl PlayerMotion {
         let state = self.__horizon_mixins_lunatic_fairy_mut();
         state.size = size;
         state.enabled = fairy;
-        state.crow_tengu = crow_tengu;
+        state.racial_glider = racial_glider;
         state.potion_slowfall = potion_slowfall;
         if !fairy {
             state.used = false;
@@ -150,18 +150,18 @@ impl PlayerMotion {
             potion_slowfall || self.__horizon_mixins_lunatic_fairy().slowfall
                 || self.__horizon_mixins_lunatic_fairy().parasol;
         if crow_changed {
-            self.lunatic_crow_glide();
+            self.lunatic_racial_glide();
         }
     }
     pub fn lunatic_fairy_sync(&mut self, server: &Self) {
         let enabled = server.__horizon_mixins_lunatic_fairy().enabled;
-        let crow_tengu = server.__horizon_mixins_lunatic_fairy().crow_tengu;
+        let racial_glider = server.__horizon_mixins_lunatic_fairy().racial_glider;
         let potion = server.__horizon_mixins_lunatic_fairy().potion_slowfall;
         let parasol = server.__horizon_mixins_lunatic_fairy().parasol;
         let revision = server.__horizon_mixins_lunatic_fairy().parasol_revision;
         let state = self.__horizon_mixins_lunatic_fairy_mut();
         state.enabled = enabled;
-        state.crow_tengu = crow_tengu;
+        state.racial_glider = racial_glider;
         state.potion_slowfall = potion;
         // Replay derives Space cancellation from the recorded input. Only a
         // new item toggle/death reset overrides it, not a later input's result.
@@ -191,7 +191,7 @@ impl PlayerMotion {
         if self.health.dead_or_dying() || self.spectator {
             self.lunatic_parasol_set(false);
         }
-        self.lunatic_crow_glide();
+        self.lunatic_racial_glide();
         let input = Input {
             jump,
             grounded,

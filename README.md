@@ -268,3 +268,5 @@ Heart sprite overrides are discovered once when the atlas is prepared. Adding or
 Changing characters removes carried Soulbound items during authoritative join initialization, after the new character selection is confirmed. Inventory, armor, offhand and pending Soulbound kit stacks are cleared; ordinary items survive, same-character reconnects preserve Soulbound, and switching grants no additional starter kit. The initialized character is persisted with the existing player kit metadata, with legacy awarded-kit identity as the migration baseline.
 
 Crow tengu characters require at least three blocks of clearance from their feet to collision surfaces under their footprint to start a glide. The threshold only gates takeoff; an active glide may descend below it. The existing armor restriction remains in effect.
+
+The `devil` race shares crow tengu’s racial glide: three-block takeoff clearance, 5:1 glide ratio, 18 blocks/s forward speed and the existing armor limit. Characters with `devil` cannot activate the Hauchiwa Fan flight boost, including mixed-race characters that also have `crow_tengu`.

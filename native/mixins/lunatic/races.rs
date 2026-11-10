@@ -44,15 +44,19 @@ impl Game<'_> {
     pub(super) fn lunatic_crow_tengu(&self) -> bool {
         self.lunatic_has_race("crow_tengu")
     }
+    pub(super) fn lunatic_racial_glider(&self) -> bool {
+        self.lunatic_crow_tengu() || self.lunatic_has_race("devil")
+    }
     pub(super) fn lunatic_fan_boost(&mut self, stack: &crate::items::ItemStack) -> bool {
         const FAN: &str = "lunatic:hauchiwa_fan";
         if stack.item.as_ref() != FAN
             || self.remote.is_some()
             || !self.lunatic_crow_tengu()
+            || self.lunatic_has_race("devil")
             || self.spectator()
             || !self.player.as_ref().is_some_and(|p| {
                 p.fall_flying
-                    && !p.__horizon_mixins_lunatic_fairy().crow_armor_blocked
+                    && !p.__horizon_mixins_lunatic_fairy().racial_glide_armor_blocked
                     && !p.health.dead_or_dying()
             })
             || self.cooldowns.is_on_cooldown(FAN)
@@ -125,13 +129,13 @@ impl Game<'_> {
             Some(remote) => remote.profile(),
             None => self.native_acting_id(),
         };
-        let (size, health, fairy, crow_tengu) =
+        let (size, health, fairy, racial_glider) =
             self.lunatic_character(id).map_or((1.0, 20.0, false, false), |c| {
-                (c.size, c.health, c.has_race("fairy"), c.has_race("crow_tengu"))
+                (c.size, c.health, c.has_race("fairy"), c.has_race("crow_tengu") || c.has_race("devil"))
             });
         let potion = self.potions.effects.get("slow_falling").is_some();
         if let Some(p) = self.player.as_mut() {
-            p.lunatic_character_body(size, fairy, potion, crow_tengu);
+            p.lunatic_character_body(size, fairy, potion, racial_glider);
             let has = p.attributes.key("minecraft:max_health").and_then(|key|
                 p.attributes.has_modifier(Some(key), "lunatic:character_health").ok()).unwrap_or(false);
             if p.__horizon_mixins_lunatic_fairy().character_health != health || has != (health != 20.0) {

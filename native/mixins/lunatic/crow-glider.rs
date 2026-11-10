@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 fn crow_glider(game: &crate::game::Game<'_>) -> core::ops::ControlFlow<bool> {
-    if !game.lunatic_crow_tengu() {
+    if !game.lunatic_racial_glider() {
         return core::ops::ControlFlow::Continue(());
     }
     core::ops::ControlFlow::Break(game.player.as_ref().is_some_and(|p| {
-        if p.__horizon_mixins_lunatic_fairy().crow_armor_blocked {
+        if p.__horizon_mixins_lunatic_fairy().racial_glide_armor_blocked {
             return false;
         }
         // This hook also maintains active glides: altitude gates takeoff only.
