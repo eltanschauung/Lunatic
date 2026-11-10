@@ -1,0 +1,11 @@
+{
+  "loader": "neoforge:obj",
+  "model": "lunatic:models/obj/cubensis_juvenile.obj",
+  "flip_v": true,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "lunatic:block/cubensis_cap",
+    "cap": "lunatic:block/cubensis_cap",
+    "stem": "lunatic:block/cubensis_stem"
+  }
+}

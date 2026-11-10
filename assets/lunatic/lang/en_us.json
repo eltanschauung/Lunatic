@@ -22,5 +22,6 @@
   "block.lunatic.fly_agaric": "§cFly Agaric§r",
   "block.lunatic.fly_agaric_blue": "§9Blue Agaric§r",
   "block.lunatic.veiled_lady": "§oVeiled Lady§r",
-  "enchantment.lunatic.soulbound": "Soulbound"
+  "enchantment.lunatic.soulbound": "Soulbound",
+  "block.lunatic.psilocybe_cubensis": "§dPsilocybe Cubensis§r"
 }

@@ -1,0 +1,15 @@
+{
+  "template": "minecraft:dead_bush",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.psilocybe_cubensis",
+      "color": "light_purple",
+      "italic": false
+    }
+  },
+  "properties": {
+    "random_ticks": false,
+    "sounds": "minecraft:red_mushroom"
+  }
+}

@@ -262,3 +262,5 @@ Right-click Yuuka's Parasol to toggle fairy-style slow falling for any character
 Default full, half and container hearts, including blinking variants, use Lunatic’s 17×17 textures in `assets/lunatic/textures/gui/sprites/hud/heart/`. Their complete images are scaled into the usual 9×9 HUD space, keeping heart spacing and bar dimensions intact.
 
 Heart sprite overrides are discovered once when the atlas is prepared. Adding or editing matching PNGs in that folder only requires rebuilding the content package.
+
+`lunatic:psilocybe_cubensis` is a decorative mushroom block named **Psilocybe Cubensis** in pink, available in the Lunatic creative tab. Placed blocks deterministically choose equally between adult, cluster and juvenile OBJ models, each with four equally likely quarter-turn orientations, following MushroomsPlus’s blockstate-variant pattern. The inventory uses the supplied mushroom icon. MTL files bind `#cap` and `#stem` to `cubensis_cap` and `cubensis_stem`; the block adds no edible, potion, growth or weapon functionality.

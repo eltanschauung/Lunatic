@@ -1,0 +1,66 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "lunatic:block/psilocybe_cubensis",
+        "y": 0,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis",
+        "y": 90,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis",
+        "y": 180,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis",
+        "y": 270,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis_cluster",
+        "y": 0,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis_cluster",
+        "y": 90,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis_cluster",
+        "y": 180,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/psilocybe_cubensis_cluster",
+        "y": 270,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/cubensis_juvenile",
+        "y": 0,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/cubensis_juvenile",
+        "y": 90,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/cubensis_juvenile",
+        "y": 180,
+        "weight": 1
+      },
+      {
+        "model": "lunatic:block/cubensis_juvenile",
+        "y": 270,
+        "weight": 1
+      }
+    ]
+  }
+}
