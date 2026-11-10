@@ -12,6 +12,8 @@ const KIT_KEY: &str = "lunatic:starting_kits";
 struct Kits {
     #[serde(default)]
     initialized: bool,
+    #[serde(default)]
+    deaths: Option<i32>,
     awarded: Vec<String>,
     pending: Vec<Stack>,
 }
@@ -168,13 +170,15 @@ impl Game<'_> {
             );
         }
         let id = self.native_acting_id();
+        let deaths = self.stats.get("custom", "minecraft:deaths");
         let character = self.lunatic_character(id);
         let Some(p) = self.player.as_ref() else {
             return;
         };
         if p.health.dead_or_dying()
             || self.spectator()
-            || p.__horizon_mixins_lunatic_fairy().kit_checked.is_some()
+            || p.__horizon_mixins_lunatic_fairy().kit_checked.as_deref()
+                .and_then(|value| value.parse::<i32>().ok()) == Some(deaths)
         {
             return;
         }
@@ -190,7 +194,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(String::new());
+                .kit_checked = Some(deaths.to_string());
             return;
         }
         // Stored in the existing player NBT, saved together with inventory.
@@ -213,7 +217,7 @@ impl Game<'_> {
                         .as_mut()
                         .unwrap()
                         .__horizon_mixins_lunatic_fairy_mut()
-                        .kit_checked = Some(String::new());
+                        .kit_checked = Some(deaths.to_string());
                     return;
                 }
             },
@@ -222,11 +226,18 @@ impl Game<'_> {
                     .as_mut()
                     .unwrap()
                     .__horizon_mixins_lunatic_fairy_mut()
-                    .kit_checked = Some(String::new());
+                    .kit_checked = Some(deaths.to_string());
                 return;
             }
         };
-        let mut changed = false;
+        let respawned = kits.deaths.is_some_and(|previous| deaths > previous);
+        let mut changed = kits.deaths != Some(deaths);
+        kits.deaths = Some(deaths);
+        if respawned {
+            kits.initialized = false;
+            kits.awarded.clear();
+            kits.pending.clear();
+        }
         if !kits.initialized {
             kits.initialized = true;
             changed = true;
@@ -234,7 +245,7 @@ impl Game<'_> {
             // Existing saves without our marker must not gain a retroactive kit.
             self.load_stats();
             if kits.awarded.is_empty()
-                && self.stats.get("custom", "minecraft:play_time") <= 1
+                && (respawned || self.stats.get("custom", "minecraft:play_time") <= 1)
                 && let Some(character) = &character
             {
                 for entry in &character.starting_items {
@@ -311,7 +322,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(String::new());
+                .kit_checked = Some(deaths.to_string());
         }
     }
 }

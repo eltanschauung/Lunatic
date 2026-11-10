@@ -243,7 +243,9 @@ def main():
             drops = until(lambda: ctl(fresh, 'entities', '16', 'minecraft:item')['entities'],
                           lambda rows: any(row.get('item', {}).get('item') == 'minecraft:diamond' for row in rows))
             assert all('lunatic:' not in row.get('item', {}).get('item', '') for row in drops), drops
-            assert not counts(fresh), 'Respawn granted another kit'
+            until(lambda: counts(fresh), lambda c: c.get('lunatic:ibuki_gourd') == 1)
+            time.sleep(2)
+            assert counts(fresh).get('lunatic:ibuki_gourd') == 1, 'Respawn duplicated the kit'
             quit_client(fresh, f)
             print('PASS: empty first kits stay consumed; Soulbound vanishes on death while ordinary items drop', flush=True)
             server.stdin.write(b'stop\n')
