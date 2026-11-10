@@ -8,22 +8,34 @@
       "size": 0.9,
       "starting_items": [
         {
-          "item": "lunatic:purification_rod"
+          "item": "lunatic:purification_rod",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "lunatic:yin_yang_orb_precision",
           "min_count": 4,
-          "max_count": 12
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "lunatic:yin_yang_orb_homing",
           "min_count": 4,
-          "max_count": 12
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "lunatic:yin_yang_orb_bouncing",
           "min_count": 4,
-          "max_count": 12
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -36,7 +48,10 @@
       "starting_items": [
         {
           "item": "minecraft:experience_bottle",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -49,7 +64,10 @@
       "starting_items": [
         {
           "item": "lunatic:yuuka_parasol",
-          "count": 1
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -88,11 +106,17 @@
           ],
           "min_count": 1,
           "max_count": 4,
-          "rolls": 3
+          "rolls": 3,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "minecraft:cookie",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -123,11 +147,17 @@
           ],
           "min_count": 1,
           "max_count": 4,
-          "rolls": 3
+          "rolls": 3,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "minecraft:cookie",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -244,7 +274,10 @@
       "starting_items": [
         {
           "item": "minecraft:carrot",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -257,7 +290,10 @@
       "starting_items": [
         {
           "item": "minecraft:carrot",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -286,7 +322,10 @@
       "starting_items": [
         {
           "item": "lunatic:ibuki_gourd",
-          "count": 1
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -298,14 +337,23 @@
       "size": 0.88,
       "starting_items": [
         {
-          "item": "minecraft:cooked_cod"
+          "item": "minecraft:cooked_cod",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "minecraft:stick",
-          "count": 2
+          "count": 2,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
-          "item": "lunatic:hauchiwa_fan"
+          "item": "lunatic:hauchiwa_fan",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -333,7 +381,10 @@
       "size": 0.9,
       "starting_items": [
         {
-          "item": "lunatic:miko_stick"
+          "item": "lunatic:miko_stick",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -386,7 +437,10 @@
       "starting_items": [
         {
           "item": "arcadiandream:wall_passing_chisel",
-          "count": 1
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },
@@ -438,11 +492,17 @@
       "size": 0.75,
       "starting_items": [
         {
-          "item": "lunatic:lampad_torch"
+          "item": "lunatic:lampad_torch",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         },
         {
           "item": "minecraft:cookie",
-          "count": 16
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
         }
       ]
     },

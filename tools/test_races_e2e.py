@@ -107,6 +107,12 @@ def main():
             assert 1 <= len(flowers) <= 3 and 3 <= sum(flowers.values()) <= 12, kit
             until(lambda: counts(bob), lambda c: c.get('lunatic:purification_rod') == 1)
             kit = counts(bob)
+            for p in (alice, bob):
+                inventory = ctl(p, 'inventory')
+                for slot in inventory['hotbar'] + inventory['main']:
+                    if slot.get('item'):
+                        assert 'lunatic:soulbound' in slot.get('components', ''), slot
+            print('PASS: every randomized and fixed starter stack carries Soulbound', flush=True)
             assert all(4 <= kit.get('lunatic:yin_yang_orb_' + v, 0) <= 12
                        for v in ('precision', 'homing', 'bouncing')), kit
             until(lambda: height(alice), lambda h: abs(h - 1.62*.7) < .001)
@@ -163,14 +169,15 @@ def main():
             # Re-selecting an ordinary character removes the fairy trait and size.
             quit_client(alice, a)
             alice, a = client('Alice', 'kirisame_marisa')
-            until(lambda: counts(alice), lambda c: c.get('minecraft:experience_bottle') == 16)
+            time.sleep(2)
+            assert not counts(alice), 'Character change granted another kit'
             until(lambda: height(alice), lambda h: abs(h - 1.62) < .001)
             quit_client(alice, a)
             alice, a = client('Alice', 'cirno')
             until(lambda: height(alice), lambda h: abs(h - 1.62*.7) < .001)
             assert counts(alice).get('minecraft:cookie', 0) == 0
-            print('PASS: selection changes traits and grants each character kit only once', flush=True)
-            # A full inventory must keep the one rolled grant across a server restart.
+            print('PASS: character changes update traits without granting another kit', flush=True)
+            # Changing characters with a full inventory must not queue a later kit.
             for group, size in (('hotbar', 9), ('inventory', 27)):
                 for slot in range(size):
                     console(f'item replace entity Alice {group}.{slot} with minecraft:stone 64')
@@ -191,13 +198,43 @@ def main():
             alice, a = client('Alice', 'kochiya_sanae')
             until(lambda: counts(alice), lambda c: c.get('minecraft:stone') == 36*64)
             console('clear Alice')
-            until(lambda: counts(alice), lambda c: c.get('lunatic:miko_stick') == 1)
+            until(lambda: counts(alice), lambda c: not c)
+            time.sleep(2)
+            assert not counts(alice), 'Character change queued a delayed kit'
             quit_client(alice, a)
             alice, a = client('Alice', 'kochiya_sanae')
             time.sleep(2)
-            assert counts(alice).get('lunatic:miko_stick') == 1
-            print('PASS: full inventory preserves pending kit across server restart; remainder granted once', flush=True)
+            assert not counts(alice), 'Restart or reconnect granted another kit'
+            print('PASS: full-inventory character changes do not queue kits across restart', flush=True)
             quit_client(alice, a)
+            empty, e = client('EmptyKit', 'alice_margatroid')
+            time.sleep(2)
+            assert not counts(empty)
+            quit_client(empty, e)
+            empty, e = client('EmptyKit', 'hakurei_reimu')
+            time.sleep(2)
+            assert not counts(empty), 'Empty starting kit allowed a later character kit'
+            quit_client(empty, e)
+            fresh, f = client('SoulboundDeath', 'hakurei_reimu')
+            until(lambda: counts(fresh), lambda c: c.get('lunatic:purification_rod') == 1)
+            console('gamerule keep_inventory false')
+            console('gamemode survival SoulboundDeath')
+            console('tp SoulboundDeath 100.5 -60 100.5')
+            console('give SoulboundDeath minecraft:diamond 1')
+            until(lambda: counts(fresh), lambda c: c.get('minecraft:diamond') == 1)
+            console('kill SoulboundDeath')
+            until(lambda: ctl(fresh, 'state')['screen'], lambda s: s == 'dead')
+            time.sleep(1.2)
+            ctl(fresh, 'respawn')
+            until(lambda: ctl(fresh, 'state')['screen'], lambda s: s == 'playing')
+            console('gamemode spectator SoulboundDeath')
+            console('tp SoulboundDeath 100.5 -60 100.5')
+            drops = until(lambda: ctl(fresh, 'entities', '16', 'minecraft:item')['entities'],
+                          lambda rows: any(row.get('item', {}).get('item') == 'minecraft:diamond' for row in rows))
+            assert all('lunatic:' not in row.get('item', {}).get('item', '') for row in drops), drops
+            assert not counts(fresh), 'Respawn granted another kit'
+            quit_client(fresh, f)
+            print('PASS: empty first kits stay consumed; Soulbound vanishes on death while ordinary items drop', flush=True)
             server.stdin.write(b'stop\n')
             server.stdin.flush()
             server.wait(timeout=60)

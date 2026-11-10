@@ -10,6 +10,8 @@ const KIT_KEY: &str = "lunatic:starting_kits";
 #[derive(Default, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 struct Kits {
+    #[serde(default)]
+    initialized: bool,
     awarded: Vec<String>,
     pending: Vec<Stack>,
 }
@@ -18,6 +20,8 @@ struct Kits {
 struct Stack {
     item: String,
     count: u32,
+    #[serde(default)]
+    enchantments: std::collections::BTreeMap<String, u32>,
 }
 impl Game<'_> {
     pub(super) fn lunatic_has_race(&self, race: &str) -> bool {
@@ -164,20 +168,18 @@ impl Game<'_> {
             );
         }
         let id = self.native_acting_id();
-        let Some(character) = self.lunatic_character(id) else {
-            return;
-        };
+        let character = self.lunatic_character(id);
         let Some(p) = self.player.as_ref() else {
             return;
         };
         if p.health.dead_or_dying()
             || self.spectator()
-            || p.__horizon_mixins_lunatic_fairy().kit_checked.as_ref() == Some(&character.id)
+            || p.__horizon_mixins_lunatic_fairy().kit_checked.is_some()
         {
             return;
         }
         // Clone only when a kit needs resolving, never on ordinary player ticks.
-        let character = character.clone();
+        let character = character.cloned();
         if self
             .level
             .player_extra
@@ -188,7 +190,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(character.id);
+                .kit_checked = Some(String::new());
             return;
         }
         // Stored in the existing player NBT, saved together with inventory.
@@ -211,7 +213,7 @@ impl Game<'_> {
                         .as_mut()
                         .unwrap()
                         .__horizon_mixins_lunatic_fairy_mut()
-                        .kit_checked = Some(character.id);
+                        .kit_checked = Some(String::new());
                     return;
                 }
             },
@@ -220,47 +222,57 @@ impl Game<'_> {
                     .as_mut()
                     .unwrap()
                     .__horizon_mixins_lunatic_fairy_mut()
-                    .kit_checked = Some(character.id);
+                    .kit_checked = Some(String::new());
                 return;
             }
         };
         let mut changed = false;
-        if !kits.awarded.contains(&character.id) {
-            for entry in &character.starting_items {
-                let choices: Vec<_> = if entry.choices.is_empty() {
-                    vec![entry.item.as_str()]
-                } else {
-                    entry.choices.iter().map(String::as_str).collect()
-                };
-                let choices: Vec<_> = choices
-                    .into_iter()
-                    .filter(|item| self.items().get(item).is_some())
-                    .collect();
-                if choices.is_empty() {
-                    continue;
-                }
-                let min = entry.min_count.unwrap_or(entry.count).clamp(1, 1024);
-                let max = entry.max_count.unwrap_or(entry.count).clamp(min, 1024);
-                for _ in 0..entry.rolls.min(64) {
-                    let index = self
-                        .world
-                        .random
-                        .next_int_bound(choices.len() as i32)
-                        .unwrap_or(0) as usize;
-                    let count = min
-                        + self
+        if !kits.initialized {
+            kits.initialized = true;
+            changed = true;
+            // A kit belongs to the player's first session, not each character.
+            // Existing saves without our marker must not gain a retroactive kit.
+            self.load_stats();
+            if kits.awarded.is_empty()
+                && self.stats.get("custom", "minecraft:play_time") <= 1
+                && let Some(character) = &character
+            {
+                for entry in &character.starting_items {
+                    let choices: Vec<_> = if entry.choices.is_empty() {
+                        vec![entry.item.as_str()]
+                    } else {
+                        entry.choices.iter().map(String::as_str).collect()
+                    };
+                    let choices: Vec<_> = choices
+                        .into_iter()
+                        .filter(|item| self.items().get(item).is_some())
+                        .collect();
+                    if choices.is_empty() {
+                        continue;
+                    }
+                    let min = entry.min_count.unwrap_or(entry.count).clamp(1, 1024);
+                    let max = entry.max_count.unwrap_or(entry.count).clamp(min, 1024);
+                    for _ in 0..entry.rolls.min(64) {
+                        let index = self
                             .world
                             .random
-                            .next_int_bound((max - min + 1) as i32)
-                            .unwrap_or(0) as u32;
-                    kits.pending.push(Stack {
-                        item: choices[index].to_owned(),
-                        count,
-                    });
+                            .next_int_bound(choices.len() as i32)
+                            .unwrap_or(0) as usize;
+                        let count = min
+                            + self
+                                .world
+                                .random
+                                .next_int_bound((max - min + 1) as i32)
+                                .unwrap_or(0) as u32;
+                        kits.pending.push(Stack {
+                            item: choices[index].to_owned(),
+                            count,
+                            enchantments: entry.enchantments.clone(),
+                        });
+                    }
                 }
+                kits.awarded.push(character.id.clone());
             }
-            kits.awarded.push(character.id.clone());
-            changed = true;
         }
         for stack in &mut kits.pending {
             // Removed items are skipped, including an item removed since the kit was rolled.
@@ -269,9 +281,13 @@ impl Game<'_> {
                 changed = true;
                 continue;
             }
-            let gave = self.native_give_items(&stack.item, stack.count);
-            stack.count -= gave;
-            changed |= gave > 0;
+            let mut item = crate::items::ItemStack::new(stack.item.as_str(), stack.count);
+            for (enchantment, level) in &stack.enchantments {
+                item.enchant(enchantment, *level);
+            }
+            let left = self.native_give_stack(id, item).map_or(0, |item| item.count);
+            changed |= left != stack.count;
+            stack.count = left;
         }
         kits.pending.retain(|s| s.count > 0);
         if changed {
@@ -295,7 +311,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(character.id);
+                .kit_checked = Some(String::new());
         }
     }
 }

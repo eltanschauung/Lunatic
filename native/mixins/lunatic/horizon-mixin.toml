@@ -618,3 +618,11 @@ kind="HEAD"
 target="horizon_client_render::hud::HudAtlas::pack_pixels"
 helper="heart-icons.rs"
 bindings=[{name="atlas",ty="&mut HudAtlas",value="&mut *self"}]
+
+[[injection]]
+id="soulbound-vanishing-alias"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_data::ItemStack::enchantment_level"
+helper="soulbound.rs"
+bindings=[{name="stack",ty="&ItemStack",value="self"},{name="id",ty="&str",value="id"}]
