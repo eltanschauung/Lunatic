@@ -17,12 +17,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('game', 'ctl', 'resources', 'mod'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--kits-only', action='store_true', help='Run starter-kit and persistence regressions without movement checks')
     args = parser.parse_args()
     args.game, args.ctl, args.resources, args.mod = (
         p.resolve() for p in (args.game, args.ctl, args.resources, args.mod))
+    catalog = json.loads((Path(__file__).resolve().parents[1] / 'assets/lunatic/horizon/characters.json').read_text())
+    sizes = {c['id'].split(':', 1)[1]: max(.7, min(1.2, c.get('size', 1.0))) for c in catalog['characters']}
     with tempfile.TemporaryDirectory(prefix='lunatic-races-e2e-') as scratch:
         root = Path(scratch)
         children, logs = [], []
+        account_names = {}
 
         def home(name):
             p = root / name
@@ -62,6 +66,7 @@ def main():
             return state['eye'][1] - state['position'][1]
 
         def console(command):
+            command = ' '.join(account_names.get(word, word) for word in command.split(' '))
             server.stdin.write((command + '\n').encode())
             server.stdin.flush()
 
@@ -70,7 +75,10 @@ def main():
             (p/'character.json').write_text(json.dumps({'character': 'lunatic:' + character}))
             process = launch(p, ['--headless', '--server', f'127.0.0.1:{port}', '--name', name,
                                  '--control', '--control-socket', str(p/'c.sock')])
-            until(lambda: ctl(p, 'status'), lambda s: (s.get('server') or {}).get('loaded', False))
+            status = until(lambda: ctl(p, 'status'), lambda s: (s.get('server') or {}).get('loaded', False)
+                           and any(c['id'] == 'lunatic:' + character for c in s['server'].get('characters', {}).values()))
+            uuid = next(uuid for uuid, c in status['server']['characters'].items() if c['id'] == 'lunatic:' + character)
+            account_names[name] = next(n for n in status['server']['players'] if n == 'P' + uuid[:15])
             return p, process
 
         def quit_client(p, process):
@@ -99,6 +107,8 @@ def main():
         try:
             server = launch(srv_home, ['--dedicated', '--nogui'])
             until(lambda: socket.create_connection(('127.0.0.1', port), 1).close(), lambda _: True)
+            console('gamerule spawn_mobs false')
+            console('gamerule spawn_monsters false')
             alice, a = client('Alice', 'cirno')
             bob, b = client('Bob', 'hakurei_reimu')
             until(lambda: counts(alice), lambda c: c.get('minecraft:cookie') == 16)
@@ -115,66 +125,67 @@ def main():
             print('PASS: every randomized and fixed starter stack carries Soulbound', flush=True)
             assert all(4 <= kit.get('lunatic:yin_yang_orb_' + v, 0) <= 12
                        for v in ('precision', 'homing', 'bouncing')), kit
-            until(lambda: height(alice), lambda h: abs(h - 1.62*.7) < .001)
-            assert abs(height(bob) - 1.62) < .001
+            until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['cirno']) < .001)
+            assert abs(height(bob) - 1.62*sizes['hakurei_reimu']) < .001
             print('PASS: catalog kits, bounded random flowers/ammo, fairy and normal eye height', flush=True)
             console('clear Alice')
             until(lambda: counts(alice), lambda c: not c)
             quit_client(alice, a)
             alice, a = client('Alice', 'cirno')
-            until(lambda: height(alice), lambda h: abs(h - 1.62*.7) < .001)
+            until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['cirno']) < .001)
             time.sleep(2)
             assert not counts(alice), 'Reconnect duplicated the starting kit'
             print('PASS: consumed kit stays consumed across reconnect', flush=True)
 
-            ground = round(player(alice)['position'][1])
-            console('gamemode survival Alice')
-            console(f'tp Alice 0.5 {ground} 0.5 0 0')
-            until(lambda: player(alice), lambda p: p['on_ground'])
-            def jumps():
-                return ctl(alice, 'status')['heard'].get('lunatic:entity.fairy.jump', 0)
-            first = jumps()
-            press(alice, .10, .05)
-            assert jumps() == first, 'Normal ground jump consumed the airborne boost'
-            press(alice, .05, .05)
-            until(jumps, lambda n: n == first + 1)
-            assert player(alice)['position'][1] > ground + .5
-            until(lambda: player(alice)['velocity'][1], lambda v: v < 0)
-            falling = player(alice)['velocity'][1]
-            assert -.5 < falling < 0, falling
-            # Repeated presses cancel float, but never grant a second boost.
-            press(alice, .05, .05)
-            after = player(alice)['velocity'][1]
-            assert after < .1, after
-            console(f'tp Alice 0.5 {ground} 0.5')
-            until(lambda: player(alice), lambda p: p['on_ground'])
-            print('PASS: airborne boost, slow falling and cancellation without another boost', flush=True)
+            if not args.kits_only:
+                ground = round(player(alice)['position'][1])
+                console('gamemode survival Alice')
+                console(f'tp Alice 0.5 {ground} 0.5 0 0')
+                until(lambda: player(alice), lambda p: p['on_ground'])
+                def jumps():
+                    return ctl(alice, 'status')['heard'].get('lunatic:entity.fairy.jump', 0)
+                first = jumps()
+                press(alice, .10, .05)
+                assert jumps() == first, 'Normal ground jump consumed the airborne boost'
+                press(alice, .05, .05)
+                until(jumps, lambda n: n == first + 1)
+                assert player(alice)['position'][1] > ground + .5
+                until(lambda: player(alice)['velocity'][1], lambda v: v < 0)
+                falling = player(alice)['velocity'][1]
+                assert -.5 < falling < 0, falling
+                # Repeated presses cancel float, but never grant a second boost.
+                press(alice, .05, .05)
+                after = player(alice)['velocity'][1]
+                assert after < .1, after
+                console(f'tp Alice 0.5 {ground} 0.5')
+                until(lambda: player(alice), lambda p: p['on_ground'])
+                print('PASS: airborne boost, slow falling and cancellation without another boost', flush=True)
 
-            # Start slow fall again, cancel its race source while a potion is active.
-            console(f'tp Alice 0.5 {ground+20} 0.5')
-            time.sleep(.25)
-            press(alice, .05, .1)
-            console('effect give Alice minecraft:slow_falling 30 0 true')
-            until(lambda: player(alice), lambda p: any(e['id']=='slow_falling' for e in p['effects']))
-            press(alice, .05, .05)
-            console(f'tp Alice 0.5 {ground+20} 0.5')
-            time.sleep(1)
-            assert -.5 < player(alice)['velocity'][1] <= 0, player(alice)
-            console('effect clear Alice minecraft:slow_falling')
-            time.sleep(.8)
-            assert player(alice)['velocity'][1] < -.5, player(alice)
-            console(f'tp Alice 0.5 {ground} 0.5')
-            print('PASS: cancelling fairy float preserves potion Slow Falling; potion expiry restores gravity', flush=True)
+                # Start slow fall again, cancel its race source while a potion is active.
+                console(f'tp Alice 0.5 {ground+20} 0.5')
+                time.sleep(.25)
+                press(alice, .05, .1)
+                console('effect give Alice minecraft:slow_falling 30 0 true')
+                until(lambda: player(alice), lambda p: any(e['id']=='slow_falling' for e in p['effects']))
+                press(alice, .05, .05)
+                console(f'tp Alice 0.5 {ground+20} 0.5')
+                time.sleep(1)
+                assert -.5 < player(alice)['velocity'][1] <= 0, player(alice)
+                console('effect clear Alice minecraft:slow_falling')
+                time.sleep(.8)
+                assert player(alice)['velocity'][1] < -.5, player(alice)
+                console(f'tp Alice 0.5 {ground} 0.5')
+                print('PASS: cancelling fairy float preserves potion Slow Falling; potion expiry restores gravity', flush=True)
 
             # Re-selecting an ordinary character removes the fairy trait and size.
             quit_client(alice, a)
             alice, a = client('Alice', 'kirisame_marisa')
             time.sleep(2)
             assert not counts(alice), 'Character change granted another kit'
-            until(lambda: height(alice), lambda h: abs(h - 1.62) < .001)
+            until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['kirisame_marisa']) < .001)
             quit_client(alice, a)
             alice, a = client('Alice', 'cirno')
-            until(lambda: height(alice), lambda h: abs(h - 1.62*.7) < .001)
+            until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['cirno']) < .001)
             assert counts(alice).get('minecraft:cookie', 0) == 0
             print('PASS: character changes update traits without granting another kit', flush=True)
             # Changing characters with a full inventory must not queue a later kit.
@@ -184,7 +195,7 @@ def main():
             until(lambda: counts(alice), lambda c: c.get('minecraft:stone') == 36*64)
             quit_client(alice, a)
             alice, a = client('Alice', 'kochiya_sanae')
-            until(lambda: height(alice), lambda h: abs(h - 1.62) < .001)
+            until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['kochiya_sanae']) < .001)
             time.sleep(2)
             assert counts(alice).get('minecraft:stone') == 36*64
             assert counts(alice).get('lunatic:miko_stick', 0) == 0
@@ -211,12 +222,12 @@ def main():
             time.sleep(2)
             assert not counts(empty)
             quit_client(empty, e)
-            empty, e = client('EmptyKit', 'hakurei_reimu')
+            empty, e = client('EmptyKit', 'kazami_yuuka')
             time.sleep(2)
             assert not counts(empty), 'Empty starting kit allowed a later character kit'
             quit_client(empty, e)
-            fresh, f = client('SoulboundDeath', 'hakurei_reimu')
-            until(lambda: counts(fresh), lambda c: c.get('lunatic:purification_rod') == 1)
+            fresh, f = client('SoulboundDeath', 'ibuki_suika')
+            until(lambda: counts(fresh), lambda c: c.get('lunatic:ibuki_gourd') == 1)
             console('gamerule keep_inventory false')
             console('gamemode survival SoulboundDeath')
             console('tp SoulboundDeath 100.5 -60 100.5')
