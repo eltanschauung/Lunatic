@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.9.4"
+version = "0.9.5"
 priority = 100
 
 [[injection]]
@@ -626,3 +626,9 @@ cancellable=true
 target="horizon_items::item_data::ItemStack::enchantment_level"
 helper="soulbound.rs"
 bindings=[{name="stack",ty="&ItemStack",value="self"},{name="id",ty="&str",value="id"}]
+
+[[module]]
+id="confirmed-join-identity"
+file="crates/horizon-client/src/game/character_sync.rs"
+name="lunatic_join_identity"
+source="join-identity.rs"

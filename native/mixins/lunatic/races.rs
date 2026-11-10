@@ -13,6 +13,8 @@ struct Kits {
     #[serde(default)]
     initialized: bool,
     #[serde(default)]
+    character: Option<String>,
+    #[serde(default)]
     deaths: Option<i32>,
     awarded: Vec<String>,
     pending: Vec<Stack>,
@@ -178,19 +180,20 @@ impl Game<'_> {
         }
         let id = self.native_acting_id();
         let deaths = self.stats.get("custom", "minecraft:deaths");
-        let character = self.lunatic_character(id);
+        let Some(character) = self.lunatic_character(id) else { return; };
+        if !self.lunatic_character_confirmed(id) { return; }
         let Some(p) = self.player.as_ref() else {
             return;
         };
         if p.health.dead_or_dying()
             || self.spectator()
-            || p.__horizon_mixins_lunatic_fairy().kit_checked.as_deref()
-                .and_then(|value| value.parse::<i32>().ok()) == Some(deaths)
+            || p.__horizon_mixins_lunatic_fairy().kit_checked.as_ref()
+                .is_some_and(|(previous, count)| previous == &character.id && *count == deaths)
         {
             return;
         }
         // Clone only when a kit needs resolving, never on ordinary player ticks.
-        let character = character.cloned();
+        let character = Some(character.clone());
         if self
             .level
             .player_extra
@@ -201,7 +204,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(deaths.to_string());
+                .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
             return;
         }
         // Stored in the existing player NBT, saved together with inventory.
@@ -224,7 +227,7 @@ impl Game<'_> {
                         .as_mut()
                         .unwrap()
                         .__horizon_mixins_lunatic_fairy_mut()
-                        .kit_checked = Some(deaths.to_string());
+                        .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
                     return;
                 }
             },
@@ -233,12 +236,30 @@ impl Game<'_> {
                     .as_mut()
                     .unwrap()
                     .__horizon_mixins_lunatic_fairy_mut()
-                    .kit_checked = Some(deaths.to_string());
+                    .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
                 return;
             }
         };
+        let current = &character.as_ref().unwrap().id;
+        // Old saves recorded their first awarded character; adopt it as a safe
+        // migration baseline. Empty/unknown legacy histories are not destructive.
+        let previous = kits.character.as_ref().or_else(|| kits.awarded.last());
+        let switched = previous.is_some_and(|previous| previous != current);
+        if switched {
+            for slot in self.inventory.iter_mut().chain(self.armor.iter_mut())
+                .chain(std::iter::once(&mut self.offhand)) {
+                if slot.as_ref().is_some_and(|item| item.enchantments().iter()
+                    .any(|(name, level)| name.as_ref() == "lunatic:soulbound" && *level > 0)) {
+                    *slot = None;
+                }
+            }
+            kits.pending.retain(|stack| stack.enchantments.get("lunatic:soulbound").copied().unwrap_or(0) == 0);
+            self.apply_equipment();
+        }
+        let identity_changed = kits.character.as_ref() != Some(current);
+        kits.character = Some(current.clone());
         let respawned = kits.deaths.is_some_and(|previous| deaths > previous);
-        let mut changed = kits.deaths != Some(deaths);
+        let mut changed = kits.deaths != Some(deaths) || identity_changed;
         kits.deaths = Some(deaths);
         if respawned {
             kits.initialized = false;
@@ -329,7 +350,7 @@ impl Game<'_> {
                 .as_mut()
                 .unwrap()
                 .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some(deaths.to_string());
+                .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
         }
     }
 }

@@ -20,7 +20,7 @@ pub struct Fairy {
     size: f32,
     pub sound: Option<&'static str>,
     pub character_health: f32,
-    pub kit_checked: Option<String>,
+    pub kit_checked: Option<(String, i32)>,
 }
 impl Default for Fairy {
     fn default() -> Self {

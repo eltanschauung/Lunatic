@@ -269,8 +269,28 @@ def main():
                 assert ctl(fresh, 'status')['player']['max_health'] == 16
                 assert player(fresh)['health'] == 16
             assert counts(fresh).get('lunatic:ibuki_gourd') == 1, 'Respawn duplicated the kit'
-            quit_client(fresh, f)
             print('PASS: empty first kits stay consumed; Soulbound vanishes on death while ordinary items drop', flush=True)
+            console('gamemode survival SoulboundDeath');time.sleep(.3)
+            quit_client(fresh, f)
+            fresh, f = client('SoulboundDeath', 'ibuki_suika')
+            until(lambda: counts(fresh), lambda c: c.get('lunatic:ibuki_gourd') == 1)
+            console('give SoulboundDeath minecraft:diamond 2')
+            console('item replace entity SoulboundDeath weapon.offhand with minecraft:stick[minecraft:enchantments={"lunatic:soulbound":1}]')
+            console('item replace entity SoulboundDeath armor.head with minecraft:leather_helmet[minecraft:enchantments={"lunatic:soulbound":1}]')
+            until(lambda: counts(fresh), lambda c: c.get('minecraft:stick') == 1 and c.get('minecraft:leather_helmet') == 1)
+            diamonds = counts(fresh).get('minecraft:diamond', 0)
+            assert diamonds >= 2
+            quit_client(fresh, f)
+            fresh, f = client('SoulboundDeath', 'kazami_yuuka')
+            until(lambda: counts(fresh), lambda c: not any(c.get(item, 0) for item in ('lunatic:ibuki_gourd', 'minecraft:stick', 'minecraft:leather_helmet')))
+            assert counts(fresh).get('minecraft:diamond') == diamonds, 'Character switch removed ordinary items'
+            assert not counts(fresh).get('lunatic:yuuka_parasol', 0), 'Switch awarded another kit'
+            quit_client(fresh, f)
+            fresh, f = client('SoulboundDeath', 'ibuki_suika')
+            time.sleep(1)
+            assert not counts(fresh).get('lunatic:ibuki_gourd', 0), 'Switch back restored Soulbound kit'
+            print('PASS: same-character joins keep Soulbound; switching removes inventory/armor/offhand Soulbound only, without new kits', flush=True)
+
             server.stdin.write(b'stop\n')
             server.stdin.flush()
             server.wait(timeout=60)
