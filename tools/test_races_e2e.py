@@ -9,6 +9,7 @@ import socket
 import subprocess
 import tempfile
 import time
+import zipfile
 
 from test_weapons_e2e import until
 
@@ -18,6 +19,7 @@ def main():
     for name in ('game', 'ctl', 'resources', 'mod'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--kits-only', action='store_true', help='Run starter-kit and persistence regressions without movement checks')
+    parser.add_argument('--health-fixture', action='store_true', help='Exercise string max health in isolated content')
     args = parser.parse_args()
     args.game, args.ctl, args.resources, args.mod = (
         p.resolve() for p in (args.game, args.ctl, args.resources, args.mod))
@@ -32,7 +34,20 @@ def main():
             p = root / name
             p.mkdir(exist_ok=True)
             (p / 'horizon-mods').mkdir(exist_ok=True)
-            shutil.copy2(args.mod, p / 'horizon-mods/lunatic.hmod')
+            target = p / 'horizon-mods/lunatic.hmod'
+            if args.health_fixture:
+                with zipfile.ZipFile(args.mod) as src, zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as dst:
+                    for entry in src.infolist():
+                        data = src.read(entry.filename)
+                        if entry.filename == 'assets/lunatic/horizon/characters.json':
+                            catalog = json.loads(data)
+                            for c in catalog['characters']:
+                                if c['id'] in ('lunatic:cirno', 'lunatic:ibuki_suika'):
+                                    c['health'] = '16'
+                            data = json.dumps(catalog).encode()
+                        dst.writestr(entry, data)
+            else:
+                shutil.copy2(args.mod, target)
             (p / 'horizon-mods.txt').write_text('mod.lunatic:true\n')
             (p / 'options.txt').write_text('version:5023\nrenderDistance:2\nsimulationDistance:2\nautoJump:false\n')
             return p
@@ -112,6 +127,9 @@ def main():
             alice, a = client('Alice', 'cirno')
             bob, b = client('Bob', 'hakurei_reimu')
             until(lambda: counts(alice), lambda c: c.get('minecraft:cookie') == 16)
+            if args.health_fixture:
+                until(lambda: ctl(alice, 'status')['player']['max_health'], lambda h: h == 16)
+                assert player(alice)['health'] == 16
             kit = counts(alice)
             flowers = {k: v for k, v in kit.items() if k != 'minecraft:cookie'}
             assert 1 <= len(flowers) <= 3 and 3 <= sum(flowers.values()) <= 12, kit
@@ -182,6 +200,8 @@ def main():
             alice, a = client('Alice', 'kirisame_marisa')
             time.sleep(2)
             assert not counts(alice), 'Character change granted another kit'
+            if args.health_fixture:
+                until(lambda: ctl(alice, 'status')['player']['max_health'], lambda h: h == 20)
             until(lambda: height(alice), lambda h: abs(h - 1.62*sizes['kirisame_marisa']) < .001)
             quit_client(alice, a)
             alice, a = client('Alice', 'cirno')
@@ -245,6 +265,9 @@ def main():
             assert all('lunatic:' not in row.get('item', {}).get('item', '') for row in drops), drops
             until(lambda: counts(fresh), lambda c: c.get('lunatic:ibuki_gourd') == 1)
             time.sleep(2)
+            if args.health_fixture:
+                assert ctl(fresh, 'status')['player']['max_health'] == 16
+                assert player(fresh)['health'] == 16
             assert counts(fresh).get('lunatic:ibuki_gourd') == 1, 'Respawn duplicated the kit'
             quit_client(fresh, f)
             print('PASS: empty first kits stay consumed; Soulbound vanishes on death while ordinary items drop', flush=True)
