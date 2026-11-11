@@ -277,3 +277,9 @@ Crow tengu characters require at least three blocks of clearance from their feet
 The `devil` race shares crow tengu’s racial glide: three-block takeoff clearance, 5:1 glide ratio, 18 blocks/s forward speed and the existing armor limit. The Hauchiwa Fan flight boost requires the `tengu` race; other race tags do not exclude a character who also has `tengu`.
 
 Bushy Bamboo world generation: while Lunatic is enabled, bamboo features use seeded, irregular patches roughly 16 blocks across, with a 35% patch selection chance. Whole stalks and their leaf caps use Bushy Bamboo; vanilla stalk height, podzol and placement rules remain intact. Existing chunks and player-planted bamboo are unchanged. Explicit feature patch selectors take precedence. Requires the matching Horizon bamboo patch support and a native game rebuild.
+
+## Colored mushroom blocks
+
+Eleven full mushroom blocks cover plain, white, light gray, gray, black, brown, red, blue, light blue, purple and magenta terracotta. They appear in Lunatic's creative tab and drop themselves. Each face independently selects its colored cap or the unchanged vanilla mushroom interior using the inherited six directional properties.
+
+`tools/generate_mushroom_blocks.py` preserves every original 16×16 cap pixel and multiplies its sRGB channels by the corresponding terracotta texture's mean RGB, with fixed channel gains `(1.088003, 1.088223, 1.633296)` calibrated to the selected dark preview A. Output is rounded to bytes; light blue averages approximately RGB `(72,52,72)`. The content build regenerates these local PNGs; vanilla inputs and derived textures are not committed. Supply `HORIZON_MINECRAFT_ASSETS` (the directory containing `textures/block/`) when auto-discovery of prepared 26.3 assets is unavailable. Use `--definitions` only when intentionally regenerating the authored block/item declarations. The uncolored terracotta variant is named Plain Mushroom Block (`lunatic:plain_mushroom_block`).

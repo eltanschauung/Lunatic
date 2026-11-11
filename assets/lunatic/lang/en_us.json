@@ -28,5 +28,16 @@
   "effect.lunatic.growing": "Growing",
   "effect.lunatic.giant": "Giant",
   "effect.lunatic.shrinking": "Shrinking",
-  "effect.lunatic.tiny": "Tiny"
+  "effect.lunatic.tiny": "Tiny",
+  "block.lunatic.plain_mushroom_block": "Plain Mushroom Block",
+  "block.lunatic.white_mushroom_block": "White Mushroom Block",
+  "block.lunatic.light_gray_mushroom_block": "Light Gray Mushroom Block",
+  "block.lunatic.gray_mushroom_block": "Gray Mushroom Block",
+  "block.lunatic.black_mushroom_block": "Black Mushroom Block",
+  "block.lunatic.brown_mushroom_block": "Brown Mushroom Block",
+  "block.lunatic.red_mushroom_block": "Red Mushroom Block",
+  "block.lunatic.blue_mushroom_block": "Blue Mushroom Block",
+  "block.lunatic.light_blue_mushroom_block": "Light Blue Mushroom Block",
+  "block.lunatic.purple_mushroom_block": "Purple Mushroom Block",
+  "block.lunatic.magenta_mushroom_block": "Magenta Mushroom Block"
 }

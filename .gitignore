@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 TODO.md
+
+# Rebuilt from locally prepared vanilla textures; do not redistribute source derivatives in Git.
+/assets/lunatic/textures/block/*_mushroom_block.png

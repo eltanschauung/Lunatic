@@ -34,6 +34,7 @@ def main():
     tool = target / "debug/cargo-horizon-mod"
     subprocess.run(["python3", ROOT / "tools/generate_orbs.py"], check=True)
     subprocess.run(["python3", ROOT / "tools/generate_lampad.py"], check=True)
+    subprocess.run(["python3", ROOT / "tools/generate_mushroom_blocks.py"], check=True)
     subprocess.run([tool, "build"], cwd=ROOT, env=env, check=True)
     subprocess.run([tool, "check", ROOT / "target/horizon-mod/lunatic.hmod", "--json"],
         cwd=ROOT, env=env, check=True)
