@@ -166,7 +166,7 @@ impl Game<'_> {
             s.reeling.remove(&key);
             s.attacks.push(attack);
         });
-        self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action:primary"), 80);
+        self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action/primary"), 80);
         self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.8);
     }
     fn gourd_reward(&mut self, attack: &Attack) {
@@ -177,7 +177,7 @@ impl Game<'_> {
             *ready = (*ready).min(attack.started + 40);
             *ready
         });
-        self.lunatic_as_player(attack.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action-update:primary"), (end-now).max(0) as i32));
+        self.lunatic_as_player(attack.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action_update/primary"), (end-now).max(0) as i32));
     }
     pub(super) fn gourd_pre(&mut self) {
         if self.remote.is_some() {
@@ -232,7 +232,7 @@ impl Game<'_> {
                         *ready
                     });
                     let ticks = (end - now).max(0) as i32;
-                    self.lunatic_as_player(a.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action-update:primary"), ticks));
+                    self.lunatic_as_player(a.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action_update/primary"), ticks));
                 }
             }
             if !present {
