@@ -66,7 +66,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-chest-proof-') as temp:
   time.sleep(1)
   watcher_name=re.findall(r'\]: (\S+)\[/127\.0\.0\.1:',(a.output/'server.log').read_text())[-1]
   console(f'gamemode spectator {watcher_name}');console(f'clear {name}')
-  console(f'tp {name} 0.5 -60 0.5 180 0');console(f'tp {watcher_name} 4 -60 -4 35 5');time.sleep(.5)
+  console(f'tp {name} 0.5 -60 0.5 180 0');console(f'tp {watcher_name} 2.5 -60 -1 53 12');time.sleep(.5)
   ctl(observer,'screenshot',str(a.output/'slim-chest-2-rest.png'))
   ctl(d,'key','space','down');ctl(d,'key','w','down');time.sleep(.6)
   ctl(observer,'screenshot',str(a.output/'slim-chest-2-moving.png'))
