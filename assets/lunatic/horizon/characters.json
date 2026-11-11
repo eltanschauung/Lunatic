@@ -354,7 +354,8 @@
       "starting_spells": [
         "lunatic:gigantification",
         "lunatic:miniaturization"
-      ]
+      ],
+      "hunger": 30
     },
     {
       "id": "lunatic:shameimaru_aya",
@@ -488,7 +489,8 @@
       "color": "#ffc0cb",
       "size": 0.94,
       "starting_items": [],
-      "starting_spells": []
+      "starting_spells": [],
+      "hunger": 30
     },
     {
       "id": "lunatic:houjuu_nue",

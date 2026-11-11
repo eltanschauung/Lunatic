@@ -23,6 +23,8 @@ struct Attack {
     id: u32,
     retract: bool,
     exceptional: bool,
+    started: i64,
+    landed: bool,
 }
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 struct Tether {
@@ -91,7 +93,7 @@ impl Game<'_> {
     fn gourd_anchor(&self) -> Option<[f64; 3]> {
         let _p = self.player.as_ref()?;
         let (eye, dir) = self.aim()?;
-        Some(f::right_hand(eye, dir))
+        Some(f::third_person_hand(eye, dir, self.player.as_ref()?.scale as f64))
     }
     fn gourd_click(&mut self, dir: [f64; 3]) {
         if self.spectator() || self.held().is_none_or(|s| s.item.as_ref() != ITEM) {
@@ -156,13 +158,26 @@ impl Game<'_> {
             id: p.id,
             retract: false,
             exceptional: false,
+            started: now,
+            landed: false,
         };
         STATE.with_borrow_mut(|s| {
             s.ready.insert(key, now + 80);
             s.reeling.remove(&key);
             s.attacks.push(attack);
         });
+        self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action:primary"), 80);
         self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.8);
+    }
+    fn gourd_reward(&mut self, attack: &Attack) {
+        if attack.exceptional { return; }
+        let now = self.world.game_time;
+        let end = STATE.with_borrow_mut(|s| {
+            let ready = s.ready.entry((attack.world,attack.owner)).or_insert(now);
+            *ready = (*ready).min(attack.started + 40);
+            *ready
+        });
+        self.lunatic_as_player(attack.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action-update:primary"), (end-now).max(0) as i32));
     }
     pub(super) fn gourd_pre(&mut self) {
         if self.remote.is_some() {
@@ -198,7 +213,9 @@ impl Game<'_> {
                     && g.player.as_ref().is_some_and(|p| !p.health.dead_or_dying());
             });
             let present = live.contains(&a.id);
+            a.landed |= motion::view(a.id).is_some_and(|(_,_,phase)| phase == f::Phase::Grounded);
             if !present && a.retract && !a.exceptional {
+                if a.landed { self.gourd_reward(&a); }
                 continue;
             }
             if !valid || !present || anchor.is_none() {
@@ -208,9 +225,14 @@ impl Game<'_> {
                     if let Some(at) = anchor {
                         self.lunatic_sound("item.gourd.reel", motion::vec(at), 0.8);
                     }
-                    STATE.with_borrow_mut(|s| {
-                        s.ready.insert((world, a.owner), now + 160);
+                    let end = STATE.with_borrow_mut(|s| {
+                        let ready = s.ready.entry((world,a.owner)).or_insert(a.started+80);
+                        let duration=(*ready-a.started).max(0);
+                        *ready=a.started+(duration*6+4)/5;
+                        *ready
                     });
+                    let ticks = (end - now).max(0) as i32;
+                    self.lunatic_as_player(a.owner, |g| g.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd#action-update:primary"), ticks));
                 }
             }
             if !present {
@@ -263,10 +285,14 @@ impl Game<'_> {
                     .mobs
                     .iter()
                     .find(|m| m.id == id)
-                    .is_none_or(|m| m.health >= before)
+                    .is_some_and(|m| m.health >= before)
                 {
                     continue;
                 }
+            }
+            if matches!(who, Who::Mob(_)) {
+                let attack = STATE.with_borrow(|s| s.attacks.iter().find(|a| a.id == e.projectile.id).cloned());
+                if let Some(attack) = attack { self.gourd_reward(&attack); }
             }
             let options = horizon_client::particles::ParticleOptions::simple(
                 horizon_client::particles::ParticleType::Explosion,
@@ -353,7 +379,7 @@ impl Game<'_> {
                     f::forward(p.yaw, p.pitch),
                 );
                 let mut hand = v.anchor;
-                if v.owner == self.gourd_view_owner() {
+                if v.owner == self.gourd_view_owner() && self.camera_type == super::perspective::CameraType::FirstPerson {
                     if let Some((eye, dir)) = self.aim() {
                         hand = f::add(f::right_hand(eye, dir), f::mul(dir, 0.45));
                     }

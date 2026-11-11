@@ -47,6 +47,11 @@ pub fn nozzle(at: [f64; 3], axis: [f64; 3]) -> [f64; 3] {
 pub fn right_hand(eye: [f64; 3], dir: [f64; 3]) -> [f64; 3] {
     [eye[0] - dir[2] * 0.38, eye[1] - 0.3, eye[2] + dir[0] * 0.38]
 }
+pub fn third_person_hand(eye: [f64;3], dir: [f64;3], scale: f64) -> [f64;3] {
+    let horizontal = (dir[0]*dir[0]+dir[2]*dir[2]).sqrt().max(1e-6);
+    let x=dir[0]/horizontal; let z=dir[2]/horizontal;
+    [eye[0]+(-z*0.3125+x*0.35)*scale, eye[1]-0.77*scale, eye[2]+(x*0.3125+z*0.35)*scale]
+}
 impl Body {
     pub fn new(at: [f64; 3], velocity: [f64; 3]) -> Self {
         Self {

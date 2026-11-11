@@ -17,6 +17,7 @@ pub struct Flight {
     pub anchor: [f64; 3],
     pub owner: u128,
     pub hit: bool,
+    pub landed: bool,
 }
 #[derive(Clone)]
 pub struct Event {
@@ -54,6 +55,7 @@ pub fn prepare(id: u32, owner: u128, anchor: [f64; 3], p: &Projectile, retract: 
             anchor,
             owner,
             hit: false,
+            landed: false,
         });
         q.anchor = anchor;
         if retract {
@@ -100,12 +102,13 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
             s.flights.remove(&key);
             return (false, Hit::None);
         }
-        // A removed supporting block allows a grounded gourd to fall again.
-        if q.body.phase == f::Phase::Grounded
-            && w.clip(p.position, p.position.add_vector(Vec3::new(0.0, -0.8, 0.0)))
-                .is_none()
-        {
-            q.body.phase = f::Phase::Falling;
+        // Probe the entire footprint: a ledge may support the rim while the center is in air.
+        if q.body.phase == f::Phase::Grounded {
+            let supported = [-0.4,0.0,0.4].into_iter().any(|x| [-0.4,0.0,0.4].into_iter().any(|z| {
+                let at=p.position.add_vector(Vec3::new(x,0.0,z));
+                w.clip(at,at.add_vector(Vec3::new(0.0,-0.85,0.0))).is_some_and(|(_,_,face)| face[1]>0)
+            }));
+            if !supported { q.body.phase=f::Phase::Falling; }
         }
         let old = p.position;
         let phase = q.body.phase;
@@ -192,7 +195,8 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
                 }
             }
             if let Some((_, face)) = block {
-                if face[1] > 0 && q.body.phase != f::Phase::Grounded {
+                if face[1] > 0 && !q.landed {
+                    q.landed = true;
                     s.cues.push(CueEvent {
                         at: end,
                         kind: Cue::Land,
@@ -203,9 +207,33 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
                 } else {
                     f::Phase::Falling
                 };
-                q.body.velocity = [0.0; 3];
+                if face[1] > 0 {
+                    q.body.velocity = [0.0;3];
+                    p.pitch=0.0; p.previous_pitch=0.0;
+                } else {
+                    // Slide vertically past doors/walls instead of resetting gravity each tick.
+                    for axis in [0,2] { if face[axis] != 0 { q.body.velocity[axis]=0.0; } }
+                    let slide=end.add_vector(Vec3::new(0.0,q.body.velocity[1].min(-0.05),0.0));
+                    if let Some((at,_,normal))=w.clip(end,slide) {
+                        if normal[1]>0 { end=at.add_vector(Vec3::new(0.0,f::RADIUS+0.015,0.0));q.body.phase=f::Phase::Grounded;q.body.velocity=[0.0;3];p.pitch=0.0;p.previous_pitch=0.0; }
+                    } else { end=slide; }
+                }
             }
             q.body.at = arr(end);
+        }
+        if q.body.phase == f::Phase::Grounded {
+            // Flatten the pose and lower the center onto the highest supporting surface.
+            p.pitch=0.0; p.previous_pitch=0.0;
+            let center=vec(q.body.at);
+            let mut top: Option<f64>=None;
+            for x in [-0.4,0.0,0.4] { for z in [-0.4,0.0,0.4] {
+                let probe=center.add_vector(Vec3::new(x,0.05,z));
+                if let Some((at,_,face))=w.clip(probe,probe.add_vector(Vec3::new(0.0,-0.9,0.0))) {
+                    if face[1]>0 { top=Some(top.map_or(at.y,|y|y.max(at.y))); }
+                }
+            }}
+            if let Some(y)=top { q.body.at[1]=y+f::RADIUS+0.015; }
+            if !q.landed { q.landed=true; s.cues.push(CueEvent {at:vec(q.body.at),kind:Cue::Land}); }
         }
         p.position = vec(q.body.at);
         p.velocity = vec(q.body.velocity);

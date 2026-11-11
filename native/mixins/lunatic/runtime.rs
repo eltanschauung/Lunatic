@@ -84,6 +84,17 @@ impl Game<'_> {
         if !self.native_on("lunatic") || stack.custom_name().is_some() {
             return;
         }
+        if stack.item.as_ref() == "lunatic:ibuki_gourd" {
+            for (a,b) in [
+                ("Primary fire for ", ": Hurl the gourd up to 16 blocks away as a flail, dealing great damage. Left click to pull back in. Cooldown: 4s"),
+                ("Alt fire: Get drunk. For ", ": Gain super strength for 12-20 seconds before drunkenness sets in, empowering melee damage and providing explosive punches. Effect expiry consumes 2-5 hunger.")
+            ] {
+                let mut text = Text::colored(a, 0xFFAAAAAA);
+                text.spans.extend(Text::colored("Oni", 0xFFFFAA00).spans);
+                text.spans.extend(Text::colored(b, 0xFFAAAAAA).spans);
+                lines.push((text, u32::MAX));
+            }
+        }
         let Some(index) = motion::ITEMS
             .iter()
             .position(|id| *id == stack.item.as_ref())

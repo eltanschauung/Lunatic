@@ -128,13 +128,14 @@ impl Game<'_> {
             Some(remote) => remote.profile(),
             None => self.native_acting_id(),
         };
-        let (size, health, fairy, racial_glider) =
-            self.lunatic_character(id).map_or((1.0, 20.0, false, false), |c| {
-                (c.size, c.health, c.has_race("fairy"), c.has_race("crow_tengu") || c.has_race("devil"))
+        let (size, health, hunger, fairy, racial_glider) =
+            self.lunatic_character(id).map_or((1.0, 20.0, 20, false, false), |c| {
+                (c.size, c.health, c.hunger, c.has_race("fairy"), c.has_race("crow_tengu") || c.has_race("devil"))
             });
         let potion = self.potions.effects.get("slow_falling").is_some();
         if let Some(p) = self.player.as_mut() {
             p.lunatic_character_body(size, fairy, potion, racial_glider);
+            p.health.food.set_capacity(hunger);
             let has = p.attributes.key("minecraft:max_health").and_then(|key|
                 p.attributes.has_modifier(Some(key), "lunatic:character_health").ok()).unwrap_or(false);
             if p.__horizon_mixins_lunatic_fairy().character_health != health || has != (health != 20.0) {
