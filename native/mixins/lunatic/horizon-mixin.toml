@@ -674,3 +674,14 @@ kind="RETURN"
 target="horizon_client::projectiles::Projectile::bounds"
 helper="gourd-bounds.rs"
 bindings=[{name="value",ty="Aabb",value="$value"},{name="p",ty="&Projectile",value="&*self"}]
+
+[[injection]]
+id = "bushy-bamboo-worldgen"
+kind = "HEAD"
+target = "horizon_world::worldgen::overrides::WorldgenOverrides::apply"
+helper = "bamboo-worldgen.rs"
+bindings = [
+ {name="overrides",ty="&WorldgenOverrides",value="self"},
+ {name="bundle",ty="&str",value="bundle"},
+ {name="base",ty="&mut BTreeMap<String,String>",value="&mut base"},
+]

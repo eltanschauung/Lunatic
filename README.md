@@ -275,3 +275,5 @@ Changing characters removes carried Soulbound items during authoritative join in
 Crow tengu characters require at least three blocks of clearance from their feet to collision surfaces under their footprint to start a glide. The threshold only gates takeoff; an active glide may descend below it. The existing armor restriction remains in effect.
 
 The `devil` race shares crow tengu’s racial glide: three-block takeoff clearance, 5:1 glide ratio, 18 blocks/s forward speed and the existing armor limit. The Hauchiwa Fan flight boost requires the `tengu` race; other race tags do not exclude a character who also has `tengu`.
+
+Bushy Bamboo world generation: while Lunatic is enabled, bamboo features use seeded, irregular patches roughly 16 blocks across, with a 35% patch selection chance. Whole stalks and their leaf caps use Bushy Bamboo; vanilla stalk height, podzol and placement rules remain intact. Existing chunks and player-planted bamboo are unchanged. Explicit feature patch selectors take precedence. Requires the matching Horizon bamboo patch support and a native game rebuild.
