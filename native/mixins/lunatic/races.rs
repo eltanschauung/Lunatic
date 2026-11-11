@@ -135,7 +135,11 @@ impl Game<'_> {
         let potion = self.potions.effects.get("slow_falling").is_some();
         if let Some(p) = self.player.as_mut() {
             p.lunatic_character_body(size, fairy, potion, racial_glider);
-            p.health.food.set_capacity(hunger);
+            if self.remote.is_some() {
+                // Food packets already contain the authoritative amount; do not scale it again.
+                p.health.food.max_food=hunger;
+                p.health.food.food=p.health.food.food.min(hunger);
+            } else { p.health.food.set_capacity(hunger); }
             let has = p.attributes.key("minecraft:max_health").and_then(|key|
                 p.attributes.has_modifier(Some(key), "lunatic:character_health").ok()).unwrap_or(false);
             if p.__horizon_mixins_lunatic_fairy().character_health != health || has != (health != 20.0) {
