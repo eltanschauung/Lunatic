@@ -116,17 +116,17 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   click();until(shots,lambda ps:not ps,seconds=3);console('kill @e[type=minecraft:cow]')
   # Grounded retrieval earns the launch-based two-second cooldown.
   wait_ready();ctl(d,'look','0','65');started=time.monotonic();click()
-  until(shots,lambda ps:ps and ps[0].get('gourd_phase')=='Grounded',seconds=5)
+  until(shots,lambda ps:ps and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=5)
   click();until(shots,lambda ps:not ps,seconds=3)
   time.sleep(max(0,2.3-(time.monotonic()-started)));ctl(d,'look','0','0');click();until(shots,bool,seconds=2)
   evidence['grounded_retrieval_halves_cooldown']=True
   click();until(shots,lambda ps:not ps,seconds=3)
   # Doors must settle without repeated landing sounds.
   wait_ready();console('setblock 0 -60 4 minecraft:oak_door[facing=north,half=lower]');console('setblock 0 -59 4 minecraft:oak_door[facing=north,half=upper]')
-  ctl(d,'look','0','0');click();until(shots,lambda ps:ps and ps[0].get('gourd_phase')=='Grounded',seconds=8)
+  ctl(d,'look','0','0');click();until(shots,lambda ps:ps and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=8)
   land=ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)
   console('tick sprint 160');time.sleep(1)
-  assert shots() and shots()[0].get('gourd_phase')=='Grounded'
+  assert shots() and sum(v*v for v in shots()[0]['velocity'])<.0001
   assert ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)==land
   click();until(shots,lambda ps:not ps,seconds=3);console('fill 0 -60 4 0 -59 4 minecraft:air')
   evidence['door_settles_without_landing_spam']=True
