@@ -93,5 +93,13 @@
         "attenuation_distance": 64
       }
     ]
+  },
+  "entity.gourd.impact": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ]
   }
 }

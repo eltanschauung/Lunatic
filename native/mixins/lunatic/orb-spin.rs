@@ -5,6 +5,12 @@ fn hook(
     partial: f64,
     pose: &mut glam::Mat4,
 ) {
+    if horizon_client::projectiles::gourd_motion::ours(p) {
+        let (scale,_,position)=pose.to_scale_rotation_translation();
+        let speed=p.velocity.distance_squared(horizon_core::geometry::Vec3::ZERO).sqrt() as f32;
+        let angle=if speed>0.02{(p.age as f32+partial as f32)*0.45}else{0.0};
+        *pose=glam::Mat4::from_scale_rotation_translation(scale*1.3,glam::Quat::from_rotation_x(angle),position);return;
+    }
     if p.kind.id().starts_with("lunatic:lampad_star_") {
         // The star's broad faces are in XY. Replace the camera billboard with
         // a world-space XZ pose, retaining the renderer's position and scale.

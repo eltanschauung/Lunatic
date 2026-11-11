@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.9.5"
+version = "0.10.0"
 priority = 100
 
 [[injection]]
@@ -632,3 +632,38 @@ id="confirmed-join-identity"
 file="crates/horizon-client/src/game/character_sync.rs"
 name="lunatic_join_identity"
 source="join-identity.rs"
+
+[[module]]
+id="gourd"
+file="crates/horizon-client/src/game.rs"
+name="lunatic_gourd"
+source="gourd.rs"
+
+[[module]]
+id="gourd-physics"
+file="crates/horizon-client/src/projectiles.rs"
+name="gourd_physics"
+source="gourd-physics.rs"
+visibility="pub"
+
+[[module]]
+id="gourd-motion"
+file="crates/horizon-client/src/projectiles.rs"
+name="gourd_motion"
+source="gourd-motion.rs"
+visibility="pub"
+
+[[injection]]
+id="gourd-rope"
+kind="HEAD"
+target="horizon_client::game::native_visuals::Game<'_>::native_frame_visuals"
+helper="gourd-lines.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="alpha",ty="f64",value="alpha"},{name="lines",ty="&mut Vec<gizmos::Line>",value="&mut *lines"}]
+
+[[injection]]
+id="gourd-model-property"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::item_draw::<Env<'_,'_> as ItemEnv>::item_model_property"
+helper="gourd-property.rs"
+bindings=[{name="env",ty="&Env<'_, '_>",value="&*self"},{name="property",ty="&str",value="property"}]

@@ -1,6 +1,38 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lunatic:item/ibuki_gourd"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": "gui",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lunatic:item/ibuki_gourd"
+        }
+      },
+      {
+        "when": [
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "thirdperson_righthand",
+          "thirdperson_lefthand"
+        ],
+        "model": {
+          "type": "minecraft:condition",
+          "property": "lunatic:gourd_deployed",
+          "on_true": {
+            "type": "minecraft:empty"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "lunatic:item/ibuki_gourd_3d"
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "lunatic:item/ibuki_gourd_3d"
+    }
   }
 }

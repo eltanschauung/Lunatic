@@ -21,7 +21,7 @@ fn crow_glider(game: &crate::game::Game<'_>) -> core::ops::ControlFlow<bool> {
         let bounds = player.bounds();
         let feet = bounds.min(Axis::Y);
         let floor = feet - MIN_CLEARANCE;
-        let mut scene = crate::game::SceneCollisions {
+        let mut scene = horizon_client::collisions::SceneCollisions {
             world: &game.world,
             binding: game.collision,
             subject: None,

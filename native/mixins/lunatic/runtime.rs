@@ -125,6 +125,7 @@ impl Game<'_> {
         }
     }
     pub(super) fn lunatic_input(&mut self) -> bool {
+        if self.gourd_input(){return true;}
         if self.lampad_input(false) { return true; }
         if !self.native_on("lunatic")
             || self.spectator()
@@ -147,6 +148,7 @@ impl Game<'_> {
         has_ammo
     }
     pub(super) fn lunatic_continue(&self) -> bool {
+        if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()==super::lunatic_gourd::ITEM){return true;}
         if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()=="lunatic:lampad_torch") {return true;}
         self.native_on("lunatic")
             && self.held().is_some_and(|s| s.item.as_ref() == ROD)
@@ -184,6 +186,7 @@ impl Game<'_> {
         self.lunatic_notice_text(ammo_notice(selected));
     }
     pub(super) fn lunatic_message(&mut self, player: u128, channel: &str, data: &[u8]) {
+        self.gourd_request(player,channel,data);
         if channel == super::lunatic_parasol::REQUEST {
             if data.len() == 1 && data[0] <= 1 && self.native_on("lunatic") && self.remote.is_none() {
                 self.lunatic_as_player(player, |game| game.lunatic_parasol_toggle(data[0]));
@@ -466,6 +469,7 @@ impl Game<'_> {
         if !self.native_on("lunatic") {
             return;
         }
+        self.gourd_pre();
         self.lampad_pre();
         let world = self.lunatic_world_key();
         let dim = self.dim.id();
@@ -496,6 +500,7 @@ impl Game<'_> {
         );
     }
     pub(super) fn lunatic_post(&mut self) {
+        self.gourd_post();
         self.lampad_post();
         for event in motion::finish() {
             self.lunatic_queue_burst(&event);
@@ -539,6 +544,7 @@ impl Game<'_> {
         }
     }
     pub(super) fn lunatic_stop(&mut self) {
+        self.gourd_stop();
         self.lampad_stop();
         self.lunatic_clear_bursts();
         STATE.with_borrow_mut(|s| *s = State::default());

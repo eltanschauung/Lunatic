@@ -3,6 +3,12 @@ fn hook(
     p: &mut horizon_client::projectiles::Projectile,
     world: &dyn horizon_client::projectiles::ProjectileWorld,
 ) -> std::ops::ControlFlow<()> {
+    if horizon_client::projectiles::gourd_motion::ours(p) {
+        p.set_old_pos_and_rot();p.age=p.age.saturating_add(1);
+        // Server snapshots own all phases and positions; extrapolate at most one tick.
+        super::lunatic_gourd::predict(p,world);
+        return std::ops::ControlFlow::Break(());
+    }
     if !p.kind.id().starts_with("lunatic:lampad_star_") {
         return std::ops::ControlFlow::Continue(());
     }
