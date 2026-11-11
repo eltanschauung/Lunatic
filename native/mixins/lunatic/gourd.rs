@@ -36,6 +36,7 @@ struct State {
     attacks: Vec<Attack>,
     ready: HashMap<(u64, u128), i64>,
     views: Vec<Tether>,
+    reeling: std::collections::HashSet<(u64, u128)>,
 }
 thread_local! {static STATE:RefCell<State>=RefCell::new(State::default());}
 // Client prediction is bounded even between server snapshots.
@@ -90,7 +91,7 @@ impl Game<'_> {
     fn gourd_anchor(&self) -> Option<[f64; 3]> {
         let _p = self.player.as_ref()?;
         let (eye, dir) = self.aim()?;
-        Some([eye[0] + dir[2] * 0.32, eye[1] - 0.3, eye[2] - dir[0] * 0.32])
+        Some(f::right_hand(eye, dir))
     }
     fn gourd_click(&mut self, dir: [f64; 3]) {
         if self.spectator() || self.held().is_none_or(|s| s.item.as_ref() != ITEM) {
@@ -107,12 +108,19 @@ impl Game<'_> {
             }
         });
         if deployed {
+            let key = (key.0, key.1);
+            let first = STATE.with_borrow_mut(|s| s.reeling.insert(key));
+            if first {
+                if let Some(anchor) = self.gourd_anchor() {
+                    self.lunatic_sound("item.gourd.reel", motion::vec(anchor), 0.8);
+                }
+            }
             return;
         }
         if STATE.with_borrow(|s| s.ready.get(&key).is_some_and(|t| now < *t)) {
             return;
         }
-        let Some(anchor) = self.gourd_anchor() else {
+        let Some((eye, _)) = self.aim() else {
             return;
         };
         let Some(t) = thrown_type(motion::ID) else {
@@ -120,11 +128,15 @@ impl Game<'_> {
         };
         let mut p = Projectile::new(
             ProjectileKind::Thrown(t),
-            motion::vec(f::add(anchor, f::mul(dir, 0.45))),
+            motion::vec(f::add(eye, f::mul(dir, 0.9))),
             Some(Who::Player),
         );
         p.guest = self.lan_acting;
-        p.velocity = motion::vec(f::mul(dir, 1.15));
+        p.velocity = motion::vec(f::mul(dir, 1.65));
+        p.yaw = (-dir[0]).atan2(dir[2]).to_degrees() as f32;
+        p.pitch = (-dir[1]).asin().to_degrees() as f32;
+        p.previous_yaw = p.yaw;
+        p.previous_pitch = p.pitch;
         p.no_gravity = true;
         // add_projectile assigns the real tracking id synchronously.
         self.add_projectile(p);
@@ -147,8 +159,10 @@ impl Game<'_> {
         };
         STATE.with_borrow_mut(|s| {
             s.ready.insert(key, now + 80);
+            s.reeling.remove(&key);
             s.attacks.push(attack);
         });
+        self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.8);
     }
     pub(super) fn gourd_pre(&mut self) {
         if self.remote.is_some() {
@@ -191,6 +205,9 @@ impl Game<'_> {
                 if !a.exceptional {
                     a.exceptional = true;
                     a.retract = true;
+                    if let Some(at) = anchor {
+                        self.lunatic_sound("item.gourd.reel", motion::vec(at), 0.8);
+                    }
                     STATE.with_borrow_mut(|s| {
                         s.ready.insert((world, a.owner), now + 160);
                     });
@@ -220,6 +237,16 @@ impl Game<'_> {
         if self.remote.is_some() {
             return;
         }
+        for cue in motion::cues() {
+            self.lunatic_sound(
+                match cue.kind {
+                    motion::Cue::Elastic => "item.gourd.elastic",
+                    motion::Cue::Land => "item.gourd.land",
+                },
+                cue.at,
+                0.8,
+            );
+        }
         for e in motion::finish() {
             let horizon_client::projectiles::Hit::Entity { who, at } = e.hit else {
                 continue;
@@ -230,7 +257,7 @@ impl Game<'_> {
             } else {
                 None
             };
-            self.lampad_direct(&e.projectile, who, 6.0, at);
+            self.lampad_direct(&e.projectile, who, f::DAMAGE, at);
             if let (Who::Mob(id), Some(before)) = (who, before) {
                 if self
                     .mobs
@@ -321,15 +348,14 @@ impl Game<'_> {
                 else {
                     continue;
                 };
-                let at = motion::arr(p.previous.lerp(p.position, alpha));
+                let at = f::nozzle(
+                    motion::arr(p.previous.lerp(p.position, alpha)),
+                    f::forward(p.yaw, p.pitch),
+                );
                 let mut hand = v.anchor;
                 if v.owner == self.gourd_view_owner() {
                     if let Some((eye, dir)) = self.aim() {
-                        hand = [
-                            eye[0] + dir[0] * 0.45 + dir[2] * 0.32,
-                            eye[1] - 0.32 + dir[1] * 0.45,
-                            eye[2] + dir[2] * 0.45 - dir[0] * 0.32,
-                        ];
+                        hand = f::add(f::right_hand(eye, dir), f::mul(dir, 0.45));
                     }
                 }
                 let delta = f::sub(at, hand);
@@ -337,7 +363,7 @@ impl Game<'_> {
                 let slack = if v.phase == "Retracting" {
                     0.1
                 } else {
-                    ((8.0 - distance).max(0.0) * 0.18).min(1.2)
+                    ((f::LENGTH - f::NOZZLE - distance).max(0.0) * 0.12).min(1.8)
                 };
                 let point = |t: f64| {
                     let mut x = f::add(hand, f::mul(delta, t));

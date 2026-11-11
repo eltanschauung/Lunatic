@@ -55,30 +55,43 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   observer=home('observer');watcher,_=connect(observer,'hakurei_reimu','observer')
   watcher_name=re.findall(r'\]: (\S+)\[/127\.0\.0\.1:',(a.output/'server.log').read_text())[-1]
   console(f'gamemode spectator {watcher_name}');console(f'tp {watcher_name} 6.5 -60 0.5 40 10');time.sleep(.4)
-  console(f'gamemode survival {name}');console(f'clear {name}');console(f'tp {name} 0.5 -60 0.5 0 -20');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
+  console(f'gamemode survival {name}');console(f'clear {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
   def shots():return [p for p in ctl(d,'status')['projectiles'] if p['kind'].startswith('Thrown')]
   def click():ctl(d,'mouse','left','click')
   def equip(item):console(f'item replace entity {name} weapon.mainhand with {item}');time.sleep(.3)
   def wait_ready():console('tick sprint 180');time.sleep(1)
   ctl(d,'screenshot',str(a.output/'held.png'))
   # Observe outbound travel and a damped reversal before the first terrain impact.
-  click();until(shots,bool,seconds=4);samples=[]
-  end=time.monotonic()+1.8
+  heard_before=ctl(d,'status')['heard'];click();until(shots,bool,seconds=4);samples=[];flight_saved=False
+  end=time.monotonic()+2.3
   while time.monotonic()<end:
    v=shots()
-   if v:samples.append(v[0])
+   if v:
+    samples.append(v[0])
+    if not flight_saved and 7<v[0]['position'][2]<14:
+     ctl(observer,'look','36','0');ctl(observer,'screenshot',str(a.output/'flight-side.png'));flight_saved=True
    time.sleep(.025)
   assert samples and any(p['velocity'][2]>0.05 for p in samples),samples
-  assert any(p['velocity'][2]<-0.01 for p in samples),samples
-  assert all(sum((p['position'][i]-[.82,-58.7,.5][i])**2 for i in range(3))**.5<=8.8 for p in samples),samples
-  evidence['momentum_elastic_reversal_and_bounded_range']=True
+  assert any(p['velocity'][2]<-0.6 for p in samples),samples
+  assert all(sum((p['position'][i]-[.12,-58.68,.5][i])**2 for i in range(3))**.5<=17.8 for p in samples),samples
+  assert max(p['position'][2] for p in samples)>16.0,samples
+  early=[p for p in samples if p['position'][2]<12 and p['velocity'][2]>1]
+  assert early and max(p['position'][1] for p in early)-min(p['position'][1] for p in early)<.3
+  assert all(abs(p['position'][0]-.5)<.1 for p in early)
+  evidence['straight_crosshair_flight_16_block_range_and_stronger_recoil']=True
   resting=until(shots,lambda ps:ps and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=6)[0]
-  ctl(d,'look','0','20');time.sleep(.2);ctl(d,'screenshot',str(a.output/'grounded-rope.png'));ctl(d,'look','0','-20')
+  ctl(d,'look','0','10');time.sleep(.2);ctl(d,'screenshot',str(a.output/'grounded-rope.png'));ctl(d,'look','0','0')
+  for cue in ['fire','elastic','land']:
+   until(lambda:ctl(d,'status')['heard'].get('lunatic:item.gourd.'+cue,0),lambda n:n>heard_before.get('lunatic:item.gourd.'+cue,0),seconds=3)
+  land_count=ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)
   console('tick sprint 240');time.sleep(1)
+  assert ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)==land_count
+  evidence['fire_elastic_and_single_landing_sounds']=True
   assert shots() and shots()[0]['id']==resting['id'];evidence['landing_never_auto_retrieves']=True
   assert any(p['id']==resting['id'] for p in ctl(observer,'status')['projectiles'])
-  ctl(observer,'look','40','10');ctl(observer,'screenshot',str(a.output/'observer-rope.png'));evidence['second_client_tracks_same_deployed_projectile']=True
+  ctl(observer,'look','20','8');ctl(observer,'screenshot',str(a.output/'observer-rope.png'));evidence['second_client_tracks_same_deployed_projectile']=True
   click();until(shots,lambda ps:not ps,seconds=4);assert ctl(d,'inventory')['counts'].get('lunatic:ibuki_gourd')==1;evidence['manual_animated_retrieval_retains_item']=True
+  until(lambda:ctl(d,'status')['heard'].get('lunatic:item.gourd.reel',0),lambda n:n>0,seconds=3);evidence['reeling_sound']=True
   # Early retrieval does not restart/double the four-second launch cooldown.
   wait_ready();click();until(shots,bool,seconds=3);click();until(shots,lambda ps:not ps,seconds=3)
   click();time.sleep(.3);assert not shots();evidence['four_second_attack_cooldown_blocks_early_rethrow']=True
@@ -89,17 +102,18 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   until(shots,bool,seconds=3);time.sleep(1);assert shots() and shots()[0]['position'][2]<4.1
   click();until(shots,lambda ps:not ps,seconds=3);console('fill -2 -60 4 2 -55 4 minecraft:air');evidence['wall_collision_and_manual_return']=True
   # One mob hit per deployment, modern explosion sound, and the larger punch burst.
-  wait_ready();console('summon minecraft:pig 0.5 -60 4 {NoAI:1b,PersistenceRequired:1b}');time.sleep(.4)
-  def pig():return next((m for m in ctl(d,'mobs','32')['near'] if m['kind']=='minecraft:pig'),None)
-  ctl(d,'look','0','7');before=ctl(d,'status');click()
-  hurt=until(pig,lambda m:m is not None and m['health']<10,seconds=4);assert hurt['health']<=4.01,hurt
+  wait_ready();console('summon minecraft:cow 1.35 -60 4 {NoAI:1b,PersistenceRequired:1b,Health:40f,attributes:[{id:"minecraft:max_health",base:40.0}]}');time.sleep(.4)
+  def pig():return next((m for m in ctl(d,'mobs','32')['near'] if m['kind']=='minecraft:cow'),None)
+  until(pig,lambda m:m is not None and m['health']==40,seconds=5)
+  ctl(d,'look','0','0');before=ctl(d,'status');click()
+  hurt=until(pig,lambda m:m is not None and m['health']<40,seconds=4);assert 21.99<=hurt['health']<=22.01,hurt
   assert shots();health=hurt['health'];until(pig,lambda m:m is not None and m['pos'][2]>4.05,seconds=3);time.sleep(.5);assert pig()['health']==health
   after=ctl(d,'status');assert after['heard'].get('lunatic:entity.gourd.impact',0)>before['heard'].get('lunatic:entity.gourd.impact',0)
   assert after['particles'].get('minecraft:explosion',after['particles'].get('explosion',0))>before['particles'].get('minecraft:explosion',before['particles'].get('explosion',0))+7
-  evidence['single_hit_damage_sound_particles_and_persistent_deployment']=True
-  click();until(shots,lambda ps:not ps,seconds=3);console('kill @e[type=minecraft:pig]')
+  evidence['18_damage_enlarged_grazing_hitbox_knockback_particles_and_persistence']=True
+  click();until(shots,lambda ps:not ps,seconds=3);console('kill @e[type=minecraft:cow]')
   # Switching items retrieves automatically and imposes the exceptional eight seconds.
-  wait_ready();ctl(d,'look','0','-20');click();until(shots,bool,seconds=3);equip('minecraft:stick');until(shots,lambda ps:not ps,seconds=3)
+  wait_ready();ctl(d,'look','0','0');click();until(shots,bool,seconds=3);equip('minecraft:stick');until(shots,lambda ps:not ps,seconds=3)
   equip('lunatic:ibuki_gourd');click();time.sleep(.3);assert not shots();time.sleep(4);click();time.sleep(.3);assert not shots()
   time.sleep(4);click();until(shots,bool,seconds=3);evidence['switch_cleanup_and_doubled_cooldown']=True
   console('kill @e[type=lunatic:gourd_flail]');until(shots,lambda ps:not ps,seconds=4)

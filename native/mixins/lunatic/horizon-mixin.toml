@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.10.0"
+version = "0.11.0"
 priority = 100
 
 [[injection]]
@@ -667,3 +667,10 @@ cancellable=true
 target="horizon_client::game::item_draw::<Env<'_,'_> as ItemEnv>::item_model_property"
 helper="gourd-property.rs"
 bindings=[{name="env",ty="&Env<'_, '_>",value="&*self"},{name="property",ty="&str",value="property"}]
+
+[[injection]]
+id="gourd-capsule-bounds"
+kind="RETURN"
+target="horizon_client::projectiles::Projectile::bounds"
+helper="gourd-bounds.rs"
+bindings=[{name="value",ty="Aabb",value="$value"},{name="p",ty="&Projectile",value="&*self"}]

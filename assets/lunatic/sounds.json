@@ -101,5 +101,37 @@
         "type": "event"
       }
     ]
+  },
+  "item.gourd.fire": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.fishing_bobber.throw",
+        "type": "event"
+      }
+    ]
+  },
+  "item.gourd.reel": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.fishing_bobber.retrieve",
+        "type": "event"
+      }
+    ]
+  },
+  "item.gourd.land": {
+    "sounds": [
+      {
+        "name": "minecraft:block.wood.hit",
+        "type": "event"
+      }
+    ]
+  },
+  "item.gourd.elastic": {
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.guitar",
+        "type": "event"
+      }
+    ]
   }
 }

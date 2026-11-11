@@ -23,11 +23,21 @@ pub struct Event {
     pub projectile: Projectile,
     pub hit: Hit,
 }
+#[derive(Clone, Copy)]
+pub enum Cue {
+    Elastic,
+    Land,
+}
+pub struct CueEvent {
+    pub at: Vec3,
+    pub kind: Cue,
+}
 #[derive(Default)]
 struct State {
     level: u64,
     flights: HashMap<(u64, u32), Flight>,
     events: Vec<Event>,
+    cues: Vec<CueEvent>,
 }
 thread_local! {static STATE:RefCell<State>=RefCell::new(State::default());}
 pub fn begin(level: u64, live: &[u32]) {
@@ -57,6 +67,9 @@ pub fn view(id: u32) -> Option<(u128, [f64; 3], f::Phase)> {
             .get(&(s.level, id))
             .map(|q| (q.owner, q.anchor, q.body.phase))
     })
+}
+pub fn cues() -> Vec<CueEvent> {
+    STATE.with_borrow_mut(|s| std::mem::take(&mut s.cues))
 }
 pub fn finish() -> Vec<Event> {
     STATE.with_borrow_mut(|s| std::mem::take(&mut s.events))
@@ -89,34 +102,46 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
         }
         // A removed supporting block allows a grounded gourd to fall again.
         if q.body.phase == f::Phase::Grounded
-            && w.clip(
-                p.position,
-                p.position.add_vector(Vec3::new(0.0, -0.25, 0.0)),
-            )
-            .is_none()
+            && w.clip(p.position, p.position.add_vector(Vec3::new(0.0, -0.8, 0.0)))
+                .is_none()
         {
             q.body.phase = f::Phase::Falling;
         }
         let old = p.position;
+        let phase = q.body.phase;
         if q.body.step(q.anchor) {
             s.flights.remove(&key);
             return (false, Hit::None);
         }
+        if phase == f::Phase::Thrown && q.body.phase == f::Phase::Recoiling {
+            s.cues.push(CueEvent {
+                at: vec(q.body.at),
+                kind: Cue::Elastic,
+            });
+        }
         let next = vec(q.body.at);
+        let axis = vec(f::forward(p.yaw, p.pitch));
         if q.body.phase != f::Phase::Retracting {
             // Sweep the gourd's radius against actual block collision shapes.
             let mut end = next;
             let mut block = None;
             let mut best = old.distance_squared(next);
-            for offset in [
+            let radial = [
                 Vec3::ZERO,
-                Vec3::new(0.18, 0.0, 0.0),
-                Vec3::new(-0.18, 0.0, 0.0),
-                Vec3::new(0.0, -0.18, 0.0),
-                Vec3::new(0.0, 0.18, 0.0),
-                Vec3::new(0.0, 0.0, 0.18),
-                Vec3::new(0.0, 0.0, -0.18),
-            ] {
+                Vec3::new(f::RADIUS, 0.0, 0.0),
+                Vec3::new(-f::RADIUS, 0.0, 0.0),
+                Vec3::new(0.0, -f::RADIUS, 0.0),
+                Vec3::new(0.0, f::RADIUS, 0.0),
+                Vec3::new(0.0, 0.0, f::RADIUS),
+                Vec3::new(0.0, 0.0, -f::RADIUS),
+            ];
+            for offset in [-f::HALF_SEGMENT, 0.0, f::HALF_SEGMENT]
+                .into_iter()
+                .flat_map(|n| {
+                    let along = Vec3::new(axis.x * n, axis.y * n, axis.z * n);
+                    radial.into_iter().map(move |r| r.add_vector(along))
+                })
+            {
                 if let Some((at, pos, face)) =
                     w.clip(old.add_vector(offset), next.add_vector(offset))
                 {
@@ -139,11 +164,18 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
                     if Some(*who) == p.owner {
                         continue;
                     }
-                    if let Some(at) = bounds.inflate(Vec3::new(0.18, 0.18, 0.18)).clip(old, end) {
-                        let d = old.distance_squared(at);
-                        if d < nearest {
-                            nearest = d;
-                            victim = Some((*who, at));
+                    for along in [-f::HALF_SEGMENT, 0.0, f::HALF_SEGMENT] {
+                        let offset = Vec3::new(axis.x * along, axis.y * along, axis.z * along);
+                        if let Some(at) = bounds
+                            .inflate(Vec3::new(f::RADIUS, f::RADIUS, f::RADIUS))
+                            .clip(old.add_vector(offset), end.add_vector(offset))
+                        {
+                            let center = at.add_vector(Vec3::new(-offset.x, -offset.y, -offset.z));
+                            let d = old.distance_squared(center);
+                            if d < nearest {
+                                nearest = d;
+                                victim = Some((*who, center));
+                            }
                         }
                     }
                 }
@@ -160,6 +192,12 @@ pub fn tick(p: &mut Projectile, w: &dyn ProjectileWorld) -> Option<(bool, Hit)> 
                 }
             }
             if let Some((_, face)) = block {
+                if face[1] > 0 && q.body.phase != f::Phase::Grounded {
+                    s.cues.push(CueEvent {
+                        at: end,
+                        kind: Cue::Land,
+                    });
+                }
                 q.body.phase = if face[1] > 0 {
                     f::Phase::Grounded
                 } else {
