@@ -37,7 +37,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kirisame_marisa",
@@ -53,7 +54,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kazami_yuuka",
@@ -69,7 +71,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:alice_margatroid",
@@ -77,7 +80,8 @@
       "race": "magician,youkai,puppeteer,former_human",
       "color": "gold",
       "size": 0.9,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:daiyousei",
@@ -118,7 +122,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:cirno",
@@ -159,7 +164,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:hong_meiling",
@@ -167,7 +173,8 @@
       "race": "youkai",
       "color": "dark_green",
       "size": 0.95,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:koakuma",
@@ -175,7 +182,8 @@
       "race": "youkai,devil,magician",
       "color": "red",
       "size": 0.85,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:patchouli_knowledge",
@@ -183,7 +191,8 @@
       "race": "youkai,magician",
       "color": "light_purple",
       "size": 0.9,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:izayoi_sakuya",
@@ -191,7 +200,8 @@
       "race": "human",
       "color": "gray",
       "size": 0.95,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:remilia_scarlet",
@@ -199,7 +209,8 @@
       "race": "vampire,youkai,remilia",
       "color": "dark_red",
       "size": 0.8,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:flandre_scarlet",
@@ -207,7 +218,8 @@
       "race": "vampire,youkai,flandre",
       "color": "red",
       "size": 0.8,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:letty_whiterock",
@@ -215,7 +227,8 @@
       "race": "youkai,yuki_onna",
       "color": "light_blue",
       "size": 0.92,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:chen",
@@ -223,7 +236,8 @@
       "race": "youkai,nekomata,shikigami",
       "color": "green",
       "size": 0.75,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:konpaku_youmu",
@@ -231,7 +245,8 @@
       "race": "half_phantom",
       "color": "green",
       "size": 0.85,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:saigyouji_yuyuko",
@@ -239,7 +254,8 @@
       "race": "ghost,yuyuko",
       "color": "light_purple",
       "size": 0.95,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:yakumo_ran",
@@ -247,7 +263,8 @@
       "race": "shikigami,youkai,",
       "color": "yellow",
       "size": 1.0,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:yakumo_yukari",
@@ -255,7 +272,8 @@
       "race": "youkai,yukari",
       "color": "#800080",
       "size": 1.0,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:wriggle_nightbug",
@@ -263,7 +281,8 @@
       "race": "youkai,nightbug",
       "color": "dark_green",
       "size": 0.75,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:inaba_tewi",
@@ -279,7 +298,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:reisen_udongein_inaba",
@@ -295,7 +315,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:houraisan_kaguya",
@@ -303,7 +324,8 @@
       "race": "hourai_immortal,kaguya",
       "color": "dark_purple",
       "size": 0.9,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:fujiwara_no_mokou",
@@ -311,7 +333,8 @@
       "race": "hourai_immortal,mokou",
       "color": "red",
       "size": 0.93,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:ibuki_suika",
@@ -327,6 +350,10 @@
             "lunatic:soulbound": 1
           }
         }
+      ],
+      "starting_spells": [
+        "lunatic:gigantification",
+        "lunatic:miniaturization"
       ]
     },
     {
@@ -355,7 +382,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kawashiro_nitori",
@@ -363,7 +391,8 @@
       "race": "youkai,kappa",
       "color": "aqua",
       "size": 0.75,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:inubashiri_momiji",
@@ -371,7 +400,8 @@
       "race": "youkai,tengu,wolf_tengu",
       "color": "white",
       "size": 0.96,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kochiya_sanae",
@@ -386,7 +416,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:nagae_iku",
@@ -394,7 +425,8 @@
       "race": "youkai",
       "color": "dark_purple",
       "size": 0.95,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:hinanawi_tenshi",
@@ -402,7 +434,8 @@
       "race": "celestial",
       "color": "blue",
       "size": 0.85,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:komeiji_satori",
@@ -410,7 +443,8 @@
       "race": "satori,youkai",
       "color": "light_purple",
       "size": 0.82,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:komeiji_koishi",
@@ -418,7 +452,8 @@
       "race": "satori,youkai,koishi",
       "color": "green",
       "size": 0.82,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:miyako_yoshika",
@@ -426,7 +461,8 @@
       "race": "youkai,jiangshi",
       "color": "dark_blue",
       "size": 0.85,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kaku_seiga",
@@ -442,7 +478,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:ibaraki_kasen",
@@ -450,7 +487,8 @@
       "race": "youkai,oni,hermit,kasen",
       "color": "#ffc0cb",
       "size": 0.94,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:houjuu_nue",
@@ -458,7 +496,8 @@
       "race": "youkai,nue",
       "color": "dark_red",
       "size": 0.9,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:minamitsu_murasa",
@@ -466,7 +505,8 @@
       "race": "ship_phantom,youkai",
       "color": "dark_blue",
       "size": 0.9,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:yorigami_shion",
@@ -474,7 +514,8 @@
       "race": "youkai,poverty_god",
       "color": "dark_blue",
       "size": 0.85,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:yorigami_joon",
@@ -482,7 +523,8 @@
       "race": "youkai,pestilence_god",
       "color": "dark_blue",
       "size": 0.88,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:clownpiece",
@@ -504,7 +546,8 @@
             "lunatic:soulbound": 1
           }
         }
-      ]
+      ],
+      "starting_spells": []
     },
     {
       "id": "lunatic:junko",
@@ -512,7 +555,8 @@
       "race": "divine_spirit",
       "color": "#ffa500",
       "size": 1.0,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     },
     {
       "id": "lunatic:kudamaki_tsukasa",
@@ -520,7 +564,8 @@
       "race": "tube_fox,youkai,",
       "color": "#008080",
       "size": 0.88,
-      "starting_items": []
+      "starting_items": [],
+      "starting_spells": []
     }
   ]
 }

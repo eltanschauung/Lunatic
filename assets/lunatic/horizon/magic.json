@@ -1,0 +1,43 @@
+{
+  "page": {
+    "title": "Magic",
+    "icon": "lunatic:gui/sprites/magic/magic",
+    "color": 11827430
+  },
+  "spells": [
+    {
+      "id": "lunatic:gigantification",
+      "name": "Gigantification",
+      "icon": "lunatic:gui/sprites/magic/oni_grimoire",
+      "color": 16755200,
+      "kind": "giant",
+      "hunger": 6,
+      "scale": 8.0,
+      "transition_ticks": 80,
+      "duration_ticks": 400,
+      "ending_ticks": 80,
+      "effects": [
+        "lunatic:growing",
+        "lunatic:giant",
+        "lunatic:shrinking"
+      ]
+    },
+    {
+      "id": "lunatic:miniaturization",
+      "name": "Miniaturization",
+      "icon": "lunatic:gui/sprites/magic/oni_grimoire",
+      "color": 8900331,
+      "kind": "tiny",
+      "hunger": 4,
+      "scale": 0.125,
+      "transition_ticks": 60,
+      "duration_ticks": 600,
+      "ending_ticks": 60,
+      "effects": [
+        "lunatic:shrinking",
+        "lunatic:tiny",
+        "lunatic:growing"
+      ]
+    }
+  ]
+}

@@ -24,5 +24,9 @@
   "block.lunatic.veiled_lady": "\u00a7oVeiled Lady\u00a7r",
   "enchantment.lunatic.soulbound": "Soulbound",
   "block.lunatic.psilocybe_cubensis": "\u00a7dPsilocybe Cubensis\u00a7r",
-  "block.lunatic.bushy_bamboo": "Bushy Bamboo"
+  "block.lunatic.bushy_bamboo": "Bushy Bamboo",
+  "effect.lunatic.growing": "Growing",
+  "effect.lunatic.giant": "Giant",
+  "effect.lunatic.shrinking": "Shrinking",
+  "effect.lunatic.tiny": "Tiny"
 }
