@@ -1,0 +1,11 @@
+{
+  "template": "minecraft:paper",
+  "components": {
+    "minecraft:item_name": {
+      "translate": "item.lunatic.koishi_phone",
+      "color": "green",
+      "italic": false
+    }
+  },
+  "max_stack_size": 1
+}

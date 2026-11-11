@@ -453,7 +453,14 @@
       "race": "satori,youkai,koishi",
       "color": "green",
       "size": 0.82,
-      "starting_items": [],
+      "starting_items": [
+        {
+          "item": "lunatic:koishi_phone",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
       "starting_spells": []
     },
     {
