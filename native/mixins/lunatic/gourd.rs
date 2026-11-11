@@ -362,7 +362,7 @@ impl Game<'_> {
         STATE.with_borrow(|s| s.views.iter().any(|v| v.owner == self.gourd_view_owner()))
     }
     pub(super) fn gourd_render_hand(&self, mob: &horizon_client::mobs::Mob, camera: glam::DVec3, alpha: f64) {
-        if !self.native_on("lunatic") || mob.kind.id.as_ref() != "minecraft:player" { return; }
+        if !self.native_on("lunatic") || mob.kind.id.as_str() != "minecraft:player" { return; }
         if STATE.with_borrow(|s| s.views.is_empty()) { return; }
         let owner = if self.player_model.as_ref().is_some_and(|m| m.id == mob.id) {
             Some(self.gourd_view_owner())
