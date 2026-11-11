@@ -105,16 +105,14 @@
   "item.gourd.fire": {
     "sounds": [
       {
-        "name": "minecraft:entity.fishing_bobber.throw",
-        "type": "event"
+        "name": "lunatic:item/lampad_torch/shoot"
       }
     ]
   },
   "item.gourd.reel": {
     "sounds": [
       {
-        "name": "minecraft:entity.fishing_bobber.retrieve",
-        "type": "event"
+        "name": "lunatic:item/purification_rod/no_target"
       }
     ]
   },
