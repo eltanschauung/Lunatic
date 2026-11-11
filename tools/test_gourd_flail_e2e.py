@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
  def player(d):return ctl(d,'state')['player']
  def connect(d,char,label):
   (d/'character.json').write_text(json.dumps({'character':'lunatic:'+char}))
-  child=launch(d,['--server',f'127.0.0.1:{port}','--name','FlailProof','--control','--control-socket',str(d/'c.sock'),'--width','640','--height','480'],label)
+  child=launch(d,['--offscreen','--server',f'127.0.0.1:{port}','--name','FlailProof','--control','--control-socket',str(d/'c.sock'),'--width','640','--height','480'],label)
   status=until(lambda:ctl(d,'status'),lambda s:(s.get('server') or {}).get('loaded',False),seconds=90)
   return child,'@a'
  def console(text):server.stdin.write((text+'\n').encode());server.stdin.flush()

@@ -34,7 +34,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
  def player(d):return ctl(d,'state')['player']
  def connect(d,char,label):
   (d/'character.json').write_text(json.dumps({'character':'lunatic:'+char}))
-  child=launch(d,['--server',f'127.0.0.1:{port}','--name','GourdProof','--control','--control-socket',str(d/'c.sock'),'--width','640','--height','480'],label)
+  child=launch(d,['--offscreen','--server',f'127.0.0.1:{port}','--name','GourdProof','--control','--control-socket',str(d/'c.sock'),'--width','640','--height','480'],label)
   status=until(lambda:ctl(d,'status'),lambda s:(s.get('server') or {}).get('loaded',False),seconds=90)
   return child,'@a'
  def console(text):server.stdin.write((text+'\n').encode());server.stdin.flush()
@@ -50,8 +50,12 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   console('gamerule spawn_mobs false');console('gamerule spawn_monsters false')
   for character,is_oni in [('ibuki_suika',True),('hakurei_reimu',False),('ibaraki_kasen',True)]:
    d=home(character);client,name=connect(d,character,character)
+   time.sleep(2) # Initial character/kit synchronization must finish before replacing the held stack.
    console(f'gamemode survival {name}');console(f'tp {name} 0.5 -60 0.5 0 0');console(f'clear {name}');console(f'item replace entity {name} weapon.mainhand with lunatic:ibuki_gourd');time.sleep(.5)
+   (a.output/(character+'-before.json')).write_text(json.dumps(ctl(d,'status')))
    ctl(d,'mouse','right','down')
+   time.sleep(.3)
+   (a.output/(character+'-using.json')).write_text(json.dumps(ctl(d,'status')))
    effect='lunatic:oni' if is_oni else 'lunatic:drunk'
    value=until(lambda:next((e for e in player(d)['effects'] if e['id']==effect),None),lambda e:e is not None,seconds=6)
    ctl(d,'mouse','right','up')
