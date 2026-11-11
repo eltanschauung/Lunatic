@@ -6,4 +6,4 @@ Upstream project: https://github.com/FemaleGenderMod/FemaleGenderMod
 License declared by the supplied jar: LGPL-3.0. The license text is included
 in Female-Gender-Mod-LGPL-3.0.txt. The rest of Lunatic retains its own license.
 Lunatic changes: Rust/Horizon integration, character-defined size mapping,
-fixed 10% motion settings, size threshold, slim-only rendering and preview.
+fixed 30% motion settings, size threshold, slim-only rendering and preview.

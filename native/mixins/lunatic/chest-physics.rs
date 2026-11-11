@@ -1,7 +1,7 @@
 // Chest motion adapted from Female Gender Mod 5.0.0 by pupnewfster.
 // SPDX-License-Identifier: LGPL-3.0-only
 // Original: com.wildfire.client.physics.BreastPhysics, provided mc26.3 jar.
-// Lunatic fixes bounce multiplier and floppiness to 10%, with no user config.
+// Lunatic fixes bounce multiplier and floppiness to 30%, with no user config.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Input {
     pub tick: u32,
@@ -65,7 +65,7 @@ impl Physics {
             let elapsed = input.tick - last.tick;
             let dy = ((input.position[1] - last.position[1]) / f64::from(elapsed)) as f32;
             let yaw = (input.yaw - last.yaw + 180.0).rem_euclid(360.0) - 180.0;
-            let intensity = size * 3.0 * 0.3; // round(0.10 * 3 * 100) / 100
+            let intensity = size * 3.0 * 0.9; // round(0.30 * 3 * 100) / 100
             if last.vertical_velocity <= 0.0 && input.vertical_velocity > 0.0
                 || last.vertical_velocity < 0.0 && input.vertical_velocity == 0.0
             {
@@ -100,13 +100,13 @@ impl Physics {
                 }
                 target[1] = target[1].clamp(-1.5, 2.5);
                 target[2] = target[2].clamp(-25.0, 25.0);
-                let bounce = 0.45 * (1.0 - 0.10) + 0.15;
+                let bounce = 0.45 * (1.0 - 0.30) + 0.15;
                 let delta = 2.25 - bounce;
                 for axis in 0..3 {
                     self.velocity[axis] +=
                         ((target[axis] - self.spring[axis]) * delta - self.velocity[axis]) * bounce;
                     self.spring[axis] +=
-                        self.velocity[axis] * 0.10 * if axis == 1 { 1.1625 } else { 1.0 };
+                        self.velocity[axis] * 0.30 * if axis == 1 { 1.1625 } else { 1.0 };
                 }
                 self.value = self.spring;
                 self.value[1] = self.value[1].clamp(-0.5, 1.5);
