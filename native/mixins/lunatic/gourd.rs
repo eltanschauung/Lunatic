@@ -93,7 +93,7 @@ impl Game<'_> {
     fn gourd_anchor(&self) -> Option<[f64; 3]> {
         let _p = self.player.as_ref()?;
         let (eye, dir) = self.aim()?;
-        Some(f::third_person_hand(eye, dir, self.player.as_ref()?.scale as f64))
+        Some(f::third_person_hand(eye, f::forward(self.yaw, 0.0), self.player.as_ref()?.scale as f64))
     }
     fn gourd_click(&mut self, dir: [f64; 3]) {
         if self.spectator() || self.held().is_none_or(|s| s.item.as_ref() != ITEM) {
