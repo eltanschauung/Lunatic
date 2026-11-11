@@ -51,6 +51,8 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   console('gamerule spawn_mobs false');console('gamerule spawn_monsters false')
   d=home('client');client,name=connect(d,'ibuki_suika','flail')
   until(lambda:ctl(d,'inventory')['counts'],lambda c:bool(c));time.sleep(.4)
+  assert player(d)['food']==30,player(d)
+  evidence['oni_hunger_capacity_30']=True
   name=re.findall(r'\]: (\S+)\[/127\.0\.0\.1:',(a.output/'server.log').read_text())[0]
   observer=home('observer');watcher,_=connect(observer,'hakurei_reimu','observer')
   watcher_name=re.findall(r'\]: (\S+)\[/127\.0\.0\.1:',(a.output/'server.log').read_text())[-1]
@@ -73,7 +75,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
    time.sleep(.025)
   assert samples and any(p['velocity'][2]>0.05 for p in samples),samples
   assert any(p['velocity'][2]<-0.6 for p in samples),samples
-  assert all(sum((p['position'][i]-[.12,-58.68,.5][i])**2 for i in range(3))**.5<=17.8 for p in samples),samples
+  assert all(sum((p['position'][i]-p.get('gourd_anchor',[.1875,-59.15,.85])[i])**2 for i in range(3))**.5<=17.8 for p in samples),samples
   assert max(p['position'][2] for p in samples)>16.0,samples
   early=[p for p in samples if p['position'][2]<12 and p['velocity'][2]>1]
   assert early and max(p['position'][1] for p in early)-min(p['position'][1] for p in early)<.3
@@ -112,10 +114,27 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   assert after['particles'].get('minecraft:explosion',after['particles'].get('explosion',0))>before['particles'].get('minecraft:explosion',before['particles'].get('explosion',0))+7
   evidence['18_damage_enlarged_grazing_hitbox_knockback_particles_and_persistence']=True
   click();until(shots,lambda ps:not ps,seconds=3);console('kill @e[type=minecraft:cow]')
-  # Switching items retrieves automatically and imposes the exceptional eight seconds.
-  wait_ready();ctl(d,'look','0','0');click();until(shots,bool,seconds=3);equip('minecraft:stick');until(shots,lambda ps:not ps,seconds=3)
-  equip('lunatic:ibuki_gourd');click();time.sleep(.3);assert not shots();time.sleep(4);click();time.sleep(.3);assert not shots()
-  time.sleep(4);click();until(shots,bool,seconds=3);evidence['switch_cleanup_and_doubled_cooldown']=True
+  # Grounded retrieval earns the launch-based two-second cooldown.
+  wait_ready();ctl(d,'look','0','65');started=time.monotonic();click()
+  until(shots,lambda ps:ps and ps[0].get('gourd_phase')=='Grounded',seconds=5)
+  click();until(shots,lambda ps:not ps,seconds=3)
+  time.sleep(max(0,2.3-(time.monotonic()-started)));ctl(d,'look','0','0');click();until(shots,bool,seconds=2)
+  evidence['grounded_retrieval_halves_cooldown']=True
+  click();until(shots,lambda ps:not ps,seconds=3)
+  # Doors must settle without repeated landing sounds.
+  wait_ready();console('setblock 0 -60 4 minecraft:oak_door[facing=north,half=lower]');console('setblock 0 -59 4 minecraft:oak_door[facing=north,half=upper]')
+  ctl(d,'look','0','0');click();until(shots,lambda ps:ps and ps[0].get('gourd_phase')=='Grounded',seconds=8)
+  land=ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)
+  console('tick sprint 160');time.sleep(1)
+  assert shots() and shots()[0].get('gourd_phase')=='Grounded'
+  assert ctl(d,'status')['heard'].get('lunatic:item.gourd.land',0)==land
+  click();until(shots,lambda ps:not ps,seconds=3);console('fill 0 -60 4 0 -59 4 minecraft:air')
+  evidence['door_settles_without_landing_spam']=True
+  # Switching imposes only 20 percent extra, measured from launch.
+  wait_ready();ctl(d,'look','0','0');started=time.monotonic();click();until(shots,bool,seconds=3);equip('minecraft:stick');until(shots,lambda ps:not ps,seconds=3)
+  equip('lunatic:ibuki_gourd');click();time.sleep(.15);assert not shots()
+  time.sleep(max(0,4.95-(time.monotonic()-started)));click();until(shots,bool,seconds=3)
+  evidence['switch_cleanup_and_twenty_percent_penalty']=True
   console('kill @e[type=lunatic:gourd_flail]');until(shots,lambda ps:not ps,seconds=4)
   click();time.sleep(.3);assert not shots();evidence['invalid_projectile_cleanup']=True
   console('tick sprint 180');time.sleep(1);click();until(shots,bool,seconds=3)
