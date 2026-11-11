@@ -20,7 +20,8 @@
         "lunatic:growing",
         "lunatic:giant",
         "lunatic:shrinking"
-      ]
+      ],
+      "description": "Become gigantic. Jumping or falling will create a destructive explosion. Strength is raised to Strength II level. Attack range is increased enough that you can strike at your feet."
     },
     {
       "id": "lunatic:miniaturization",
@@ -29,7 +30,7 @@
       "color": 8900331,
       "kind": "tiny",
       "hunger": 4,
-      "scale": 0.125,
+      "scale": 0.2,
       "transition_ticks": 60,
       "duration_ticks": 600,
       "ending_ticks": 60,
@@ -37,7 +38,8 @@
         "lunatic:shrinking",
         "lunatic:tiny",
         "lunatic:growing"
-      ]
+      ],
+      "description": "Become tiny. Movement speed is increased by 50%. Gain Jump Boost II. Gain Mining Fatigue I."
     }
   ]
 }

@@ -20,17 +20,19 @@ requires sufficient hunger, and allows one size spell at a time. Both survival a
 creative casting pay the defined hunger cost.
 
 Suika unlocks Gigantification (4-second growth, 20-second Giant, 4-second return;
-6 hunger points) and Miniaturization (3-second shrink, 30-second Tiny, 3-second
+6 hunger points) and Miniaturization (one-fifth size; 3-second shrink, 30-second Tiny, 3-second
 return; 4 hunger points). Size multiplies her normal character size, including
 model, hitbox and eye height. Growth is strongly slowed. Giant adds six melee
 damage; its landings after an airborne jump cause vanilla power-3 explosions,
 with a six-block damage radius, caster immunity, resistance-aware compact craters,
 normal drops and no fire. Tiny adds 50% movement speed, a 0.3 mining multiplier
 (Mining Fatigue I), +0.2 jump strength (Jump Boost II), and fall-damage immunity.
-Bonuses end with their named active phase.
+Giant reach tracks the extra eye height through the size transition, covering melee, breaking and interaction; it restores at normal size. Growth clears destructible cells before expanding the hitbox and emits at most one full explosion per half-second when obstructed. Other bonuses end with their named active phase.
 
 Growth/return use eased scaling, sparse orange/blue ribbon particles and pitched
 amethyst chimes. Full Giant announces itself with a dragon growl; landing uses
 vanilla explosion audio/particles. Returning finishes with a soft item-frame pop.
 All size/stat modifiers are transient and cleaned on completion and initialization;
 rejoining or respawning restores normal character size without losing unlocks.
+
+Slot moves predict immediately and reconcile against revision acknowledgements; queued moves remain visible while prior swaps are acknowledged. Spell tooltips show a HUD-sized food icon, cost and the content-defined description.

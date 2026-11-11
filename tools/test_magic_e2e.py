@@ -123,8 +123,8 @@ with tempfile.TemporaryDirectory(prefix='lunatic-magic-proof-') as temporary:
   evidence['giant_restores_baseline']=True
   console('fill -8 -63 -8 8 -61 8 minecraft:dirt');console('fill -8 -60 -8 8 -60 8 minecraft:air');console(f'tp {name} 0.5 -60 0.5 0 0');time.sleep(.5)
   food=body()['food'];click_spell('miniaturization');until(lambda:has('shrinking'));assert body()['food']==food-4
-  until(lambda:has('tiny'),seconds=5);until(lambda:body()['scale'],lambda v:abs(v-.1025)<.002)
-  assert abs(body()['dimensions'][1]-baseline['dimensions'][1]/8)<.02
+  until(lambda:has('tiny'),seconds=5);until(lambda:body()['scale'],lambda v:abs(v-.164)<.002)
+  assert abs(body()['dimensions'][1]-baseline['dimensions'][1]/5)<.02
   assert abs(query('movement_speed')-.15)<.005
   assert abs(query('block_break_speed')-.3)<.005
   assert abs(query('jump_strength')-.62)<.005
