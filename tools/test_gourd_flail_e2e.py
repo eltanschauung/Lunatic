@@ -92,6 +92,7 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   assert shots() and shots()[0]['id']==resting['id'];evidence['landing_never_auto_retrieves']=True
   assert any(p['id']==resting['id'] for p in ctl(observer,'status')['projectiles'])
   ctl(observer,'look','20','8');ctl(observer,'screenshot',str(a.output/'observer-rope.png'));evidence['second_client_tracks_same_deployed_projectile']=True
+  ctl(observer,'look','90','8');ctl(observer,'screenshot',str(a.output/'hand-anchor.png'))
   click();until(shots,lambda ps:not ps,seconds=4);assert ctl(d,'inventory')['counts'].get('lunatic:ibuki_gourd')==1;evidence['manual_animated_retrieval_retains_item']=True
   until(lambda:ctl(d,'status')['heard'].get('lunatic:item.gourd.reel',0),lambda n:n>0,seconds=3);evidence['reeling_sound']=True
   # Early retrieval does not restart/double the four-second launch cooldown.
@@ -107,13 +108,17 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   wait_ready();console('summon minecraft:cow 1.35 -60 4 {NoAI:1b,PersistenceRequired:1b,Health:40f,attributes:[{id:"minecraft:max_health",base:40.0}]}');time.sleep(.4)
   def pig():return next((m for m in ctl(d,'mobs','32')['near'] if m['kind']=='minecraft:cow'),None)
   until(pig,lambda m:m is not None and m['health']==40,seconds=5)
-  ctl(d,'look','0','0');before=ctl(d,'status');click()
+  ctl(d,'look','0','0');before=ctl(d,'status');started=time.monotonic();click()
   hurt=until(pig,lambda m:m is not None and m['health']<40,seconds=4);assert 21.99<=hurt['health']<=22.01,hurt
-  assert shots();health=hurt['health'];until(pig,lambda m:m is not None and m['pos'][2]>4.05,seconds=3);time.sleep(.5);assert pig()['health']==health
+  assert shots();health=hurt['health'];until(pig,lambda m:m is not None and m['pos'][2]>4.05,seconds=3);time.sleep(.05);assert pig()['health']==health
   after=ctl(d,'status');assert after['heard'].get('lunatic:entity.gourd.impact',0)>before['heard'].get('lunatic:entity.gourd.impact',0)
   assert after['particles'].get('minecraft:explosion',after['particles'].get('explosion',0))>before['particles'].get('minecraft:explosion',before['particles'].get('explosion',0))+7
   evidence['18_damage_enlarged_grazing_hitbox_knockback_particles_and_persistence']=True
+  assert after['heard'].get('lunatic:item.gourd.land',0)==before['heard'].get('lunatic:item.gourd.land',0)
   click();until(shots,lambda ps:not ps,seconds=3);console('kill @e[type=minecraft:cow]')
+  time.sleep(max(0,2.3-(time.monotonic()-started)));click();until(shots,bool,seconds=2)
+  evidence['mob_damage_halves_cooldown_without_landing']=True
+  click();until(shots,lambda ps:not ps,seconds=3)
   # Grounded retrieval earns the launch-based two-second cooldown.
   wait_ready();ctl(d,'look','0','65');started=time.monotonic();click()
   until(shots,lambda ps:ps and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=5)
