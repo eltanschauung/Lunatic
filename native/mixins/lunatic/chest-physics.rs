@@ -1,5 +1,5 @@
 // Chest motion adapted from Female Gender Mod 5.0.0 by pupnewfster.
-// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-License-Identifier: LGPL-3.0-only
 // Original: com.wildfire.client.physics.BreastPhysics, provided mc26.3 jar.
 // Lunatic fixes bounce multiplier and floppiness to 10%, with no user config.
 #[derive(Clone, Copy, Debug, Default)]

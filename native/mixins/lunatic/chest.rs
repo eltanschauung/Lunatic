@@ -1,5 +1,5 @@
 // Adapted from Female Gender Mod 5.0.0 by pupnewfster (GenderLayer,
-// WildfireModelRenderer and default UVs). SPDX-License-Identifier: LGPL-3.0-or-later
+// WildfireModelRenderer and default UVs). SPDX-License-Identifier: LGPL-3.0-only
 // Skin-only port: no armor models, settings, networking or vanilla-player changes.
 use super::{
     Atlas, Mob, Part, Vertex,
