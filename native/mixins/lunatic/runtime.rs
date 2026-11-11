@@ -81,7 +81,7 @@ impl Game<'_> {
         })
     }
     pub(super) fn lunatic_tooltip(&self, stack: &ItemStack, lines: &mut Vec<(Text, u32)>) {
-        if !self.native_on("lunatic") || stack.custom_name().is_some() {
+        if !self.native_on("lunatic") {
             return;
         }
         if stack.item.as_ref() == "lunatic:ibuki_gourd" {
@@ -95,6 +95,7 @@ impl Game<'_> {
                 lines.push((text, u32::MAX));
             }
         }
+        if stack.custom_name().is_some() { return; }
         let Some(index) = motion::ITEMS
             .iter()
             .position(|id| *id == stack.item.as_ref())
