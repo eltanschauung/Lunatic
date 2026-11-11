@@ -36,6 +36,7 @@ struct Tether {
 #[derive(Default)]
 struct State {
     attacks: Vec<Attack>,
+    hands: HashMap<u32, (i64, [f64;3])>,
     ready: HashMap<(u64, u128), i64>,
     views: Vec<Tether>,
     reeling: std::collections::HashSet<(u64, u128)>,
@@ -360,6 +361,13 @@ impl Game<'_> {
     pub(super) fn gourd_deployed(&self) -> bool {
         STATE.with_borrow(|s| s.views.iter().any(|v| v.owner == self.gourd_view_owner()))
     }
+    pub(super) fn gourd_render_hand(&self, mob: &horizon_client::mobs::Mob, camera: glam::DVec3, alpha: f64) {
+        if !self.native_on("lunatic") || mob.kind.id.as_ref() != "minecraft:player" { return; }
+        if let Some(transform)=horizon_client::mobs::render::held_item_transform(mob, alpha as f32, camera, self.res.mob_data(), false) {
+            let at=transform.transform_point3(glam::Vec3::ZERO).as_dvec3()+camera;
+            STATE.with_borrow_mut(|s| { s.hands.retain(|_,(tick,_)| *tick>=self.world.game_time-1); s.hands.insert(mob.id,(self.world.game_time,at.to_array())); });
+        }
+    }
     pub(super) fn gourd_lines(&self, alpha: f64, lines: &mut Vec<horizon_client::gizmos::Line>) {
         if !self.native_on("lunatic") {
             return;
@@ -378,7 +386,10 @@ impl Game<'_> {
                     motion::arr(p.previous.lerp(p.position, alpha)),
                     f::forward(p.yaw, p.pitch),
                 );
-                let mut hand = v.anchor;
+                let mut hand = s.hands.values().filter(|(tick,_)| *tick>=self.world.game_time-1)
+                    .map(|(_,at)| *at).filter(|at| f::length(f::sub(*at,v.anchor))<2.0)
+                    .min_by(|a,b| f::length(f::sub(*a,v.anchor)).total_cmp(&f::length(f::sub(*b,v.anchor))))
+                    .unwrap_or(v.anchor);
                 if v.owner == self.gourd_view_owner() && self.camera_type == super::perspective::CameraType::FirstPerson {
                     if let Some((eye, dir)) = self.aim() {
                         hand = f::add(f::right_hand(eye, dir), f::mul(dir, 0.45));

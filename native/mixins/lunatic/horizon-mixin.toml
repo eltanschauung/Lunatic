@@ -685,3 +685,15 @@ bindings = [
  {name="bundle",ty="&str",value="bundle"},
  {name="base",ty="&mut BTreeMap<String,String>",value="&mut base"},
 ]
+
+[[injection]]
+id = "gourd-posed-right-hand"
+kind = "HEAD"
+target = "horizon_client::game::mob_blocks::Game<'_>::held_item_geometry"
+helper = "gourd-render-hand.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="self"},
+ {name="mob",ty="&horizon_client::mobs::Mob",value="mob"},
+ {name="camera",ty="glam::DVec3",value="camera"},
+ {name="alpha",ty="f64",value="alpha"},
+]
