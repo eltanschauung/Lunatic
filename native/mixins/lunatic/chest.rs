@@ -164,7 +164,7 @@ pub fn render(
             super::draw(
                 part,
                 transform * jacket,
-                &Poses::new(part),
+                poses,
                 uv,
                 super::body_color(m, alpha),
                 light,

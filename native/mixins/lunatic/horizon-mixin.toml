@@ -724,7 +724,7 @@ visibility = "pub"
 
 [[injection]]
 id = "character-chest-layer"
-kind = "TAIL"
+kind = "RETURN"
 target = "horizon_client_lib::mobs::render::render_visible"
 helper = "chest-render.rs"
 bindings = [
