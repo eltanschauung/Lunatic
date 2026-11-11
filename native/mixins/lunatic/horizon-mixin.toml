@@ -714,7 +714,7 @@ visibility = "pub"
 
 [[injection]]
 id = "character-chest-layer"
-kind = "RETURN"
+kind = "HEAD"
 target = "horizon_client_lib::mobs::render::render_visible"
 helper = "chest-render.rs"
 bindings = [
@@ -723,9 +723,7 @@ bindings = [
  {name="base",ty="glam::Mat4",value="base"},
  {name="atlas",ty="crate::mobs::render::Atlas<'_>",value="atlas"},
  {name="light",ty="u32",value="light"},
- {name="model",ty="&crate::mobs::Part",value="&*model"},
- {name="poses",ty="&crate::mobs::anim::Poses",value="&poses"},
- {name="skin",ty="&str",value="texture"},
+ {name="data",ty="&crate::mobs::MobData",value="data"},
  {name="visible",ty="bool",value="body_visible"},
  {name="out",ty="&mut Vec<crate::mesher::Vertex>",value="&mut *out"},
 ]

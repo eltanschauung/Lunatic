@@ -4,13 +4,11 @@ fn chest(
     base: glam::Mat4,
     atlas: crate::mobs::render::Atlas<'_>,
     light: u32,
-    model: &crate::mobs::Part,
-    poses: &crate::mobs::anim::Poses,
-    skin: &str,
+    data: &crate::mobs::MobData,
     visible: bool,
     out: &mut Vec<crate::mesher::Vertex>,
 ) {
-    crate::mobs::render::lunatic_chest::render(
-        m, alpha, base, atlas, light, model, poses, skin, visible, out,
+    crate::mobs::render::lunatic_chest::render_mob(
+        m, alpha, base, atlas, light, data, visible, out,
     );
 }

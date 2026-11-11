@@ -101,6 +101,27 @@ thread_local! {
     static MOTION: std::cell::RefCell<std::collections::HashMap<u64, (std::time::Instant, physics::Physics)>> = Default::default();
     static HALVES: [Part;4] = [half(true,false),half(false,false),half(true,true),half(false,true)];
 }
+// Run before the base renderer takes its resource locks. Reuse the same
+// posed body, including custom animations and skin scale, for the skin layer.
+pub fn render_mob(
+    m: &Mob,
+    alpha: f32,
+    base: Mat4,
+    atlas: Atlas<'_>,
+    light: u32,
+    data: &crate::mobs::MobData,
+    visible: bool,
+    out: &mut Vec<Vertex>,
+) {
+    if physics::bust(m.character_chest, m.slim) <= 0.0 || !visible || m.extra.chest.is_some() {
+        return;
+    }
+    let (model, poses, _) = super::posed_body(m, alpha, data);
+    let (_, skin) = super::body(m);
+    render(
+        m, alpha, base, atlas, light, &model, &poses, &skin, visible, out,
+    );
+}
 pub fn render(
     m: &Mob,
     alpha: f32,
