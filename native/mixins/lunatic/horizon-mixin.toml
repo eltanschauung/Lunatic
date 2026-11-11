@@ -697,3 +697,57 @@ bindings = [
  {name="camera",ty="glam::DVec3",value="camera"},
  {name="alpha",ty="f64",value="alpha"},
 ]
+
+[[module]]
+id = "chest-physics"
+file = "crates/horizon-client/src/mobs.rs"
+name = "lunatic_chest_physics"
+source = "chest-physics.rs"
+visibility = "pub"
+
+[[state]]
+id = "chest_motion"
+target = "horizon_client_lib::mobs::Mob"
+ty = "crate::mobs::lunatic_chest_physics::Motion"
+initial = "::core::default::Default::default()"
+[[state.constructor]]
+target = "horizon_client_lib::mobs::Mob::new"
+selector = "Self"
+require = 1
+
+[[module]]
+id = "chest-render"
+file = "crates/horizon-client/src/mobs/render.rs"
+name = "lunatic_chest"
+source = "chest.rs"
+visibility = "pub"
+
+[[injection]]
+id = "character-chest-layer"
+kind = "TAIL"
+target = "horizon_client_lib::mobs::render::render_visible"
+helper = "chest-render.rs"
+bindings = [
+ {name="m",ty="&crate::mobs::Mob",value="m"},
+ {name="alpha",ty="f32",value="alpha"},
+ {name="base",ty="glam::Mat4",value="base"},
+ {name="atlas",ty="crate::mobs::render::Atlas<'_>",value="atlas"},
+ {name="light",ty="u32",value="light"},
+ {name="model",ty="&crate::mobs::Part",value="&*model"},
+ {name="poses",ty="&crate::mobs::anim::Poses",value="&poses"},
+ {name="skin",ty="&str",value="texture"},
+ {name="visible",ty="bool",value="body_visible"},
+ {name="out",ty="&mut Vec<crate::mesher::Vertex>",value="&mut *out"},
+]
+
+[[injection]]
+id = "character-chest-preview"
+kind = "RETURN"
+target = "horizon_client_lib::characters::Character::presentation_model"
+helper = "chest-preview.rs"
+bindings = [
+ {name="value",ty="Option<crate::mobs::Part>",value="$value"},
+ {name="character",ty="&crate::characters::Character",value="self"},
+ {name="model",ty="&crate::mobs::Part",value="_model"},
+ {name="slim",ty="bool",value="_slim"},
+]

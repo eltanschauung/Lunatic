@@ -54,6 +54,8 @@ def main():
         add("horizon-native.json", json.dumps(manifest, indent=2).encode())
         for file in sorted((ROOT / "native/mixins").rglob("*")):
             if file.is_file(): add(file.relative_to(ROOT / "native").as_posix(), file.read_bytes())
+        for file in sorted((ROOT / "native/licenses").rglob("*")):
+            if file.is_file(): add(file.relative_to(ROOT / "native").as_posix(), file.read_bytes())
     print("Built native behavior bundle:", output)
 
 
