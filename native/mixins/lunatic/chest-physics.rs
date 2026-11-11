@@ -24,18 +24,6 @@ pub struct Physics {
     size: f32,
     vertical_sign: f32,
 }
-#[derive(Debug, Default)]
-pub struct Motion(pub std::sync::Mutex<Physics>);
-impl Clone for Motion {
-    fn clone(&self) -> Self {
-        Self(std::sync::Mutex::new(
-            self.0
-                .lock()
-                .unwrap_or_else(std::sync::PoisonError::into_inner)
-                .clone(),
-        ))
-    }
-}
 pub fn bust(chest: f32, slim: bool) -> f32 {
     if !slim || !chest.is_finite() {
         0.0

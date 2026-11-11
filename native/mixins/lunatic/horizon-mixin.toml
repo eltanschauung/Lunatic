@@ -705,16 +705,6 @@ name = "lunatic_chest_physics"
 source = "chest-physics.rs"
 visibility = "pub"
 
-[[state]]
-id = "chest_motion"
-target = "horizon_client_lib::mobs::Mob"
-ty = "crate::mobs::lunatic_chest_physics::Motion"
-initial = "::core::default::Default::default()"
-[[state.constructor]]
-target = "horizon_client_lib::mobs::Mob::new"
-selector = "Self"
-require = 1
-
 [[module]]
 id = "chest-render"
 file = "crates/horizon-client/src/mobs/render.rs"

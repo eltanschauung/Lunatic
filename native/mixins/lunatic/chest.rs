@@ -97,6 +97,8 @@ fn half(left: bool, overlay: bool) -> Part {
     }
 }
 thread_local! {
+    // Entity lifetime IDs survive render copies and never alias a later entity.
+    static MOTION: std::cell::RefCell<std::collections::HashMap<u64, (std::time::Instant, physics::Physics)>> = Default::default();
     static HALVES: [Part;4] = [half(true,false),half(false,false),half(true,true),half(false,true)];
 }
 pub fn render(
@@ -137,12 +139,27 @@ pub fn render(
         swing: m.anim.attack_anim,
         crouching: m.extra.crouching,
     };
-    let movement = m
-        .__horizon_mixins_lunatic_chest_motion()
-        .0
-        .lock()
-        .unwrap_or_else(std::sync::PoisonError::into_inner)
-        .sample(input, m.character_chest, alpha);
+    let movement = if physics::motion_enabled(m.character_chest) {
+        MOTION.with_borrow_mut(|states| {
+            let key = m.join.get();
+            if states.len() >= 512 && !states.contains_key(&key) {
+                if let Some(oldest) = states
+                    .iter()
+                    .min_by_key(|(_, (at, _))| *at)
+                    .map(|(id, _)| *id)
+                {
+                    states.remove(&oldest);
+                }
+            }
+            let (at, state) = states
+                .entry(key)
+                .or_insert_with(|| (std::time::Instant::now(), physics::Physics::default()));
+            *at = std::time::Instant::now();
+            state.sample(input, m.character_chest, alpha)
+        })
+    } else {
+        [0.0; 3]
+    };
     let enabled = physics::motion_enabled(m.character_chest);
     let breath = if enabled {
         (-(m.age as f32 + alpha) * 0.09).cos() * -0.045 + 0.045
