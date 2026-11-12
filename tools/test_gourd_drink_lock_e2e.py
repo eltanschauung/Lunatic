@@ -73,8 +73,8 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
   try_drink(True);evidence['outbound_gourd_cannot_drink']=True
   until(shots,lambda ps:bool(ps) and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=6)
   try_drink(True);evidence['landed_gourd_cannot_drink']=True
-  click();time.sleep(.1)
-  if shots():try_drink(True)
+  click();time.sleep(.05);assert shots(),'Expected animated return before reaching hand'
+  try_drink(True);evidence['returning_gourd_cannot_drink']=True
   until(shots,lambda ps:not ps,seconds=4)
   try_drink(False);evidence['returned_gourd_can_drink']=True
   (a.output/'result.json').write_text(json.dumps(evidence,indent=2)+'\n');print(json.dumps({'passed':True,'checks':evidence}),flush=True)
