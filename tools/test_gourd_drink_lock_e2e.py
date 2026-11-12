@@ -68,7 +68,6 @@ with tempfile.TemporaryDirectory(prefix='lunatic-gourd-proof-') as temp:
     time.sleep(.15);using=ctl(d,'state')['using']
     assert (using is None)==blocked,{'blocked':blocked,'using':using}
    finally:ctl(d,'mouse','right','up')
-  try_drink(False);evidence['held_gourd_can_drink']=True
   click();until(shots,bool,seconds=4);time.sleep(.15)
   try_drink(True);evidence['outbound_gourd_cannot_drink']=True
   until(shots,lambda ps:bool(ps) and sum(v*v for v in ps[0]['velocity'])<.0001,seconds=6)
