@@ -739,3 +739,11 @@ bindings = [
  {name="model",ty="&crate::mobs::Part",value="_model"},
  {name="slim",ty="bool",value="_slim"},
 ]
+
+[[injection]]
+id = "bushy-bamboo-dynamic-shape"
+kind = "HEAD"
+cancellable = true
+target = "horizon_world::dynamic_support::DynamicSupport::from_state"
+helper = "bamboo-shape.rs"
+bindings = [{name="state",ty="&crate::chunk::BlockState",value="state"}]
