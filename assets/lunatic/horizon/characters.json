@@ -62,6 +62,7 @@
       "name": "Kazami Yuuka",
       "race": "youkai,yuuka",
       "color": "dark_green",
+      "chest": "2.0",
       "size": 1.0,
       "starting_items": [
         {
@@ -173,6 +174,7 @@
       "race": "youkai",
       "color": "dark_green",
       "size": 0.95,
+      "chest": "1.5",
       "starting_items": [],
       "starting_spells": []
     },
@@ -182,6 +184,7 @@
       "race": "youkai,devil,magician",
       "color": "red",
       "size": 0.85,
+      "chest": "1.25",
       "starting_items": [],
       "starting_spells": []
     },
@@ -191,6 +194,7 @@
       "race": "youkai,magician",
       "color": "light_purple",
       "size": 0.9,
+      "chest": "1.35",
       "starting_items": [],
       "starting_spells": []
     },
@@ -200,6 +204,7 @@
       "race": "human",
       "color": "gray",
       "size": 0.95,
+      "chest": "1.15",
       "starting_items": [],
       "starting_spells": []
     },
@@ -227,6 +232,7 @@
       "race": "youkai,yuki_onna",
       "color": "light_blue",
       "size": 0.92,
+      "chest": "2.0",
       "starting_items": [],
       "starting_spells": []
     },
@@ -254,6 +260,7 @@
       "race": "ghost,yuyuko",
       "color": "light_purple",
       "size": 0.95,
+      "chest": "2.0",
       "starting_items": [],
       "starting_spells": []
     },
@@ -263,6 +270,7 @@
       "race": "shikigami,youkai,",
       "color": "yellow",
       "size": 1.0,
+      "chest": "1.7",
       "starting_items": [],
       "starting_spells": []
     },
@@ -272,6 +280,7 @@
       "race": "youkai,yukari",
       "color": "#800080",
       "size": 1.0,
+      "chest": "2.0",
       "starting_items": [],
       "starting_spells": []
     },
@@ -307,6 +316,7 @@
       "race": "earth_rabbit,former_moon_rabbit",
       "color": "dark_purple",
       "size": 0.92,
+      "chest": "1.25",
       "starting_items": [
         {
           "item": "minecraft:carrot",
@@ -324,6 +334,7 @@
       "race": "hourai_immortal,kaguya",
       "color": "dark_purple",
       "size": 0.9,
+      "chest": "1.4",
       "starting_items": [],
       "starting_spells": []
     },
@@ -333,6 +344,7 @@
       "race": "hourai_immortal,mokou",
       "color": "red",
       "size": 0.93,
+      "chest": "1.2",
       "starting_items": [],
       "starting_spells": []
     },
@@ -361,8 +373,10 @@
       "id": "lunatic:shameimaru_aya",
       "name": "Shameimaru Aya",
       "race": "youkai,tengu,crow_tengu",
+      "health": "16",
       "color": "dark_red",
       "size": 0.88,
+      "chest": "1.2",
       "starting_items": [
         {
           "item": "minecraft:cooked_cod",
@@ -401,6 +415,7 @@
       "race": "youkai,tengu,wolf_tengu",
       "color": "white",
       "size": 0.96,
+      "chest": "1.4",
       "starting_items": [],
       "starting_spells": []
     },
@@ -410,6 +425,7 @@
       "race": "human,living_god,miko",
       "color": "green",
       "size": 0.9,
+      "chest": "1.6",
       "starting_items": [
         {
           "item": "lunatic:miko_stick",
@@ -426,6 +442,7 @@
       "race": "youkai",
       "color": "dark_purple",
       "size": 0.95,
+      "chest": "1.6",
       "starting_items": [],
       "starting_spells": []
     },
@@ -435,6 +452,7 @@
       "race": "celestial",
       "color": "blue",
       "size": 0.85,
+      "chest": "1.15",
       "starting_items": [],
       "starting_spells": []
     },
@@ -478,6 +496,7 @@
       "race": "youkai,hermit,seiga",
       "color": "blue",
       "size": 0.92,
+      "chest": "1.8",
       "starting_items": [
         {
           "item": "arcadiandream:wall_passing_chisel",
@@ -495,6 +514,7 @@
       "race": "youkai,oni,hermit,kasen",
       "color": "#ffc0cb",
       "size": 0.94,
+      "chest": "1.8",
       "starting_items": [],
       "starting_spells": [],
       "hunger": 30
@@ -505,6 +525,7 @@
       "race": "youkai,nue",
       "color": "dark_red",
       "size": 0.9,
+      "chest": "1.2",
       "starting_items": [],
       "starting_spells": []
     },
@@ -514,6 +535,7 @@
       "race": "ship_phantom,youkai",
       "color": "dark_blue",
       "size": 0.9,
+      "chest": "1.2",
       "starting_items": [],
       "starting_spells": []
     },
@@ -532,6 +554,7 @@
       "race": "youkai,pestilence_god",
       "color": "dark_blue",
       "size": 0.88,
+      "chest": "1.5",
       "starting_items": [],
       "starting_spells": []
     },
@@ -564,6 +587,7 @@
       "race": "divine_spirit",
       "color": "#ffa500",
       "size": 1.0,
+      "chest": "2.0",
       "starting_items": [],
       "starting_spells": []
     },
@@ -573,6 +597,7 @@
       "race": "tube_fox,youkai,",
       "color": "#008080",
       "size": 0.88,
+      "chest": "1.15",
       "starting_items": [],
       "starting_spells": []
     }
