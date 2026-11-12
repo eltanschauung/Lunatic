@@ -747,3 +747,15 @@ cancellable = true
 target = "horizon_world::dynamic_support::DynamicSupport::from_state"
 helper = "bamboo-shape.rs"
 bindings = [{name="state",ty="&crate::chunk::BlockState",value="state"}]
+
+[[injection]]
+id="gourd-use-start"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_living_entity_use_item_start"
+helper="gourd-use-start.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+ {name="entity",ty="Option<i32>",value="entity"},
+ {name="canceled",ty="&mut bool",value="&mut *canceled"},
+]
