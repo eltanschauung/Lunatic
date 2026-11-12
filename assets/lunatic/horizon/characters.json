@@ -477,9 +477,15 @@
           "enchantments": {
             "lunatic:soulbound": 1
           }
+        },
+        {
+          "item": "lunatic:koishi_knife",
+          "count": 1
         }
       ],
-      "starting_spells": []
+      "starting_spells": [
+        "lunatic:reveal"
+      ]
     },
     {
       "id": "lunatic:miyako_yoshika",

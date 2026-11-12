@@ -40,6 +40,24 @@
         "lunatic:growing"
       ],
       "description": "Become tiny. Movement speed is increased by 50%. Gain Jump Boost II. Gain Mining Fatigue I."
+    },
+    {
+      "id": "lunatic:reveal",
+      "name": "Reveal",
+      "icon": "lunatic:gui/sprites/magic/koishi_spellbook",
+      "color": 12223964,
+      "kind": "effect",
+      "hunger": 0,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 1200,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:revealed",
+        "lunatic:revealed",
+        "lunatic:revealed"
+      ],
+      "description": "Become fully visible to players and mobs for 60 seconds."
     }
   ]
 }

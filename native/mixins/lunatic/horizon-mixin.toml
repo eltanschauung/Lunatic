@@ -759,3 +759,79 @@ bindings=[
  {name="entity",ty="Option<i32>",value="entity"},
  {name="canceled",ty="&mut bool",value="&mut *canceled"},
 ]
+
+[[module]]
+id="koishi"
+file="crates/horizon-client/src/game.rs"
+name="koishi"
+source="koishi.rs"
+[[module]]
+id="koishi_policy"
+file="crates/horizon-client/src/game.rs"
+name="koishi_policy"
+source="koishi-policy.rs"
+
+[[injection]]
+id="koishi-opacity"
+kind="RETURN"
+target="horizon_client::game::player_presentation::Game<'_>::player_presentation_opacity"
+helper="koishi-opacity.rs"
+bindings=[
+ {name="value",ty="f32",value="$value"},
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="m",ty="&Mob",value="_mob"},
+ {name="camera",ty="glam::DVec3",value="_camera"}
+]
+
+[[injection]]
+id="koishi-senses"
+kind="RETURN"
+target="horizon_client::game::player_presentation::Game<'_>::player_sensory_visible"
+helper="koishi-senses.rs"
+bindings=[
+ {name="value",ty="bool",value="$value"},
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="uuid",ty="u128",value="_uuid"}
+]
+
+[[injection]]
+id="koishi-mob-hit"
+kind="HEAD"
+target="horizon_client::game::mace::Game<'_>::weapon_hit"
+helper="koishi-mob-hit.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="index",ty="usize",value="index"}
+]
+
+[[injection]]
+id="koishi-player-hit"
+kind="HEAD"
+target="horizon_client::game::mace::Game<'_>::accepted_player_melee"
+helper="koishi-player-hit.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="id",ty="u32",value="_id"}
+]
+
+[[injection]]
+id="koishi-bleed"
+kind="HEAD"
+target="horizon_client::game::potions::Game<'_>::mod_effect_tick"
+helper="koishi-bleed.rs"
+bindings=[
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="effect",ty="&str",value="effect"},
+ {name="id",ty="Option<i32>",value="entity"},
+ {name="ticks",ty="i32",value="tick_count"},
+]
+
+[[injection]]
+id="koishi-post"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_level_tick_post"
+helper="koishi-post.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="dimension",ty="&str",value="dimension"}
+]

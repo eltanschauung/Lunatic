@@ -557,6 +557,7 @@ impl Game<'_> {
     }
     pub(super) fn lunatic_stop(&mut self) {
         self.gourd_stop();
+        self.koishi_stop();
         self.lampad_stop();
         self.lunatic_clear_bursts();
         STATE.with_borrow_mut(|s| *s = State::default());
