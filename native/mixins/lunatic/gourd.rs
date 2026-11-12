@@ -360,7 +360,7 @@ impl Game<'_> {
     }
     /// The client predicts from synchronized tethers; the server trusts only its own attacks.
     /// Keep blocking during retraction, until the projectile actually reaches the hand.
-    pub(super) fn gourd_use_unavailable(&self) -> bool {
+    pub(super) fn gourd_use_unavailable(&mut self) -> bool {
         if self.remote.is_some() { return self.gourd_deployed(); }
         let key = (self.lunatic_world_key(), self.native_acting_id());
         STATE.with_borrow(|s| s.attacks.iter().any(|a| (a.world, a.owner) == key))
