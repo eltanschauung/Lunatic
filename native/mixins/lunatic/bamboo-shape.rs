@@ -2,7 +2,7 @@
 // Bamboo's cached shape is intentionally absent: its stalk is offset by position.
 // Renaming its states must preserve the template's dynamic collision AND support.
 fn bamboo_shape(state: &crate::chunk::BlockState)
-    -> std::ops::ControlFlow<std::io::Result<Option<crate::dynamic_support::DynamicSupport>>> {
+    -> std::ops::ControlFlow<io::Result<Option<DynamicSupport>>> {
     if state.name != "lunatic:bushy_bamboo" {
         return std::ops::ControlFlow::Continue(());
     }
