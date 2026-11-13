@@ -851,7 +851,7 @@ kind="HEAD"
 cancellable=true
 target="horizon_assets::item_model::Resolve<'_>::has_foil"
 helper="soulbound-model-foil.rs"
-bindings=[{name="components",ty="&Components",value="self.components"}]
+bindings=[{name="resolver",ty="&Resolve<'_>",value="&*self"}]
 
 [[injection]]
 id="gourd-disconnect"
