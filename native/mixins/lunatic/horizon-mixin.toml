@@ -435,7 +435,8 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_living_entity_use_item_finish"
 helper="gourd-finish.rs"
 bindings=[
- {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="hand",ty="horizon_client::first_person::Hand",value="hand"},
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
  {name="stack",ty="&ItemStack",value="stack"},
  {name="result",ty="&mut Option<ItemStack>",value="&mut *result"},
 ]
@@ -835,3 +836,11 @@ bindings=[
  {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
  {name="dimension",ty="&str",value="dimension"}
 ]
+
+[[injection]]
+id="soulbound-foil"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_data::ItemStack::has_foil"
+helper="soulbound-foil.rs"
+bindings=[{name="stack",ty="&ItemStack",value="self"}]

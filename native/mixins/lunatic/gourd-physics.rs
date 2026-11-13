@@ -5,7 +5,7 @@ pub const LIMIT: f64 = 17.4;
 pub const NOZZLE: f64 = 10.3 / 16.0;
 pub const RADIUS: f64 = 0.45;
 pub const HALF_SEGMENT: f64 = 0.30;
-pub const DAMAGE: f32 = 18.0;
+pub const DAMAGE: f32 = 16.0;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Phase {
     Thrown,

@@ -167,6 +167,10 @@ impl Game<'_> {
             s.reeling.remove(&key);
             s.attacks.push(attack);
         });
+        if let Some(stack) = self.held().filter(|s| s.item.as_ref() == ITEM).cloned() {
+            let remaining = self.gourd_wear(&stack, 3, horizon_world::player_inventory::EquipmentSlot::MainHand);
+            *self.held_mut() = remaining;
+        }
         self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action/primary"), 80);
         self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.8);
     }
@@ -447,5 +451,20 @@ impl Game<'_> {
     pub(super) fn gourd_stop(&mut self) {
         STATE.with_borrow_mut(|s| *s = State::default());
         motion::reset();
+    }
+}
+
+impl Game<'_> {
+    pub(super) fn gourd_wear(&mut self, stack: &horizon_client::items::ItemStack, amount: u32,
+        hand: horizon_world::player_inventory::EquipmentSlot) -> Option<horizon_client::items::ItemStack> {
+        let mut next = stack.clone();
+        if self.creative { return Some(next); }
+        next.damage = next.damage.saturating_add(self.wear(stack, amount));
+        let max = self.items().get(ITEM).map_or(250, |i| i.max_damage);
+        if next.damage >= max {
+            self.award_stat("broken", &next.item, 1);
+            self.player_equipment_broke(hand, &next);
+            None
+        } else { Some(next) }
     }
 }

@@ -480,7 +480,8 @@
         },
         {
           "item": "lunatic:koishi_knife",
-          "count": 1
+          "count": 1,
+          "enchantments": {"lunatic:soulbound": 1}
         }
       ],
       "starting_spells": [

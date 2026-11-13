@@ -21,6 +21,7 @@
     "minecraft:use_cooldown": {
       "seconds": 240.0,
       "cooldown_group": "lunatic:ibuki_gourd"
-    }
+    },
+    "minecraft:max_damage": 250
   }
 }

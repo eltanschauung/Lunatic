@@ -17,7 +17,8 @@ impl Game<'_> {
  }
  pub(super) fn koishi_opacity(&self,m:&Mob,camera:glam::DVec3)->f32 {
   if !self.native_on("lunatic") || m.kind.id!="minecraft:player" {return 1.0;}
-  let Some(c)=self.remote_player_uuid(m.id).and_then(|u|self.character_for(u)) else{return 1.0;};
+  let local = self.player_model.as_ref().is_some_and(|own| own.id == m.id);
+  let Some(c)=self.remote_player_uuid(m.id).and_then(|u|self.character_for(u)).or_else(||local.then_some(self.character.as_ref()).flatten()) else{return 1.0;};
   if !c.has_race("koishi") {return 1.0;}
   let viewer=self.remote.as_ref().and_then(|r|self.character_for(r.profile())).or(self.character.as_ref());
   let exempt=viewer.is_some_and(|c|c.has_race("satori")||c.has_race("koishi")||c.id.contains("satori")||c.id.contains("koishi"));

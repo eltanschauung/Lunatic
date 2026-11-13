@@ -84,6 +84,12 @@ impl Game<'_> {
         if !self.native_on("lunatic") {
             return;
         }
+        let description = match stack.item.as_ref() {
+            "lunatic:koishi_phone" => Some("While held, proximity voice chat is replaced with all-talk."),
+            "lunatic:koishi_knife" => Some("Stone sword damage, swing cooldown is 50% lower, 25% chance to make enemies bleed."),
+            _ => None,
+        };
+        if let Some(description) = description { lines.push((Text::literal(description), 0xFFAAAAAA)); }
         if stack.item.as_ref() == "lunatic:ibuki_gourd" {
             for (a,b) in [
                 ("Primary fire for ", ": Hurl the gourd up to 16 blocks away as a flail, dealing great damage. Left click to pull back in. Cooldown: 4s"),

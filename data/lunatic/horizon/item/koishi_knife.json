@@ -1,5 +1,5 @@
 {
-  "template": "minecraft:iron_sword",
+  "template": "minecraft:stone_sword",
   "max_stack_size": 1,
   "components": {
     "minecraft:item_name": {
@@ -11,17 +11,20 @@
       {
         "type": "minecraft:attack_damage",
         "id": "minecraft:base_attack_damage",
-        "amount": 5,
+        "amount": 4,
         "operation": "add_value",
         "slot": "mainhand"
       },
       {
         "type": "minecraft:attack_speed",
         "id": "minecraft:base_attack_speed",
-        "amount": -1.6,
+        "amount": -0.8,
         "operation": "add_value",
         "slot": "mainhand"
       }
-    ]
+    ],
+    "minecraft:enchantments": {
+      "lunatic:soulbound": 1
+    }
   }
 }
