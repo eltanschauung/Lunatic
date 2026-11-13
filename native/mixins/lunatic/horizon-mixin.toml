@@ -844,13 +844,3 @@ cancellable=true
 target="horizon_items::item_data::ItemStack::has_foil"
 helper="soulbound-foil.rs"
 bindings=[{name="stack",ty="&ItemStack",value="self"}]
-
-[[injection]]
-id="koishi-hand-opacity"
-kind="RETURN"
-target="horizon_client::game::Game<'_>::hand_geometry"
-helper="koishi-hand-opacity.rs"
-bindings=[
- {name="geometry",ty="(Vec<crate::mesher::Vertex>, Vec<(u32, i32)>)",value="$value"},
- {name="game",ty="&crate::game::Game<'_>",value="&*self"},
-]
