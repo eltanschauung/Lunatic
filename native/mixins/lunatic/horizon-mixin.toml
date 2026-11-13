@@ -435,10 +435,10 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_living_entity_use_item_finish"
 helper="gourd-finish.rs"
 bindings=[
- {name="hand",ty="horizon_client::first_person::Hand",value="hand"},
  {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
  {name="stack",ty="&ItemStack",value="stack"},
  {name="result",ty="&mut Option<ItemStack>",value="&mut *result"},
+ {name="hand",ty="horizon_client::first_person::Hand",value="hand"},
 ]
 
 [[injection]]
