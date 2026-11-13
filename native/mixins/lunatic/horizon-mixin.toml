@@ -844,3 +844,32 @@ cancellable=true
 target="horizon_items::item_data::ItemStack::has_foil"
 helper="soulbound-foil.rs"
 bindings=[{name="stack",ty="&ItemStack",value="self"}]
+
+[[injection]]
+id="soulbound-model-foil"
+kind="HEAD"
+cancellable=true
+target="horizon_assets::item_model::Resolve<'_>::has_foil"
+helper="soulbound-model-foil.rs"
+bindings=[{name="components",ty="&Components",value="self.components"}]
+
+[[injection]]
+id="gourd-disconnect"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_client_disconnecting"
+helper="gourd-disconnect.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[injection]]
+id="gourd-login"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_client_player_network_logging_in"
+helper="gourd-login.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[injection]]
+id="gourd-logout"
+kind="HEAD"
+target="horizon_client::game::native_hooks::Game<'_>::native_player_logged_out"
+helper="gourd-logout.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="player",ty="u128",value="player"}]

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pub fn opacity(distance: f64, exempt: bool, revealed: bool) -> f32 {
-    if exempt { 0.75 } else if revealed { 1.0 } else { (0.65 - 0.60 * (distance / 32.0).clamp(0.0, 1.0)) as f32 }
+    if revealed { 1.0 } else if exempt { 0.75 } else { (0.65 - 0.60 * (distance / 32.0).clamp(0.0, 1.0)) as f32 }
 }
 #[cfg(test)] mod tests {
  use super::*;

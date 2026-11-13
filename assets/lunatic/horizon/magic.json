@@ -47,7 +47,7 @@
       "icon": "lunatic:gui/sprites/magic/koishi_spellbook",
       "color": 12223964,
       "kind": "effect",
-      "hunger": 0,
+      "hunger": 2,
       "scale": 1.0,
       "transition_ticks": 1,
       "duration_ticks": 1200,
@@ -57,7 +57,14 @@
         "lunatic:revealed",
         "lunatic:revealed"
       ],
-      "description": "Become fully visible to players and mobs for 60 seconds."
+      "description": "Become fully visible to players and mobs for 60 seconds.",
+      "start_sound": "minecraft:block.enchantment_table.use",
+      "end_sound": "minecraft:entity.illusioner.mirror_move",
+      "particle_color": [
+        0.66,
+        0.42,
+        0.88
+      ]
     }
   ]
 }

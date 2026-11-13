@@ -274,14 +274,14 @@ impl Game<'_> {
             kits.awarded.clear();
             kits.pending.clear();
         }
-        if !kits.initialized {
+        let roll_kit = !kits.initialized || switched || respawned;
+        if roll_kit {
             kits.initialized = true;
             changed = true;
-            // A kit belongs to the player's first session, not each character.
-            // Existing saves without our marker must not gain a retroactive kit.
-            self.load_stats();
-            if kits.awarded.is_empty()
-                && (respawned || self.stats.get("custom", "minecraft:play_time") <= 1)
+            // Switching characters may grant a new kit after the old Soulbound
+            // stacks are removed. Large retained inventories do not gain another kit.
+            kits.pending.clear();
+            if self.inventory.iter().flatten().count() < 12
                 && let Some(character) = &character
             {
                 for entry in &character.starting_items {

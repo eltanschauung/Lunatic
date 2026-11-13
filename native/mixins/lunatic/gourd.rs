@@ -448,7 +448,7 @@ impl Game<'_> {
             }
         });
     }
-    pub(super) fn gourd_stop(&mut self) {
+    pub(super) fn gourd_stop(&self) {
         STATE.with_borrow_mut(|s| *s = State::default());
         motion::reset();
     }
@@ -466,5 +466,20 @@ impl Game<'_> {
             self.player_equipment_broke(hand, &next);
             None
         } else { Some(next) }
+    }
+}
+
+impl Game<'_> {
+    pub(super) fn gourd_player_left(&mut self, owner: u128) {
+        let casts = STATE.with_borrow_mut(|s| {
+            let casts = s.attacks.iter().filter(|a| a.owner == owner).map(|a| (a.dim.clone(), a.id)).collect::<Vec<_>>();
+            s.attacks.retain(|a| a.owner != owner);
+            s.ready.retain(|(_, player), _| *player != owner);
+            s.reeling.retain(|(_, player)| *player != owner);
+            s.hands.remove(&owner);
+            s.views.retain(|a| a.owner != owner);
+            casts
+        });
+        for (dimension, id) in casts { self.native_remove_entity(&dimension, id); }
     }
 }
