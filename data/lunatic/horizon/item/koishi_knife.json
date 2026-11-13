@@ -1,5 +1,5 @@
 {
-  "template": "minecraft:stone_sword",
+  "template": "minecraft:iron_sword",
   "max_stack_size": 1,
   "components": {
     "minecraft:item_name": {
