@@ -41,8 +41,8 @@ def main():
 
     manifest = {
         "hooks": 359, "schema": 1, "id": "lunatic", "version": "0.13.0", "game": "26.3",
-        "horizon": "19a7b848958a5cfee957172bad4258750fb47c8b",
-        "mixins": "e8cd0aa38cffef49cb2e088ef716baa107148c02",
+        "horizon": "36f5b83bc6dbc8c19541e55d4625414b095cc446",
+        "mixins": "5a64af938ec86b00d53d16a408aabc0038fb3e57",
     }
     output = ROOT / "target/horizon-mod/lunatic.hnmod"
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:

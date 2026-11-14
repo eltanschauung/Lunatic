@@ -12,7 +12,7 @@ helper = "held-name.rs"
 bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
 
 [compatibility]
-horizon_revision = "19a7b848958a5cfee957172bad4258750fb47c8b"
+horizon_revision = "36f5b83bc6dbc8c19541e55d4625414b095cc446"
 
 [[module]]
 id = "visuals"
