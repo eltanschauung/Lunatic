@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "lunatic:bushy_bamboo"
+    "lunatic:bushy_bamboo",
+    "lunatic:bushy_bamboo_shoot"
   ]
 }

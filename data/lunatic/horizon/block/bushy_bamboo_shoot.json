@@ -1,0 +1,7 @@
+{
+  "template": "minecraft:bamboo_sapling",
+  "item": false,
+  "properties": {
+    "occludes": false
+  }
+}
