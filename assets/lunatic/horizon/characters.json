@@ -194,7 +194,7 @@
       "race": "youkai,magician",
       "color": "light_purple",
       "size": 0.9,
-      "chest": "1.35",
+      "chest": "1.85",
       "starting_items": [],
       "starting_spells": []
     },
@@ -462,6 +462,7 @@
       "race": "satori,youkai",
       "color": "light_purple",
       "size": 0.82,
+      "chest": "1.15",
       "starting_items": [],
       "starting_spells": []
     },
@@ -471,6 +472,7 @@
       "race": "satori,youkai,koishi",
       "color": "green",
       "size": 0.82,
+      "chest": "1.15",
       "starting_items": [
         {
           "item": "lunatic:koishi_phone",
@@ -559,9 +561,9 @@
       "id": "lunatic:yorigami_joon",
       "name": "Yorigami Jo'on",
       "race": "youkai,pestilence_god",
-      "color": "dark_blue",
+      "color": "gold",
       "size": 0.88,
-      "chest": "1.5",
+      "chest": "1.9",
       "starting_items": [],
       "starting_spells": []
     },
@@ -604,7 +606,7 @@
       "race": "tube_fox,youkai,",
       "color": "#008080",
       "size": 0.88,
-      "chest": "1.15",
+      "chest": "1.2",
       "starting_items": [],
       "starting_spells": []
     }
