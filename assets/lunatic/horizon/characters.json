@@ -223,7 +223,7 @@
       "size": 0.8,
       "health": "16",
       "starting_items": [],
-      "starting_spells": []
+      "starting_spells": ["lunatic:remilia_bat_transformation", "lunatic:remilia_bat_cancel"]
     },
     {
       "id": "lunatic:flandre_scarlet",
@@ -233,7 +233,7 @@
       "size": 0.8,
       "health": "16",
       "starting_items": [],
-      "starting_spells": []
+      "starting_spells": ["lunatic:flandre_bat_transformation", "lunatic:flandre_bat_cancel"]
     },
     {
       "id": "lunatic:letty_whiterock",

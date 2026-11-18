@@ -65,6 +65,90 @@
         0.42,
         0.88
       ]
+    },
+    {
+      "id": "lunatic:remilia_bat_transformation",
+      "name": "Bat Transformation",
+      "icon": "lunatic:gui/sprites/magic/remilia_spellbook",
+      "color": 6591999,
+      "kind": "bat",
+      "hunger": 8,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 3600,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation"
+      ],
+      "description": "Become a flying bat for 60–180 seconds and scatter 6–10 bats. Maximum health and hunger are 10 in bat form.",
+      "min_duration_ticks": 1200,
+      "bat_tint": [
+        70,
+        126,
+        255
+      ]
+    },
+    {
+      "id": "lunatic:remilia_bat_cancel",
+      "name": "Bat Cancel",
+      "icon": "lunatic:gui/sprites/magic/remilia_spellbook",
+      "color": 6591999,
+      "kind": "bat_cancel",
+      "hunger": 4,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 1,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation"
+      ],
+      "description": "Return to your normal form early."
+    },
+    {
+      "id": "lunatic:flandre_bat_transformation",
+      "name": "Bat Transformation",
+      "icon": "lunatic:gui/sprites/magic/flandre_spellbook",
+      "color": 16737385,
+      "kind": "bat",
+      "hunger": 8,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 3600,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation"
+      ],
+      "description": "Become a flying bat for 60–180 seconds and scatter 6–10 bats. Maximum health and hunger are 10 in bat form.",
+      "min_duration_ticks": 1200,
+      "bat_tint": [
+        255,
+        98,
+        102
+      ]
+    },
+    {
+      "id": "lunatic:flandre_bat_cancel",
+      "name": "Bat Cancel",
+      "icon": "lunatic:gui/sprites/magic/flandre_spellbook",
+      "color": 16737385,
+      "kind": "bat_cancel",
+      "hunger": 4,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 1,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation",
+        "lunatic:bat_transformation"
+      ],
+      "description": "Return to your normal form early."
     }
   ]
 }
