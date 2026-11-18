@@ -221,6 +221,7 @@
       "race": "vampire,youkai,remilia",
       "color": "dark_red",
       "size": 0.8,
+      "health": "16",
       "starting_items": [],
       "starting_spells": []
     },
@@ -230,6 +231,7 @@
       "race": "vampire,youkai,flandre",
       "color": "red",
       "size": 0.8,
+      "health": "16",
       "starting_items": [],
       "starting_spells": []
     },
