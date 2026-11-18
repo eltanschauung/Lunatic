@@ -48,6 +48,13 @@
       "size": 0.8,
       "starting_items": [
         {
+          "item": "horizon_magic_brooms:broom_magic",
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
           "item": "minecraft:experience_bottle",
           "count": 16,
           "enchantments": {
