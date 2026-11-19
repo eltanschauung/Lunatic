@@ -20,6 +20,11 @@ impl Game<'_> {
         }
     }
 
+    pub(super) fn lunatic_parasol_attack_hand(&self, alternate: bool) -> Option<u8> {
+        self.lunatic_parasol_hand()
+            .filter(|_| self.lunatic_action_allowed(YUUKA_PARASOL.attack(alternate)))
+    }
+
     pub(super) fn lunatic_parasol_key(&mut self, key: &str, pressed: bool) {
         if pressed
             && self
@@ -36,7 +41,7 @@ impl Game<'_> {
         if !self.native_on("lunatic") || !self.native_playing() || self.spectator() {
             return false;
         }
-        let Some(hand) = self.lunatic_parasol_hand() else {
+        let Some(hand) = self.lunatic_parasol_attack_hand(alternate) else {
             return false;
         };
         if self.remote.is_some() {

@@ -175,7 +175,7 @@ impl Game<'_> {
         has_ammo
     }
     pub(super) fn lunatic_continue(&self) -> bool {
-        if self.native_on("lunatic") && self.lunatic_parasol_hand().is_some() { return true; }
+        if self.native_on("lunatic") && self.lunatic_parasol_attack_hand(false).is_some() { return true; }
         if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()==super::lunatic_gourd::ITEM){return true;}
         if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()=="lunatic:lampad_torch") {return true;}
         self.native_on("lunatic")

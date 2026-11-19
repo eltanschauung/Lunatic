@@ -67,7 +67,7 @@ impl Game<'_> {
         if self.remote.is_some()
             || self.spectator()
             || !self.native_on("lunatic")
-            || self.lunatic_parasol_hand() != Some(hand)
+            || self.lunatic_parasol_attack_hand(alternate) != Some(hand)
             || self
                 .player
                 .as_ref()
@@ -242,6 +242,7 @@ impl Game<'_> {
         for volley in volleys {
             let shoot = |g: &mut Game<'_>| {
                 if g.yuuka_field() == volley.field
+                    && g.lunatic_action_allowed(YUUKA_PARASOL.alternate)
                     && !g.spectator()
                     && g.player.as_ref().is_some_and(|p| !p.health.dead_or_dying())
                 {

@@ -36,6 +36,13 @@ impl Action {
         sound: None,
     };
 
+    const fn for_race(self, race: &'static str) -> Self {
+        Self {
+            race: Some(race),
+            ..self
+        }
+    }
+
     const fn wearing(self, wear: u32) -> Self {
         Self { wear, ..self }
     }
@@ -102,8 +109,12 @@ pub(super) const IBUKI_GOURD: Weapon = Weapon {
 pub(super) const GOURD_REEL: Sound = Sound::new("item.gourd.reel", 0.8);
 
 pub(super) const YUUKA_PARASOL: Weapon = Weapon {
-    primary: Action::sounding("item.yuuka_parasol.fire", 0.55).wearing(3),
-    alternate: Action::sounding("item.yuuka_parasol.fire", 0.55).wearing(3),
+    primary: Action::sounding("item.yuuka_parasol.fire", 0.55)
+        .wearing(3)
+        .for_race("yuuka"),
+    alternate: Action::sounding("item.yuuka_parasol.fire", 0.55)
+        .wearing(3)
+        .for_race("yuuka"),
     passive: Action::sounding("item.yuuka_parasol.open", 0.5).wearing(3),
     ..Weapon::new("lunatic:yuuka_parasol", 0xff55ff55)
 };
