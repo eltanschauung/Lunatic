@@ -62,7 +62,7 @@ impl Weapon {
             primary: Action::NONE,
             alternate: Action::NONE,
             passive: Action::NONE,
-            ignores_hurt_cooldown: false,
+            ignores_hurt_cooldown: true,
             tooltip: None,
         }
     }
@@ -78,7 +78,6 @@ impl Weapon {
 
 pub(super) const PURIFICATION_ROD: Weapon = Weapon {
     primary: Action::sounding("item.purification_rod.activate", 0.6),
-    ignores_hurt_cooldown: true,
     ..Weapon::new("lunatic:purification_rod", 0xffff5555)
 };
 pub(super) const ROD_NO_TARGET: Sound = Sound::new("item.purification_rod.no_target", 0.6);
