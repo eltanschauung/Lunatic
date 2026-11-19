@@ -3,7 +3,7 @@
     "subtitle": "subtitles.lunatic.item.purification_rod.activate",
     "sounds": [
       {
-        "name": "lunatic:item/purification_rod/activate",
+        "name": "lunatic:danmaku/se_option",
         "attenuation_distance": 32
       }
     ]
@@ -12,7 +12,7 @@
     "subtitle": "subtitles.lunatic.item.purification_rod.no_target",
     "sounds": [
       {
-        "name": "lunatic:item/purification_rod/no_target",
+        "name": "lunatic:danmaku/se_ophide",
         "attenuation_distance": 24
       }
     ]
@@ -21,7 +21,7 @@
     "subtitle": "subtitles.lunatic.entity.yin_yang_orb.shoot",
     "sounds": [
       {
-        "name": "lunatic:entity/yin_yang_orb/shoot",
+        "name": "lunatic:danmaku/se_plst00",
         "attenuation_distance": 32
       }
     ]
@@ -30,7 +30,7 @@
     "subtitle": "subtitles.lunatic.entity.yin_yang_orb.bounce",
     "sounds": [
       {
-        "name": "lunatic:entity/yin_yang_orb/bounce",
+        "name": "lunatic:danmaku/se_graze",
         "attenuation_distance": 32
       }
     ]
@@ -39,7 +39,7 @@
     "subtitle": "subtitles.lunatic.entity.yin_yang_orb.impact",
     "sounds": [
       {
-        "name": "lunatic:entity/yin_yang_orb/impact",
+        "name": "lunatic:danmaku/se_kira00",
         "attenuation_distance": 32
       }
     ]
@@ -48,7 +48,7 @@
     "subtitle": "subtitles.lunatic.entity.yin_yang_orb.close_detonation",
     "sounds": [
       {
-        "name": "lunatic:entity/explosion_old",
+        "name": "lunatic:danmaku/mcl_tnt_tnt_explode",
         "attenuation_distance": 64
       }
     ]
@@ -64,7 +64,7 @@
   "entity.fairy.cancel": {
     "sounds": [
       {
-        "name": "lunatic:entity/fairy/cancel",
+        "name": "lunatic:danmaku/se_ophide",
         "attenuation_distance": 24
       }
     ]
@@ -72,7 +72,7 @@
   "item.lampad_torch.shoot": {
     "sounds": [
       {
-        "name": "lunatic:item/lampad_torch/shoot",
+        "name": "lunatic:danmaku/se_option",
         "attenuation_distance": 32
       }
     ]
@@ -89,7 +89,7 @@
   "entity.explosion_old": {
     "sounds": [
       {
-        "name": "lunatic:entity/explosion_old",
+        "name": "lunatic:danmaku/mcl_tnt_tnt_explode",
         "attenuation_distance": 64
       }
     ]
@@ -105,14 +105,14 @@
   "item.gourd.fire": {
     "sounds": [
       {
-        "name": "lunatic:item/lampad_torch/shoot"
+        "name": "lunatic:danmaku/se_option"
       }
     ]
   },
   "item.gourd.reel": {
     "sounds": [
       {
-        "name": "lunatic:item/purification_rod/no_target"
+        "name": "lunatic:danmaku/se_ophide"
       }
     ]
   },
@@ -128,6 +128,22 @@
     "sounds": [
       {
         "name": "minecraft:block.note_block.guitar",
+        "type": "event"
+      }
+    ]
+  },
+  "item.yuuka_parasol.fire": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_kira00",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "item.yuuka_parasol.open": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.flap",
         "type": "event"
       }
     ]

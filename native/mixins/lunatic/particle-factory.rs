@@ -7,7 +7,26 @@ const PREFIX: &str = "lunatic:particle/yin_yang_orb/";
 fn ours(p: &Particle) -> bool {
     matches!(&p.sprite, Sprite::Named(name) if name.starts_with(PREFIX))
 }
+const YUUKA_TRAIL: [&str; 4] = [
+    "lunatic:particle/yuuka_danmaku_trail_large",
+    "lunatic:particle/yuuka_danmaku_trail_medium",
+    "lunatic:particle/yuuka_danmaku_trail_small",
+    "lunatic:particle/yuuka_danmaku_trail_small",
+];
+fn is_yuuka_trail(p: &Particle) -> bool {
+    matches!(&p.sprite, Sprite::Named(n) if n.starts_with("lunatic:particle/yuuka_danmaku_trail_"))
+}
 pub fn tick(p: &mut Particle) -> bool {
+    if is_yuuka_trail(p) {
+        p.previous = p.position;
+        p.age += 1;
+        if let Some(sprite) = YUUKA_TRAIL.get(p.age as usize) {
+            p.sprite = Sprite::Named((*sprite).into());
+        } else {
+            p.removed = true;
+        }
+        return true;
+    }
     if matches!(&p.sprite,Sprite::Named(n)if n.starts_with("lunatic:particle/lampad_")) {
         p.previous=p.position;p.age+=1;if p.age>=p.lifetime{p.removed=true;return true;}
         if matches!(&p.sprite,Sprite::Named(n)if n.contains("lampad_ring_")){for i in 0..3{p.position[i]+=p.velocity[i]*((60.0-f64::from(p.age)+0.5)/60.0);}return true;}
@@ -33,6 +52,7 @@ pub fn tick(p: &mut Particle) -> bool {
     true
 }
 pub fn light(p: &Particle, sky: u32, block: u32) -> Option<(u32, u32)> {
+    if is_yuuka_trail(p) { return Some((240, 240)); }
     if matches!(&p.sprite,Sprite::Named(n)if n.starts_with("lunatic:particle/lampad_")){return Some((240,240));}
     ours(p).then_some((sky, block.max(8 * 16)))
 }
@@ -201,7 +221,16 @@ mod tests {
 }
 
 pub fn lampad_particle(o:&super::ParticleOptions,at:[f64;3],v:[f64;3])->Option<Particle>{
- let name=o.mod_particle.as_deref()?.strip_prefix("lunatic:lampad_")?;
+ let id = o.mod_particle.as_deref()?;
+ if id == "lunatic:yuuka_trail" {
+     let mut p = Particle::blank(ParticleType::EndRod, at);
+     p.sprite = Sprite::Named(YUUKA_TRAIL[0].into());
+     p.size = 0.20;
+     p.lifetime = 4;
+     p.gravity = 0.0;
+     return Some(p);
+ }
+ let name=id.strip_prefix("lunatic:lampad_")?;
  let color=if name.ends_with("red"){[1.0,0.1,0.1,1.0]}else if name.ends_with("blue"){[0.1,0.2,1.0,1.0]}else{[1.0;4]};
  let mut p=Particle::blank(ParticleType::EndRod,at);p.sprite=Sprite::Named(format!("lunatic:particle/lampad_{name}"));
  p.rgba=color;p.lifetime=if name.starts_with("ring_"){60}else if name.starts_with("flag_"){40}else{16};p.size=0.18;p.velocity=if name.starts_with("ring_"){v.map(|n|n/20.0)}else{v};p.gravity=0.0;Some(p)

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lunatic:item/yuuka_danmaku_flower_large"
+  }
+}

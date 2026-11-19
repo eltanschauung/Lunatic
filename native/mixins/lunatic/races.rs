@@ -179,6 +179,8 @@ impl Game<'_> {
         }
         self.lunatic_character_body();
         self.lunatic_phone_effect();
+        self.lunatic_parasol_tick();
+        self.lunatic_yuuka_spell();
         self.lunatic_parasol_publish();
         if let Some(event) = self
             .player

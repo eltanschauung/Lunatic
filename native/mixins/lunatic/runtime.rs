@@ -62,7 +62,7 @@ impl Game<'_> {
     pub(super) fn lunatic_phone_effect(&mut self) {
         const EFFECT: &str = "lunatic:all_talk";
         let active = !self.spectator()
-            && self.inventory.iter().take(9).flatten()
+            && self.inventory.iter().take(9).flatten().chain(self.offhand.as_ref())
                 .any(|stack| stack.item.as_ref() == "lunatic:koishi_phone");
         let player = self.native_acting_id();
         let Some(effects) = self.native_effects(player) else { return; };
@@ -102,7 +102,7 @@ impl Game<'_> {
             return;
         }
         let description = match stack.item.as_ref() {
-            "lunatic:koishi_phone" => Some("Keep this in your hotbar to gain All-talk and broadcast voice chat to everyone."),
+            "lunatic:koishi_phone" => Some("Keep this in your hotbar or offhand to gain All-talk and broadcast voice chat to everyone."),
             "lunatic:koishi_knife" => Some("Stone sword damage, swing cooldown is 50% lower, 25% chance to make enemies bleed."),
             _ => None,
         };
@@ -160,6 +160,7 @@ impl Game<'_> {
         }
     }
     pub(super) fn lunatic_input(&mut self) -> bool {
+        if self.lunatic_parasol_input(false) { return true; }
         if self.gourd_input(){return true;}
         if self.lampad_input(false) { return true; }
         if !self.native_on("lunatic")
@@ -183,6 +184,7 @@ impl Game<'_> {
         has_ammo
     }
     pub(super) fn lunatic_continue(&self) -> bool {
+        if self.native_on("lunatic") && self.lunatic_parasol_hand().is_some() { return true; }
         if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()==super::lunatic_gourd::ITEM){return true;}
         if self.native_on("lunatic") && self.held().is_some_and(|s|s.item.as_ref()=="lunatic:lampad_torch") {return true;}
         self.native_on("lunatic")
@@ -223,8 +225,8 @@ impl Game<'_> {
     pub(super) fn lunatic_message(&mut self, player: u128, channel: &str, data: &[u8]) {
         self.gourd_request(player,channel,data);
         if channel == super::lunatic_parasol::REQUEST {
-            if data.len() == 1 && data[0] <= 1 && self.native_on("lunatic") && self.remote.is_none() {
-                self.lunatic_as_player(player, |game| game.lunatic_parasol_toggle(data[0]));
+            if let [hand @ 0..=1, alternate @ 0..=1] = data {
+                self.lunatic_as_player(player, |game| game.lunatic_yuuka_fire(*hand, *alternate == 1));
             }
             return;
         }
@@ -307,6 +309,10 @@ impl Game<'_> {
         } else {
             32.0
         };
+        if self.lan.is_none() && self.options.dedicated.is_none() && self.serving.is_none() {
+            self.audio.play(&format!("lunatic:{event}"), Some(array(at)), gain, 1.0);
+            return;
+        }
         let dimension = self.dim.id();
         STATE.with_borrow_mut(|s| {
             s.sounds.push(QueuedSound {
@@ -506,6 +512,7 @@ impl Game<'_> {
         }
         self.gourd_pre();
         self.lampad_pre();
+        self.lunatic_yuuka_tick();
         let world = self.lunatic_world_key();
         let dim = self.dim.id();
         let now = self.world.game_time;
@@ -535,6 +542,7 @@ impl Game<'_> {
         );
     }
     pub(super) fn lunatic_post(&mut self) {
+        if self.native_on("lunatic") { self.lunatic_yuuka_trails(); }
         self.gourd_post();
         self.lampad_post();
         for event in motion::finish() {
@@ -582,6 +590,7 @@ impl Game<'_> {
         self.gourd_stop();
         self.koishi_stop();
         self.lampad_stop();
+        self.lunatic_yuuka_stop();
         self.lunatic_clear_bursts();
         STATE.with_borrow_mut(|s| *s = State::default());
         motion::reset();

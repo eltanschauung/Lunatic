@@ -172,7 +172,7 @@ impl Game<'_> {
             *self.held_mut() = remaining;
         }
         self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action/primary"), 80);
-        self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.8);
+        self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.4);
     }
     fn gourd_reward(&mut self, attack: &Attack) {
         if attack.exceptional { return; }

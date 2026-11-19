@@ -80,7 +80,7 @@
           }
         }
       ],
-      "starting_spells": []
+      "starting_spells": ["lunatic:sunflower_uprising"]
     },
     {
       "id": "lunatic:alice_margatroid",

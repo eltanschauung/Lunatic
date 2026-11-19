@@ -5,6 +5,9 @@ fn flight(
 ) -> std::ops::ControlFlow<(bool, Hit)> {
     if let Some(result)=crate::projectiles::gourd_motion::tick(projectile,world){return std::ops::ControlFlow::Break(result);}
     if let Some(result)=crate::projectiles::lampad_motion::tick(projectile,world) {return std::ops::ControlFlow::Break(result);}
+    if let Some(result) = lunatic_yuuka::tick(projectile, world) {
+        return std::ops::ControlFlow::Break(result);
+    }
     match lunatic_motion::tick(projectile, world) {
         Some(result) => std::ops::ControlFlow::Break(result),
         None => std::ops::ControlFlow::Continue(()),

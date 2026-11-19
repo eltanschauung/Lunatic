@@ -9,6 +9,11 @@ fn hook(
         super::lunatic_gourd::predict(p,world);
         return std::ops::ControlFlow::Break(());
     }
+    if horizon_client::projectiles::lunatic_yuuka::ours(p) {
+        p.set_old_pos_and_rot();
+        p.position = p.position.add_vector(p.velocity);
+        return std::ops::ControlFlow::Break(());
+    }
     if !p.kind.id().starts_with("lunatic:lampad_star_") {
         return std::ops::ControlFlow::Continue(());
     }

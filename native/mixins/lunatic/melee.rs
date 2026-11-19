@@ -2,7 +2,7 @@
 use super::Game;
 
 fn strength_bonus(oni: bool, yuuka: bool, fist: bool, strength: Option<i32>) -> f32 {
-    let desired: f32 = if oni && fist { 6.0 } else if oni || yuuka { 3.0 } else { 0.0 };
+    let desired: f32 = if oni && fist { 6.0 } else if oni { 3.0 } else if yuuka && fist { 2.0 } else { 0.0 };
     let vanilla = strength.map_or(0.0, |level| 3.0 * (level.max(0) as f32 + 1.0));
     (desired - vanilla).max(0.0)
 }
@@ -46,7 +46,7 @@ mod tests {
     }
     #[test] fn yuuka_is_permanent_and_never_stacks_with_oni_or_strength() {
         for fist in [false, true] {
-            assert_eq!(strength_bonus(false, true, fist, None), 3.0);
+            assert_eq!(strength_bonus(false, true, fist, None), if fist { 2.0 } else { 0.0 });
             assert_eq!(strength_bonus(true, true, fist, None), if fist {6.0} else {3.0});
         }
         assert_eq!(strength_bonus(true, true, true, Some(0)), 3.0);

@@ -137,7 +137,7 @@ pub fn render(
     let bsize = physics::bust(m.character_chest, m.slim);
     if bsize <= 0.0
         || !visible
-        || m.kind.id.as_str() != "minecraft:player"
+        || !matches!(m.kind.id.as_str(), "minecraft:player" | "minecraft:mannequin")
         || m.extra.spectator
         || (m.extra.chest.is_some() && super::chestplate_hides_skin())
     {

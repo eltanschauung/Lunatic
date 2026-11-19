@@ -1,6 +1,6 @@
 [mod]
 id = "lunatic"
-version = "0.13.0"
+version = "0.13.1"
 priority = 100
 
 [[injection]]
@@ -35,6 +35,19 @@ id = "game"
 file = "crates/horizon-client/src/game.rs"
 name = "lunatic_orbs"
 source = "runtime.rs"
+
+[[module]]
+id = "yuuka"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_yuuka"
+source = "yuuka.rs"
+
+[[module]]
+id = "yuuka-flight"
+file = "crates/horizon-client/src/projectiles.rs"
+name = "lunatic_yuuka"
+source = "yuuka-flight.rs"
+visibility = "pub"
 
 [[module]]
 id = "motion"

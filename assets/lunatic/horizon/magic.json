@@ -149,6 +149,30 @@
         "lunatic:bat_transformation"
       ],
       "description": "Return to your normal form early."
+    },
+    {
+      "id": "lunatic:sunflower_uprising",
+      "name": "Sunflower Uprising",
+      "icon": "minecraft:item/sunflower",
+      "color": 15906365,
+      "kind": "effect",
+      "hunger": 6,
+      "scale": 1.0,
+      "transition_ticks": 1,
+      "duration_ticks": 20,
+      "ending_ticks": 1,
+      "effects": [
+        "lunatic:sunflower_uprising",
+        "lunatic:sunflower_uprising",
+        "lunatic:sunflower_uprising"
+      ],
+      "description": "Send a 9×9 wave of sunflower-topped pillars through the ground. Each enemy struck takes 10 damage and is launched upward and away.",
+      "start_sound": "minecraft:entity.ender_dragon.growl",
+      "particle_color": [
+        1.0,
+        0.78,
+        0.16
+      ]
     }
   ]
 }
