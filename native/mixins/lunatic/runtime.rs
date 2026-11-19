@@ -59,6 +59,23 @@ fn vec(v: [f64; 3]) -> Vec3 {
     Vec3::new(v[0], v[1], v[2])
 }
 impl Game<'_> {
+    pub(super) fn lunatic_phone_effect(&mut self) {
+        const EFFECT: &str = "lunatic:all_talk";
+        let active = !self.spectator()
+            && self.inventory.iter().take(9).flatten()
+                .any(|stack| stack.item.as_ref() == "lunatic:koishi_phone");
+        let player = self.native_acting_id();
+        let Some(effects) = self.native_effects(player) else { return; };
+        let current = effects.iter().find(|effect| effect.id == EFFECT);
+        if active && current.is_none_or(|effect| effect.duration != -1) {
+            self.native_add_effect(player, &super::native_player_state::NativeEffect {
+                id: EFFECT.into(), duration: -1, amplifier: 0, ambient: false, particles: false,
+            });
+        } else if !active && current.is_some() {
+            self.native_remove_effect(player, EFFECT);
+        }
+    }
+
     pub(super) fn lunatic_held_name(&self) -> Option<horizon_client::hud_overlays::HeldName> {
         if !self.native_on("lunatic") {
             return None;
@@ -85,7 +102,7 @@ impl Game<'_> {
             return;
         }
         let description = match stack.item.as_ref() {
-            "lunatic:koishi_phone" => Some("While held, proximity voice chat is replaced with all-talk."),
+            "lunatic:koishi_phone" => Some("Keep this in your hotbar to gain All-talk and broadcast voice chat to everyone."),
             "lunatic:koishi_knife" => Some("Stone sword damage, swing cooldown is 50% lower, 25% chance to make enemies bleed."),
             _ => None,
         };

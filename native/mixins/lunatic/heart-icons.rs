@@ -7,8 +7,11 @@ fn heart_icons(atlas: &mut HudAtlas) {
     // Discover supplied variants once. New textures then need only a content rebuild.
     // Preserve complete source UVs; the existing HUD draws every heart at 9x9.
     let aliases: Vec<_> = atlas.sprites.iter().filter_map(|(key, rect)| {
-        let name = key.strip_prefix("lunatic:gui/sprites/hud/heart/")?;
-        let vanilla = format!("gui/sprites/hud/heart/{name}");
+        let name = key.strip_prefix("lunatic:gui/sprites/hud/")?;
+        if !name.starts_with("heart/") && !name.starts_with("food_") {
+            return None;
+        }
+        let vanilla = format!("gui/sprites/hud/{name}");
         atlas.sprites.contains_key(&vanilla).then_some((vanilla, *rect))
     }).collect();
     for (name, rect) in aliases {
