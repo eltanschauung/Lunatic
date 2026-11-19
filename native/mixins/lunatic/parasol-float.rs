@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-use super::Game;
+use super::{Game, lunatic_weapons::YUUKA_PARASOL};
 pub(super) const REQUEST: &str = "lunatic:parasol_fire";
 pub(super) const STATE: &str = "lunatic:parasol_state";
-const ITEM: &str = "lunatic:yuuka_parasol";
+const ITEM: &str = YUUKA_PARASOL.item;
 
 impl Game<'_> {
     pub(super) fn lunatic_parasol_hand(&self) -> Option<u8> {
@@ -72,7 +72,7 @@ impl Game<'_> {
             player.lunatic_parasol_set(active);
             if active {
                 let at = player.position;
-                self.lunatic_sound("item.yuuka_parasol.open", at, 0.5);
+                self.lunatic_action_sound(YUUKA_PARASOL.passive, at);
             }
         }
     }

@@ -886,3 +886,9 @@ kind="HEAD"
 target="horizon_client::game::native_hooks::Game<'_>::native_player_logged_out"
 helper="gourd-logout.rs"
 bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="player",ty="u128",value="player"}]
+
+[[module]]
+id = "weapon-definitions"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_weapons"
+source = "weapons.rs"

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-use super::{Game, lan_particles::QueuedParticle};
+use super::{Game, lan_particles::QueuedParticle, lunatic_weapons::YUUKA_PARASOL};
 use horizon_client::{
     mobs::{Damage, DamageKind, Who},
     particles::{ParticleOptions, ParticleType},
@@ -127,11 +127,7 @@ impl Game<'_> {
                 );
             }
         }
-        self.lunatic_sound(
-            "item.yuuka_parasol.fire",
-            Vec3::new(eye[0], eye[1], eye[2]),
-            0.55,
-        );
+        self.lunatic_action_sound(YUUKA_PARASOL.attack(alternate), Vec3::new(eye[0], eye[1], eye[2]));
     }
 
     fn lunatic_yuuka_shot(&mut self, item: &str, direction: Vec3) {

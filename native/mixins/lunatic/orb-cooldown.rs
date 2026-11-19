@@ -1,3 +1,7 @@
 fn hook(p: &horizon_client::projectiles::Projectile, bypass: &mut bool) {
-    if horizon_client::projectiles::lunatic_motion::variant(p).is_some() { *bypass=true; }
+    if crate::game::lunatic_weapons::projectile_weapon(p)
+        .is_some_and(|weapon| weapon.ignores_hurt_cooldown)
+    {
+        *bypass = true;
+    }
 }

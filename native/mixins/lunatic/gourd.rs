@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-use super::Game;
+use super::{Game, lunatic_weapons::{GOURD_REEL, IBUKI_GOURD}};
 use horizon_client::{
     mobs::Who,
     projectiles::{
@@ -12,7 +12,7 @@ use std::{
     collections::HashMap,
     hash::{Hash, Hasher},
 };
-pub const ITEM: &str = "lunatic:ibuki_gourd";
+pub const ITEM: &str = IBUKI_GOURD.item;
 const REQUEST: &str = "lunatic:gourd_attack";
 const UPDATE: &str = "lunatic:gourd_tethers";
 #[derive(Clone)]
@@ -115,7 +115,7 @@ impl Game<'_> {
             let first = STATE.with_borrow_mut(|s| s.reeling.insert(key));
             if first {
                 if let Some(anchor) = self.gourd_anchor() {
-                    self.lunatic_sound("item.gourd.reel", motion::vec(anchor), 0.8);
+                    self.lunatic_weapon_sound(GOURD_REEL, motion::vec(anchor));
                 }
             }
             return;
@@ -172,7 +172,7 @@ impl Game<'_> {
             *self.held_mut() = remaining;
         }
         self.add_cooldown(std::sync::Arc::from("lunatic:ibuki_gourd/action/primary"), 80);
-        self.lunatic_sound("item.gourd.fire", motion::vec(self.aim().unwrap().0), 0.4);
+        self.lunatic_action_sound(IBUKI_GOURD.primary, motion::vec(self.aim().unwrap().0));
     }
     fn gourd_reward(&mut self, attack: &Attack) {
         if attack.exceptional { return; }
@@ -228,7 +228,7 @@ impl Game<'_> {
                     a.exceptional = true;
                     a.retract = true;
                     if let Some(at) = anchor {
-                        self.lunatic_sound("item.gourd.reel", motion::vec(at), 0.8);
+                        self.lunatic_weapon_sound(GOURD_REEL, motion::vec(at));
                     }
                     let end = STATE.with_borrow_mut(|s| {
                         let ready = s.ready.entry((world,a.owner)).or_insert(a.started+80);

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-use super::Game;
+use super::{Game, lunatic_weapons::LAMPAD_TORCH};
 use horizon_client::{projectiles::{Projectile,ProjectileKind,Hit,thrown_type,lampad_motion as motion},mobs::Who,particles::ParticleOptions};
 use horizon_core::{geometry::Vec3,random::RandomSource};
 use std::{cell::RefCell,collections::HashMap};
-const TORCH:&str="lunatic:lampad_torch";
+const TORCH:&str=LAMPAD_TORCH.item;
 struct Shot{world:u64,dim:String,owner:u128,due:i64,dir:[f64;3],side:bool,color:usize}
 struct Zone{world:u64,dim:String,p:Projectile,at:Vec3,born:i64,last:HashMap<Who,i64>}
 #[derive(Default)]struct State{side:HashMap<(u64,u128),bool>,shots:Vec<Shot>,zones:Vec<Zone>}
@@ -29,7 +29,7 @@ impl Game<'_>{
   let Some(t)=thrown_type(&name)else{return;};let Some((eye,_))=self.aim()else{return;};
   let at=Vec3::new(eye[0]+dir[0]*0.8,eye[1]+dir[1]*0.8,eye[2]+dir[2]*0.8);
   let mut p=Projectile::new(ProjectileKind::Thrown(t),at,Some(Who::Player));p.guest=self.lan_acting;p.no_gravity=true;
-  let speed=if flag{1.4}else{1.25};p.velocity=Vec3::new(dir[0]*speed,dir[1]*speed,dir[2]*speed);self.add_projectile(p);self.lunatic_sound("item.lampad_torch.shoot",at,0.7);
+  let speed=if flag{1.4}else{1.25};p.velocity=Vec3::new(dir[0]*speed,dir[1]*speed,dir[2]*speed);self.add_projectile(p);self.lunatic_action_sound(LAMPAD_TORCH.attack(flag),at);
  }
  pub(super)fn lampad_pre(&mut self){
   let world=self.lunatic_world_key();let dim=self.dim.id();let now=self.world.game_time;

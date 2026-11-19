@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Server-owned ammo selection, consumption, volley scheduling, sounds and area effects.
-use super::{Dim, Game};
+use super::{Dim, Game, lunatic_weapons as weapons};
 use horizon_client::{
     items::ItemStack,
     mobs::{Damage, DamageKind, Who},
@@ -14,7 +14,7 @@ use std::{
     hash::{Hash, Hasher},
     time::{Duration, Instant},
 };
-const ROD: &str = "lunatic:purification_rod";
+const ROD: &str = weapons::PURIFICATION_ROD.item;
 const CHANNEL: &str = "lunatic:rod_fire";
 const ITEM_COLORS: [u32; 3] = [0xdc143c, 0x800080, 0x00ff00];
 fn ammo_notice(selected: Option<usize>) -> Text {
@@ -58,6 +58,11 @@ fn array(v: Vec3) -> [f64; 3] {
 fn vec(v: [f64; 3]) -> Vec3 {
     Vec3::new(v[0], v[1], v[2])
 }
+fn lunatic_item_color(item: &str) -> Option<u32> {
+    weapons::weapon(item).map(|weapon| weapon.color).or_else(|| {
+        motion::ITEMS.iter().position(|id| *id == item).map(|index| ITEM_COLORS[index])
+    })
+}
 impl Game<'_> {
     pub(super) fn lunatic_phone_effect(&mut self) {
         const EFFECT: &str = "lunatic:all_talk";
@@ -84,16 +89,14 @@ impl Game<'_> {
         if stack.custom_name().is_some() {
             return None;
         }
-        let index = motion::ITEMS
-            .iter()
-            .position(|id| *id == stack.item.as_ref())?;
+        let color = lunatic_item_color(&stack.item)?;
         let name = horizon_client::item_tooltip::styled_name(stack, || {
             horizon_client::item_tooltip::name_line(stack, &|key| self.pack.names.display_get(key))
         });
         Some(horizon_client::hud_overlays::HeldName {
             item: stack.item.to_string(),
-            hover_name: Text::colored(name.plain(), ITEM_COLORS[index]),
-            rarity_color: ITEM_COLORS[index],
+            hover_name: Text::colored(name.plain(), color),
+            rarity_color: color,
             custom_name: false,
         })
     }
@@ -101,35 +104,23 @@ impl Game<'_> {
         if !self.native_on("lunatic") {
             return;
         }
-        let description = match stack.item.as_ref() {
-            "lunatic:koishi_phone" => Some("Keep this in your hotbar or offhand to gain All-talk and broadcast voice chat to everyone."),
-            "lunatic:koishi_knife" => Some("Stone sword damage, swing cooldown is 50% lower, 25% chance to make enemies bleed."),
-            _ => None,
-        };
-        if let Some(description) = description { lines.push((Text::literal(description), 0xFFAAAAAA)); }
-        if stack.item.as_ref() == "lunatic:ibuki_gourd" {
-            for (a,b) in [
-                ("Primary fire for ", ": Hurl the gourd up to 16 blocks away as a flail, dealing great damage. Left click to pull back in. Cooldown: 4s"),
-                ("Alt fire: Get drunk. For ", ": Gain super strength for 12-20 seconds before drunkenness sets in, empowering melee damage and providing explosive punches. Effect expiry consumes 2-5 hunger.")
-            ] {
-                let mut text = Text::colored(a, 0xFFAAAAAA);
-                text.spans.extend(Text::colored("Oni", 0xFFFFAA00).spans);
-                text.spans.extend(Text::colored(b, 0xFFAAAAAA).spans);
-                lines.push((text, u32::MAX));
+        if stack.item.as_ref() == "lunatic:koishi_phone" {
+            lines.push((Text::literal("Keep this in your hotbar or offhand to gain All-talk and broadcast voice chat to everyone."), 0xffaaaaaa));
+        }
+        let Some(color) = lunatic_item_color(&stack.item) else { return; };
+        // The display name is the first line, before we add custom descriptions.
+        if stack.custom_name().is_none() {
+            if let Some((name, base)) = lines.first_mut() {
+                *base = u32::MAX;
+                for span in &mut name.spans {
+                    span.style.color = Some(color);
+                }
             }
         }
-        if stack.custom_name().is_some() { return; }
-        let Some(index) = motion::ITEMS
-            .iter()
-            .position(|id| *id == stack.item.as_ref())
-        else {
-            return;
-        };
-        if let Some((name, base)) = lines.first_mut() {
-            *base = u32::MAX;
-            for span in &mut name.spans {
-                span.style.color = Some(ITEM_COLORS[index]);
-            }
+        if let Some(weapon) = weapons::weapon(&stack.item)
+            && let Some(tooltip) = weapon.tooltip
+        {
+            tooltip(weapon, lines);
         }
     }
     pub(super) fn lunatic_world_key(&self) -> u64 {
@@ -416,10 +407,10 @@ impl Game<'_> {
             }
         }
         if kind == 1 && !self.lunatic_has_target(vec(eye), vec(direction)) {
-            self.lunatic_sound("item.purification_rod.no_target", vec(eye), 0.6);
+            self.lunatic_weapon_sound(weapons::ROD_NO_TARGET, vec(eye));
             return;
         }
-        self.lunatic_sound("item.purification_rod.activate", vec(eye), 0.6);
+        self.lunatic_action_sound(weapons::PURIFICATION_ROD.primary, vec(eye));
         if !self.creative {
             let held = self.held_mut();
             if let Some(stack) = held {
@@ -559,7 +550,7 @@ impl Game<'_> {
         }
     }
     fn lunatic_area_damage(&mut self, p: &Projectile, at: Vec3) {
-        let _cooldown = horizon_client::health::ProjectileCooldownGuard::new(motion::variant(p).is_some());
+        let _cooldown = horizon_client::health::ProjectileCooldownGuard::new(weapons::projectile_weapon(p).is_some_and(|weapon| weapon.ignores_hurt_cooldown));
         let damage = match p.kind {
             ProjectileKind::Thrown(t) => t.damage,
             _ => return,
