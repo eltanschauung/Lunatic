@@ -127,16 +127,23 @@ impl Game<'_> {
                 );
             }
         }
-        self.lunatic_action_sound(YUUKA_PARASOL.attack(alternate), Vec3::new(eye[0], eye[1], eye[2]));
+        self.lunatic_action_sound(
+            YUUKA_PARASOL.attack(alternate),
+            Vec3::new(eye[0], eye[1], eye[2]),
+        );
     }
 
     fn lunatic_yuuka_shot(&mut self, item: &str, direction: Vec3) {
         let (Some(kind), Some(eye)) = (thrown_type(item), self.eye_position()) else {
             return;
         };
-        let at = Vec3::new(eye[0], eye[1], eye[2]).add_vector(direction.scale(0.35));
+        let at = Vec3::new(eye[0], eye[1], eye[2]).add_vector(direction.scale(flight::SHOT_OFFSET));
         let mut shot = Projectile::new(ProjectileKind::Thrown(kind), at, Some(Who::Player));
-        shot.velocity = direction;
+        shot.velocity = if item == flight::PRIMARY {
+            direction.scale(flight::PRIMARY_START_SPEED)
+        } else {
+            direction
+        };
         shot.no_gravity = true;
         shot.guest = self.lan_acting;
         self.add_projectile(shot);
