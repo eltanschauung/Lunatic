@@ -97,6 +97,29 @@ impl Game<'_> {
             return;
         }
 
+        // Use the regular weapon animation for accepted attacks. Guests receive
+        // their own swing as well as the ordinary broadcast to nearby players.
+        use horizon_client::first_person::{Hand, SwingAnimation};
+        let before = self.swings_started;
+        self.swing_hand(
+            if hand == 0 { Hand::Main } else { Hand::Off },
+            SwingAnimation::DEFAULT,
+        );
+        if self.swings_started != before
+            && let Some(guest) = self
+                .lan_acting
+                .and_then(|conn| self.lan.as_ref()?.hub.guest(conn))
+        {
+            use horizon_protocol::packets::play::{Clientbound, SwingAnimation as Packet};
+            let animation = SwingAnimation::DEFAULT;
+            self.guest_packets.push(Clientbound::SwingAnimation(Packet {
+                id: guest.entity_id,
+                hand: i32::from(hand),
+                kind: i32::from(animation.kind),
+                duration: animation.duration,
+            }));
+        }
+
         let forward = Vec3::new(aim[0], aim[1], aim[2]).normalize();
         if alternate {
             let order = if self.world.random.next_double() < 0.5 {
