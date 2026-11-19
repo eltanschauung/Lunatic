@@ -2,6 +2,7 @@
 use super::{Game, lunatic_weapons::YUUKA_PARASOL};
 pub(super) const REQUEST: &str = "lunatic:parasol_fire";
 pub(super) const STATE: &str = "lunatic:parasol_state";
+pub(super) const FALL_DISTANCE: f64 = 2.0;
 const ITEM: &str = YUUKA_PARASOL.item;
 
 impl Game<'_> {
@@ -78,7 +79,7 @@ impl Game<'_> {
             && !player.fluids.was_touching_water
             && !player.is_in_lava()
             && !player.health.dead_or_dying()
-            && (was_active || (player.velocity.y < 0.0 && player.fall_distance > 3.0));
+            && (was_active || (player.velocity.y < 0.0 && player.fall_distance > FALL_DISTANCE));
         if active != was_active {
             player.lunatic_parasol_set(active);
             if active && let Some(hand) = hand {
