@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Spin the existing mesh each rendered frame. No model variants or item metadata.
-fn hook(p: &horizon_client::projectiles::Projectile, partial: f64, pose: &mut glam::Mat4) {
+fn hook(
+    game: &crate::game::Game<'_>,
+    p: &horizon_client::projectiles::Projectile,
+    partial: f64,
+    pose: &mut glam::Mat4,
+) {
     if horizon_client::projectiles::gourd_motion::ours(p) {
         let (_, _, position) = pose.to_scale_rotation_translation();
         let axis = horizon_client::projectiles::gourd_physics::forward(p.yaw, p.pitch);
@@ -8,6 +13,28 @@ fn hook(p: &horizon_client::projectiles::Projectile, partial: f64, pose: &mut gl
         let nozzle = -glam::Vec3::new(axis[0] as f32, axis[1] as f32, axis[2] as f32);
         let rotation = glam::Quat::from_rotation_arc(glam::Vec3::Y, nozzle);
         *pose = glam::Mat4::from_rotation_translation(rotation, position);
+        return;
+    }
+    if let Some(index) = horizon_client::projectiles::lunatic_yuuka::FLOWERS
+        .iter()
+        .position(|id| *id == p.kind.id())
+    {
+        const SPRITES: [&str; 3] = [
+            "lunatic:item/yuuka_danmaku_flower_large",
+            "lunatic:item/yuuka_danmaku_flower_medium",
+            "lunatic:item/yuuka_danmaku_flower_small",
+        ];
+        let sprites = &game.gui.atlas.sprites;
+        if let (Some(image), Some(reference)) =
+            (sprites.get(SPRITES[index]), sprites.get(SPRITES[0]))
+        {
+            let unit = reference.w.max(1) as f32;
+            let scale = glam::Vec3::new(image.w as f32 / unit, image.h as f32 / unit, 1.0);
+            let center = glam::Vec3::new(0.0, 2.0 / 16.0, 0.0);
+            *pose *= glam::Mat4::from_translation(center)
+                * glam::Mat4::from_scale(scale)
+                * glam::Mat4::from_translation(-center);
+        }
         return;
     }
     if p.kind.id().starts_with("lunatic:lampad_star_") {

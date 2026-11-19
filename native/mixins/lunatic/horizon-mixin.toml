@@ -314,6 +314,7 @@ kind = "HEAD"
 target = "horizon_client::game::native_hooks::Game<'_>::native_projectile_item_pose"
 helper = "orb-spin.rs"
 bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
  {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
  {name="partial",ty="f64",value="partial"},
  {name="pose",ty="&mut glam::Mat4",value="&mut *pose"},
