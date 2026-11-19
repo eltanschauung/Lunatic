@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 use super::Game;
 use horizon_client::{
-    projectiles::{Projectile, gourd_motion, lunatic_motion, lunatic_yuuka},
+    projectiles::{Projectile, gourd_motion, lunatic_motion, lunatic_yuuka, thrown_type},
     text::Text,
 };
 use horizon_core::geometry::Vec3;
@@ -116,6 +116,7 @@ pub(super) const YUUKA_PARASOL: Weapon = Weapon {
         .wearing(3)
         .for_race("yuuka"),
     passive: Action::sounding("item.yuuka_parasol.open", 0.5).wearing(3),
+    tooltip: Some(parasol_tooltip),
     ..Weapon::new("lunatic:yuuka_parasol", 0xff55ff55)
 };
 
@@ -164,6 +165,31 @@ fn gourd_tooltip(_: &Weapon, lines: &mut Vec<(Text, u32)>) {
         ": Hurl the gourd up to 16 blocks away as a flail, dealing great damage. Left click to pull back in. Cooldown: 4s"));
     lines.push(description("Alt fire: Get drunk. For ", "Oni", ONI_COLOR,
         ": Gain super strength for 12-20 seconds before drunkenness sets in, empowering melee damage and providing explosive punches. Effect expiry consumes 2-5 hunger."));
+}
+
+fn parasol_tooltip(_: &Weapon, lines: &mut Vec<(Text, u32)>) {
+    use super::lunatic_parasol::FALL_DISTANCE;
+    let primary = thrown_type(lunatic_yuuka::PRIMARY).map_or(6.0, |kind| kind.damage);
+    let alternate = thrown_type(lunatic_yuuka::FLOWERS[0]).map_or(5.0, |kind| kind.damage);
+    let range = lunatic_yuuka::PRIMARY_RANGE;
+    lines.push(description(
+        "Primary fire as ",
+        "Yuuka",
+        YUUKA_COLOR,
+        &format!(": Fire a flower bullet volley. Each bullet deals {primary} damage and travels up to {range} blocks."),
+    ));
+    lines.push(description(
+        "Alt fire as ",
+        "Yuuka",
+        YUUKA_COLOR,
+        &format!(": Fire a stream of large flower bullets in front of you. Each bullet deals {alternate} damage."),
+    ));
+    lines.push(description(
+        "",
+        "Passive",
+        ONI_COLOR,
+        &format!(": When falling more than {FALL_DISTANCE} blocks while holding the parasol, activate slow fall."),
+    ));
 }
 
 impl Game<'_> {
