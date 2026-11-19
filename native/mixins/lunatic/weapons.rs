@@ -24,6 +24,7 @@ impl Sound {
 
 #[derive(Clone, Copy)]
 pub(super) struct Action {
+    pub(super) wear: u32,
     pub(super) race: Option<&'static str>,
     sound: Option<Sound>,
 }
@@ -31,8 +32,13 @@ pub(super) struct Action {
 impl Action {
     const NONE: Self = Self {
         race: None,
+        wear: 0,
         sound: None,
     };
+
+    const fn wearing(self, wear: u32) -> Self {
+        Self { wear, ..self }
+    }
 
     const fn sounding(event: &'static str, gain: f32) -> Self {
         Self {
@@ -89,16 +95,16 @@ pub(super) const LAMPAD_TORCH: Weapon = Weapon {
 };
 
 pub(super) const IBUKI_GOURD: Weapon = Weapon {
-    primary: Action::sounding("item.gourd.fire", 0.4),
+    primary: Action::sounding("item.gourd.fire", 0.4).wearing(3),
     tooltip: Some(gourd_tooltip),
     ..Weapon::new("lunatic:ibuki_gourd", 0xffff55ff)
 };
 pub(super) const GOURD_REEL: Sound = Sound::new("item.gourd.reel", 0.8);
 
 pub(super) const YUUKA_PARASOL: Weapon = Weapon {
-    primary: Action::sounding("item.yuuka_parasol.fire", 0.55),
-    alternate: Action::sounding("item.yuuka_parasol.fire", 0.55),
-    passive: Action::sounding("item.yuuka_parasol.open", 0.5),
+    primary: Action::sounding("item.yuuka_parasol.fire", 0.55).wearing(3),
+    alternate: Action::sounding("item.yuuka_parasol.fire", 0.55).wearing(3),
+    passive: Action::sounding("item.yuuka_parasol.open", 0.5).wearing(3),
     ..Weapon::new("lunatic:yuuka_parasol", 0xff55ff55)
 };
 
@@ -150,6 +156,49 @@ fn gourd_tooltip(_: &Weapon, lines: &mut Vec<(Text, u32)>) {
 }
 
 impl Game<'_> {
+    pub(super) fn lunatic_worn_stack(
+        &mut self,
+        stack: &horizon_client::items::ItemStack,
+        amount: u32,
+        hand: horizon_world::player_inventory::EquipmentSlot,
+    ) -> Option<horizon_client::items::ItemStack> {
+        let mut next = stack.clone();
+        if self.creative || amount == 0 {
+            return Some(next);
+        }
+        let max = self
+            .items()
+            .get(&stack.item)
+            .map_or(0, |item| item.max_damage);
+        if max == 0 {
+            return Some(next);
+        }
+        next.damage = next.damage.saturating_add(self.wear(stack, amount));
+        if next.damage >= max {
+            self.award_stat("broken", &next.item, 1);
+            self.player_equipment_broke(hand, &next);
+            None
+        } else {
+            Some(next)
+        }
+    }
+
+    pub(super) fn lunatic_wear_weapon(&mut self, weapon: &Weapon, action: Action, offhand: bool) {
+        use horizon_world::player_inventory::EquipmentSlot;
+        let (slot, hand) = if offhand {
+            (super::shield::OFFHAND_SLOT, EquipmentSlot::OffHand)
+        } else {
+            (self.selected, EquipmentSlot::MainHand)
+        };
+        if let Some(stack) = self
+            .stack_in(slot)
+            .filter(|s| s.item.as_ref() == weapon.item)
+            .cloned()
+        {
+            *self.stack_in_mut(slot) = self.lunatic_worn_stack(&stack, action.wear, hand);
+        }
+    }
+
     pub(super) fn lunatic_action_allowed(&self, action: Action) -> bool {
         action.race.is_none_or(|race| self.lunatic_has_race(race))
     }

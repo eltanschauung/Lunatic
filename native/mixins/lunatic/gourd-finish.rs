@@ -7,6 +7,6 @@ fn finish(game: &mut crate::game::Game<'_>, stack: &ItemStack, result: &mut Opti
             horizon_client::first_person::Hand::Main => horizon_world::player_inventory::EquipmentSlot::MainHand,
             horizon_client::first_person::Hand::Off => horizon_world::player_inventory::EquipmentSlot::OffHand,
         };
-        *result = game.gourd_wear(stack, 1, slot);
+        *result = game.lunatic_worn_stack(stack, 1, slot);
     }
 }

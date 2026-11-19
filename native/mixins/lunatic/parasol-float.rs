@@ -48,16 +48,22 @@ impl Game<'_> {
     }
 
     pub(super) fn lunatic_parasol_tick(&mut self) {
-        let holding = self
-            .held()
-            .into_iter()
-            .chain(self.offhand.as_ref())
-            .any(|stack| stack.item.as_ref() == ITEM);
+        let hand = if self.held().is_some_and(|stack| stack.item.as_ref() == ITEM) {
+            Some(0)
+        } else if self
+            .offhand
+            .as_ref()
+            .is_some_and(|stack| stack.item.as_ref() == ITEM)
+        {
+            Some(1)
+        } else {
+            None
+        };
         let Some(player) = self.player.as_mut() else {
             return;
         };
         let was_active = player.__horizon_mixins_lunatic_fairy().parasol;
-        let active = holding
+        let active = hand.is_some()
             && !player.ground.on_ground
             && !player.flying
             && !player.spectator
@@ -70,8 +76,9 @@ impl Game<'_> {
             && (was_active || (player.velocity.y < 0.0 && player.fall_distance > 3.0));
         if active != was_active {
             player.lunatic_parasol_set(active);
-            if active {
+            if active && let Some(hand) = hand {
                 let at = player.position;
+                self.lunatic_wear_weapon(&YUUKA_PARASOL, YUUKA_PARASOL.passive, hand == 1);
                 self.lunatic_action_sound(YUUKA_PARASOL.passive, at);
             }
         }

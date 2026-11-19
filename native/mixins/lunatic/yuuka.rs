@@ -150,10 +150,9 @@ impl Game<'_> {
                 );
             }
         }
-        self.lunatic_action_sound(
-            YUUKA_PARASOL.attack(alternate),
-            Vec3::new(eye[0], eye[1], eye[2]),
-        );
+        let action = YUUKA_PARASOL.attack(alternate);
+        self.lunatic_wear_weapon(&YUUKA_PARASOL, action, hand == 1);
+        self.lunatic_action_sound(action, Vec3::new(eye[0], eye[1], eye[2]));
     }
 
     fn lunatic_yuuka_shot(&mut self, item: &str, direction: Vec3) {
@@ -243,7 +242,6 @@ impl Game<'_> {
         for volley in volleys {
             let shoot = |g: &mut Game<'_>| {
                 if g.yuuka_field() == volley.field
-                    && g.lunatic_parasol_hand().is_some()
                     && !g.spectator()
                     && g.player.as_ref().is_some_and(|p| !p.health.dead_or_dying())
                 {
