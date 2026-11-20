@@ -4,7 +4,7 @@ fn after(value: (), game: &mut crate::game::Game<'_>) {
     let Some(player) = game.player.as_mut() else {
         return;
     };
-    let ended = std::mem::take(&mut player.__horizon_mixins_lunatic_fairy_mut().oni_ending);
+    let ended = player.lunatic_edit_fairy(|state| std::mem::take(&mut state.oni_ending));
     // A hidden effect taking over is not an expiry. Death and early removal
     // never reach this branch; only the authoritative last tick does.
     if !ended || player.health.dead_or_dying() || game.potions.effects.get("lunatic:oni").is_some()

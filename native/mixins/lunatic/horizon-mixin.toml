@@ -224,16 +224,6 @@ name = "lunatic_fairy"
 source = "fairy-motion.rs"
 visibility = "pub"
 
-[[state]]
-id = "fairy"
-target = "horizon_client_lib::motion::PlayerMotion"
-ty = "crate::motion::lunatic_fairy::Fairy"
-initial = "::core::default::Default::default()"
-[[state.constructor]]
-target = "horizon_client_lib::motion::PlayerMotion::from_attribute_state"
-selector = "Self"
-require = 1
-
 [[injection]]
 id = "fairy-predicted-input"
 kind = "HEAD"

@@ -68,7 +68,7 @@ impl Game<'_> {
         let Some(player) = self.player.as_mut() else {
             return;
         };
-        let was_active = player.__horizon_mixins_lunatic_fairy().parasol;
+        let was_active = player.lunatic_fairy().parasol;
         let active = hand.is_some()
             && !player.ground.on_ground
             && !player.flying

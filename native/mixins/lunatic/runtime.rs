@@ -143,10 +143,15 @@ impl Game<'_> {
     pub(super) fn lunatic_parasol_publish(&mut self) {
         let id = self.native_acting_id();
         if let Some(player) = self.player.as_mut() {
-            let state = player.__horizon_mixins_lunatic_fairy_mut();
-            if state.parasol_sent != Some(state.parasol) {
+            let changed = player.lunatic_edit_fairy(|state| {
+                if state.parasol_sent == Some(state.parasol) {
+                    return None;
+                }
                 state.parasol_sent = Some(state.parasol);
-                STATE.with_borrow_mut(|s| s.parasol_updates.push((id, state.parasol)));
+                Some(state.parasol)
+            });
+            if let Some(active) = changed {
+                STATE.with_borrow_mut(|s| s.parasol_updates.push((id, active)));
             }
         }
     }

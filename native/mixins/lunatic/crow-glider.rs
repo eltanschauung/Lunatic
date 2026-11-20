@@ -4,7 +4,7 @@ fn crow_glider(game: &crate::game::Game<'_>) -> core::ops::ControlFlow<bool> {
         return core::ops::ControlFlow::Continue(());
     }
     core::ops::ControlFlow::Break(game.player.as_ref().is_some_and(|p| {
-        if p.__horizon_mixins_lunatic_fairy().racial_glide_armor_blocked {
+        if p.lunatic_fairy().racial_glide_armor_blocked {
             return false;
         }
         // This hook also maintains active glides: altitude gates takeoff only.

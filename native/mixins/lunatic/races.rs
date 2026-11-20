@@ -55,7 +55,7 @@ impl Game<'_> {
             || self.spectator()
             || !self.player.as_ref().is_some_and(|p| {
                 p.fall_flying
-                    && !p.__horizon_mixins_lunatic_fairy().racial_glide_armor_blocked
+                    && !p.lunatic_fairy().racial_glide_armor_blocked
                     && !p.health.dead_or_dying()
             })
             || self.cooldowns.is_on_cooldown(FAN)
@@ -147,10 +147,10 @@ impl Game<'_> {
             }
             let has = p.attributes.key("minecraft:max_health").and_then(|key|
                 p.attributes.has_modifier(Some(key), "lunatic:character_health").ok()).unwrap_or(false);
-            if p.__horizon_mixins_lunatic_fairy().character_health != health || has != (health != 20.0) {
+            if p.lunatic_fairy().character_health != health || has != (health != 20.0) {
                 let _ = p.set_modifier("minecraft:max_health", "lunatic:character_health",
                     f64::from(health) - 20.0, "add_value", health != 20.0);
-                p.__horizon_mixins_lunatic_fairy_mut().character_health = health;
+                p.lunatic_edit_fairy(|state| state.character_health = health);
             }
         }
     }
@@ -185,7 +185,7 @@ impl Game<'_> {
         if let Some(event) = self
             .player
             .as_mut()
-            .and_then(|p| p.__horizon_mixins_lunatic_fairy_mut().sound.take())
+            .and_then(|p| p.lunatic_edit_fairy(|state| state.sound.take()))
             && let Some(at) = self.eye_position()
         {
             self.lunatic_sound(
@@ -203,7 +203,7 @@ impl Game<'_> {
         };
         if p.health.dead_or_dying()
             || self.spectator()
-            || p.__horizon_mixins_lunatic_fairy().kit_checked.as_ref()
+            || p.lunatic_fairy().kit_checked.as_ref()
                 .is_some_and(|(previous, count)| previous == &character.id && *count == deaths)
         {
             return;
@@ -219,8 +219,7 @@ impl Game<'_> {
             self.player
                 .as_mut()
                 .unwrap()
-                .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
+                .lunatic_edit_fairy(|state| state.kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths)));
             return;
         }
         // Stored in the existing player NBT, saved together with inventory.
@@ -242,8 +241,7 @@ impl Game<'_> {
                     self.player
                         .as_mut()
                         .unwrap()
-                        .__horizon_mixins_lunatic_fairy_mut()
-                        .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
+                        .lunatic_edit_fairy(|state| state.kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths)));
                     return;
                 }
             },
@@ -251,8 +249,7 @@ impl Game<'_> {
                 self.player
                     .as_mut()
                     .unwrap()
-                    .__horizon_mixins_lunatic_fairy_mut()
-                    .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
+                    .lunatic_edit_fairy(|state| state.kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths)));
                 return;
             }
         };
@@ -365,8 +362,7 @@ impl Game<'_> {
             self.player
                 .as_mut()
                 .unwrap()
-                .__horizon_mixins_lunatic_fairy_mut()
-                .kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths));
+                .lunatic_edit_fairy(|state| state.kit_checked = Some((character.as_ref().unwrap().id.clone(), deaths)));
         }
     }
 }

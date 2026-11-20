@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Luanti's one airborne boost and cancellable float, in Minecraft blocks/tick.
-use super::PlayerMotion;
+use super::{PlayerMotion, ReplayAttachment};
 
 #[derive(Clone, Debug)]
 pub struct Fairy {
@@ -88,13 +88,24 @@ impl Fairy {
         boost
     }
 }
+static FAIRY: ReplayAttachment<Fairy> = ReplayAttachment::new("lunatic", "fairy", Fairy::default);
+static EMPTY: std::sync::LazyLock<Fairy> = std::sync::LazyLock::new(Fairy::default);
+
 impl PlayerMotion {
+    pub fn lunatic_fairy(&self) -> &Fairy {
+        self.replay_attachment(&FAIRY).unwrap_or(&EMPTY)
+    }
+    pub fn lunatic_edit_fairy<R>(&mut self, edit: impl FnOnce(&mut Fairy) -> R) -> R {
+        self.edit_replay_attachment(&FAIRY, edit)
+            .expect("Lunatic owns the fairy replay attachment key")
+    }
+
     /// Reuse the native attribute instance's dirty/computed cache. No equipment
     /// traversal, extra packets, or separately invalidated armor-value cache.
     pub fn lunatic_racial_glide(&mut self) {
-        let crow = self.__horizon_mixins_lunatic_fairy().racial_glider;
+        let crow = self.lunatic_fairy().racial_glider;
         let blocked = crow && self.attribute("minecraft:armor").map_or(true, |v| v > 11.0);
-        self.__horizon_mixins_lunatic_fairy_mut().racial_glide_armor_blocked = blocked;
+        self.lunatic_edit_fairy(|state| state.racial_glide_armor_blocked = blocked);
         if crow {
             self.glider = !blocked;
             if blocked {
@@ -114,7 +125,7 @@ impl PlayerMotion {
         } else {
             1.0
         };
-        let state = self.__horizon_mixins_lunatic_fairy();
+        let state = self.lunatic_fairy();
         let changed = state.size != size;
         let crow_changed = state.racial_glider != racial_glider;
         let has = self
@@ -136,57 +147,56 @@ impl PlayerMotion {
             );
             let _ = self.refresh_dimensions();
         }
-        let state = self.__horizon_mixins_lunatic_fairy_mut();
-        state.size = size;
-        state.enabled = fairy;
-        state.racial_glider = racial_glider;
-        state.potion_slowfall = potion_slowfall;
-        if !fairy {
-            state.used = false;
-            state.slowfall = false;
-            state.ascending = false;
-        }
-        self.status.slow_falling =
-            potion_slowfall || self.__horizon_mixins_lunatic_fairy().slowfall
-                || self.__horizon_mixins_lunatic_fairy().parasol;
+        self.status.slow_falling = self.lunatic_edit_fairy(|state| {
+            state.size = size;
+            state.enabled = fairy;
+            state.racial_glider = racial_glider;
+            state.potion_slowfall = potion_slowfall;
+            if !fairy {
+                state.used = false;
+                state.slowfall = false;
+                state.ascending = false;
+            }
+            potion_slowfall || state.slowfall || state.parasol
+        });
         if crow_changed {
             self.lunatic_racial_glide();
         }
     }
     pub fn lunatic_fairy_sync(&mut self, server: &Self) {
-        let enabled = server.__horizon_mixins_lunatic_fairy().enabled;
-        let racial_glider = server.__horizon_mixins_lunatic_fairy().racial_glider;
-        let potion = server.__horizon_mixins_lunatic_fairy().potion_slowfall;
-        let parasol = server.__horizon_mixins_lunatic_fairy().parasol;
-        let revision = server.__horizon_mixins_lunatic_fairy().parasol_revision;
-        let state = self.__horizon_mixins_lunatic_fairy_mut();
-        state.enabled = enabled;
-        state.racial_glider = racial_glider;
-        state.potion_slowfall = potion;
-        // Replay derives Space cancellation from the recorded input. Only a
-        // new item toggle/death reset overrides it, not a later input's result.
-        if state.parasol_revision != revision {
-            state.parasol = parasol;
-            state.parasol_revision = revision;
-        }
-        if !enabled {
-            state.used = false;
-            state.slowfall = false;
-            state.ascending = false;
-        }
+        let server = server.lunatic_fairy();
+        self.lunatic_edit_fairy(|state| {
+            state.enabled = server.enabled;
+            state.racial_glider = server.racial_glider;
+            state.potion_slowfall = server.potion_slowfall;
+            // Replay derives Space cancellation from the recorded input. Only a
+            // new item toggle or death reset overrides that input's result.
+            if state.parasol_revision != server.parasol_revision {
+                state.parasol = server.parasol;
+                state.parasol_revision = server.parasol_revision;
+            }
+            if !server.enabled {
+                state.used = false;
+                state.slowfall = false;
+                state.ascending = false;
+            }
+        });
     }
+
     pub fn lunatic_parasol_set(&mut self, active: bool) {
-        let state = self.__horizon_mixins_lunatic_fairy_mut();
-        if state.parasol != active {
-            state.parasol = active;
-            state.parasol_revision = state.parasol_revision.wrapping_add(1);
-        }
-        if active {
-            state.slowfall = false;
-            state.ascending = false;
-        }
-        self.status.slow_falling = state.potion_slowfall || state.slowfall || state.parasol;
+        self.status.slow_falling = self.lunatic_edit_fairy(|state| {
+            if state.parasol != active {
+                state.parasol = active;
+                state.parasol_revision = state.parasol_revision.wrapping_add(1);
+            }
+            if active {
+                state.slowfall = false;
+                state.ascending = false;
+            }
+            state.potion_slowfall || state.slowfall || state.parasol
+        });
     }
+
     pub fn lunatic_fairy_step(&mut self, jump: bool, grounded: bool) {
         if self.health.dead_or_dying() || self.spectator {
             self.lunatic_parasol_set(false);
@@ -205,15 +215,16 @@ impl PlayerMotion {
                 || self.fluids.was_touching_water
                 || self.is_in_lava(),
         };
-        let state = self.__horizon_mixins_lunatic_fairy_mut();
-        let controlled = state.enabled || state.parasol;
-        let boost = state.step(input);
+        let (controlled, boost, slowfall) = self.lunatic_edit_fairy(|state| {
+            let controlled = state.enabled || state.parasol;
+            let boost = state.step(input);
+            (controlled, boost, state.potion_slowfall || state.slowfall || state.parasol)
+        });
         // An ordinary body keeps every vanilla status flag, including flags
         // supplied directly by the potion/movement pipeline without a Game.
         if !controlled {
             return;
         }
-        let slowfall = state.potion_slowfall || state.slowfall || state.parasol;
         if boost {
             self.velocity.y += 12.0 / 20.0;
             self.fall_distance = 0.0;
@@ -305,7 +316,7 @@ mod tests {
         assert!(p.status.slow_falling);
         p.lunatic_character_body(0.7, true, true, false);
         p.lunatic_fairy_step(true, false);
-        assert!(!p.__horizon_mixins_lunatic_fairy().slowfall);
+        assert!(!p.lunatic_fairy().slowfall);
         assert!(
             p.status.slow_falling,
             "a potion survives race float cancellation"
