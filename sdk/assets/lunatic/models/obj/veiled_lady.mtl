@@ -1,0 +1,8 @@
+newmtl veiled_lady_cap
+map_Kd #cap
+
+newmtl mushroom_stem
+map_Kd #stem
+
+newmtl veiled_lady_veil
+map_Kd #veil

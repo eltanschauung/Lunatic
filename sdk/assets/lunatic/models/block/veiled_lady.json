@@ -1,0 +1,12 @@
+{
+  "loader": "neoforge:obj",
+  "model": "lunatic:models/obj/veiled_lady.obj",
+  "flip_v": true,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "lunatic:block/veiled_lady_cap",
+    "cap": "lunatic:block/veiled_lady_cap",
+    "stem": "minecraft:block/mushroom_stem",
+    "veil": "lunatic:block/veiled_lady_veil"
+  }
+}

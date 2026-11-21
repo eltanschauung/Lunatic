@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:brown_mushroom_block",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.gray_mushroom_block"
+    }
+  }
+}

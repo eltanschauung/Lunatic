@@ -1,0 +1,12 @@
+{
+  "template": "minecraft:stick",
+  "components": {
+    "minecraft:item_name": {
+      "translate": "item.lunatic.yin_yang_orb_homing",
+      "color": "#800080",
+      "italic": false
+    },
+    "!minecraft:cooking_fuel": {}
+  },
+  "max_stack_size": 16
+}

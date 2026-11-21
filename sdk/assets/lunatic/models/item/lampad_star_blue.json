@@ -1,0 +1,6 @@
+{
+  "parent": "lunatic:item/lampad_star_voxel",
+  "textures": {
+    "star": "lunatic:item/lampad_star_blue"
+  }
+}

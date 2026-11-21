@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "lunatic:block/donation_box"
+    },
+    "facing=east": {
+      "model": "lunatic:block/donation_box",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "lunatic:block/donation_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "lunatic:block/donation_box",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "lunatic:block/donation_box"
+    },
+    "facing=down": {
+      "model": "lunatic:block/donation_box"
+    }
+  }
+}

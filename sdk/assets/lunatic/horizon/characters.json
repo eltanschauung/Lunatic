@@ -1,0 +1,623 @@
+{
+  "characters": [
+    {
+      "id": "lunatic:hakurei_reimu",
+      "name": "Hakurei Reimu",
+      "race": "human,miko,reimu",
+      "color": "red",
+      "size": 0.9,
+      "starting_items": [
+        {
+          "item": "lunatic:purification_rod",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "lunatic:yin_yang_orb_precision",
+          "min_count": 4,
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "lunatic:yin_yang_orb_homing",
+          "min_count": 4,
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "lunatic:yin_yang_orb_bouncing",
+          "min_count": 4,
+          "max_count": 12,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kirisame_marisa",
+      "name": "Kirisame Marisa",
+      "race": "human,magician",
+      "color": "yellow",
+      "size": 0.8,
+      "starting_items": [
+        {
+          "item": "horizon_magic_brooms:broom_magic",
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "minecraft:experience_bottle",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kazami_yuuka",
+      "name": "Kazami Yuuka",
+      "race": "youkai,yuuka",
+      "color": "dark_green",
+      "chest": "2.0",
+      "size": 1.0,
+      "starting_items": [
+        {
+          "item": "lunatic:yuuka_parasol",
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": ["lunatic:sunflower_uprising"]
+    },
+    {
+      "id": "lunatic:alice_margatroid",
+      "name": "Alice Margatroid",
+      "race": "magician,youkai,puppeteer,former_human",
+      "color": "gold",
+      "size": 0.9,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:daiyousei",
+      "name": "Daiyousei",
+      "race": "fairy,flower_fairy,youkai",
+      "color": "green",
+      "size": 0.77,
+      "starting_items": [
+        {
+          "choices": [
+            "minecraft:poppy",
+            "minecraft:dandelion",
+            "minecraft:cornflower",
+            "minecraft:blue_orchid",
+            "minecraft:allium",
+            "minecraft:azure_bluet",
+            "minecraft:red_tulip",
+            "minecraft:orange_tulip",
+            "minecraft:white_tulip",
+            "minecraft:pink_tulip",
+            "minecraft:oxeye_daisy",
+            "minecraft:lily_of_the_valley",
+            "minecraft:peony",
+            "minecraft:rose_bush",
+            "minecraft:sunflower"
+          ],
+          "min_count": 1,
+          "max_count": 4,
+          "rolls": 3,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "minecraft:cookie",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:cirno",
+      "name": "Cirno",
+      "race": "fairy,ice_fairy,youkai",
+      "color": "aqua",
+      "size": 0.75,
+      "starting_items": [
+        {
+          "choices": [
+            "minecraft:poppy",
+            "minecraft:dandelion",
+            "minecraft:cornflower",
+            "minecraft:blue_orchid",
+            "minecraft:allium",
+            "minecraft:azure_bluet",
+            "minecraft:red_tulip",
+            "minecraft:orange_tulip",
+            "minecraft:white_tulip",
+            "minecraft:pink_tulip",
+            "minecraft:oxeye_daisy",
+            "minecraft:lily_of_the_valley",
+            "minecraft:peony",
+            "minecraft:rose_bush",
+            "minecraft:sunflower"
+          ],
+          "min_count": 1,
+          "max_count": 4,
+          "rolls": 3,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "minecraft:cookie",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:hong_meiling",
+      "name": "Hong Meiling",
+      "race": "youkai",
+      "color": "dark_green",
+      "size": 0.95,
+      "chest": "1.5",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:koakuma",
+      "name": "Koakuma",
+      "race": "youkai,devil,magician",
+      "color": "red",
+      "size": 0.85,
+      "chest": "1.25",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:patchouli_knowledge",
+      "name": "Patchouli Knowledge",
+      "race": "youkai,magician",
+      "color": "light_purple",
+      "size": 0.9,
+      "chest": "1.85",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:izayoi_sakuya",
+      "name": "Izayoi Sakuya",
+      "race": "human",
+      "color": "gray",
+      "size": 0.95,
+      "chest": "1.15",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:remilia_scarlet",
+      "name": "Remilia Scarlet",
+      "race": "vampire,youkai,remilia",
+      "color": "dark_red",
+      "size": 0.8,
+      "health": "16",
+      "starting_items": [],
+      "starting_spells": ["lunatic:remilia_bat_transformation", "lunatic:remilia_bat_cancel"]
+    },
+    {
+      "id": "lunatic:flandre_scarlet",
+      "name": "Flandre Scarlet",
+      "race": "vampire,youkai,flandre",
+      "color": "red",
+      "size": 0.8,
+      "health": "16",
+      "starting_items": [],
+      "starting_spells": ["lunatic:flandre_bat_transformation", "lunatic:flandre_bat_cancel"]
+    },
+    {
+      "id": "lunatic:letty_whiterock",
+      "name": "Letty Whiterock",
+      "race": "youkai,yuki_onna",
+      "color": "light_blue",
+      "size": 0.92,
+      "chest": "2.0",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:chen",
+      "name": "Chen",
+      "race": "youkai,nekomata,shikigami",
+      "color": "green",
+      "size": 0.75,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:konpaku_youmu",
+      "name": "Konpaku Youmu",
+      "race": "half_phantom",
+      "color": "green",
+      "size": 0.85,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:saigyouji_yuyuko",
+      "name": "Saigyouji Yuyuko",
+      "race": "ghost,yuyuko",
+      "color": "light_purple",
+      "size": 0.95,
+      "chest": "2.0",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:yakumo_ran",
+      "name": "Yakumo Ran",
+      "race": "shikigami,youkai,",
+      "color": "yellow",
+      "size": 1.0,
+      "chest": "1.7",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:yakumo_yukari",
+      "name": "Yakumo Yukari",
+      "race": "youkai,yukari",
+      "color": "#800080",
+      "size": 1.0,
+      "chest": "2.0",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:wriggle_nightbug",
+      "name": "Wriggle Nightbug",
+      "race": "youkai,nightbug",
+      "color": "dark_green",
+      "size": 0.75,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:inaba_tewi",
+      "name": "Inaba Tewi",
+      "race": "earth_rabbit,youkai,tewi",
+      "color": "light_purple",
+      "size": 0.8,
+      "starting_items": [
+        {
+          "item": "minecraft:carrot",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:reisen_udongein_inaba",
+      "name": "Reisen Udongein Inaba",
+      "race": "earth_rabbit,former_moon_rabbit",
+      "color": "dark_purple",
+      "size": 0.92,
+      "chest": "1.25",
+      "starting_items": [
+        {
+          "item": "minecraft:carrot",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:houraisan_kaguya",
+      "name": "Houraisan Kaguya",
+      "race": "hourai_immortal,kaguya",
+      "color": "dark_purple",
+      "size": 0.9,
+      "chest": "1.4",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:fujiwara_no_mokou",
+      "name": "Fujiwara no Mokou",
+      "race": "hourai_immortal,mokou",
+      "color": "red",
+      "size": 0.93,
+      "chest": "1.2",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:ibuki_suika",
+      "name": "Ibuki Suika",
+      "race": "youkai,oni",
+      "color": "gold",
+      "size": 0.82,
+      "starting_items": [
+        {
+          "item": "lunatic:ibuki_gourd",
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": [
+        "lunatic:gigantification",
+        "lunatic:miniaturization"
+      ],
+      "hunger": 30
+    },
+    {
+      "id": "lunatic:shameimaru_aya",
+      "name": "Shameimaru Aya",
+      "race": "youkai,tengu,crow_tengu",
+      "health": "16",
+      "color": "dark_red",
+      "size": 0.88,
+      "chest": "1.2",
+      "starting_items": [
+        {
+          "item": "minecraft:cooked_cod",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "minecraft:stick",
+          "count": 2,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "lunatic:hauchiwa_fan",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kawashiro_nitori",
+      "name": "Kawashiro Nitori",
+      "race": "youkai,kappa",
+      "color": "aqua",
+      "size": 0.75,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:inubashiri_momiji",
+      "name": "Inubashiri Momiji",
+      "race": "youkai,tengu,wolf_tengu",
+      "color": "white",
+      "size": 0.96,
+      "chest": "1.4",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kochiya_sanae",
+      "name": "Kochiya Sanae",
+      "race": "human,living_god,miko",
+      "color": "green",
+      "size": 0.9,
+      "chest": "1.6",
+      "starting_items": [
+        {
+          "item": "lunatic:miko_stick",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:nagae_iku",
+      "name": "Nagae Iku",
+      "race": "youkai",
+      "color": "dark_purple",
+      "size": 0.95,
+      "chest": "1.6",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:hinanawi_tenshi",
+      "name": "Hinanawi Tenshi",
+      "race": "celestial",
+      "color": "blue",
+      "size": 0.85,
+      "chest": "1.15",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:komeiji_satori",
+      "name": "Komeiji Satori",
+      "race": "satori,youkai",
+      "color": "light_purple",
+      "size": 0.82,
+      "chest": "1.15",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:komeiji_koishi",
+      "name": "Komeiji Koishi",
+      "race": "satori,youkai,koishi",
+      "color": "green",
+      "size": 0.82,
+      "chest": "1.15",
+      "starting_items": [
+        {
+          "item": "lunatic:koishi_phone",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "lunatic:koishi_knife",
+          "count": 1,
+          "enchantments": {"lunatic:soulbound": 1}
+        }
+      ],
+      "starting_spells": [
+        "lunatic:reveal"
+      ]
+    },
+    {
+      "id": "lunatic:miyako_yoshika",
+      "name": "Miyako Yoshika",
+      "race": "youkai,jiangshi",
+      "color": "dark_blue",
+      "size": 0.85,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kaku_seiga",
+      "name": "Kaku Seiga",
+      "race": "youkai,hermit,seiga",
+      "color": "blue",
+      "size": 0.92,
+      "chest": "1.8",
+      "starting_items": [
+        {
+          "item": "arcadiandream:wall_passing_chisel",
+          "count": 1,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:ibaraki_kasen",
+      "name": "Ibaraki Kasen",
+      "race": "youkai,oni,hermit,kasen",
+      "color": "#ffc0cb",
+      "size": 0.94,
+      "chest": "1.8",
+      "starting_items": [],
+      "starting_spells": [],
+      "hunger": 30
+    },
+    {
+      "id": "lunatic:houjuu_nue",
+      "name": "Houjuu Nue",
+      "race": "youkai,nue",
+      "color": "dark_red",
+      "size": 0.9,
+      "chest": "1.2",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:minamitsu_murasa",
+      "name": "Minamitsu Murasa",
+      "race": "ship_phantom,youkai",
+      "color": "dark_blue",
+      "size": 0.9,
+      "chest": "1.2",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:yorigami_shion",
+      "name": "Yorigami Shion",
+      "race": "youkai,poverty_god",
+      "color": "dark_blue",
+      "size": 0.85,
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:yorigami_joon",
+      "name": "Yorigami Jo'on",
+      "race": "youkai,pestilence_god",
+      "color": "gold",
+      "size": 0.88,
+      "chest": "1.9",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:clownpiece",
+      "name": "Clownpiece",
+      "race": "fairy,lampad_fairy,youkai",
+      "color": "dark_blue",
+      "size": 0.75,
+      "starting_items": [
+        {
+          "item": "lunatic:lampad_torch",
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        },
+        {
+          "item": "minecraft:cookie",
+          "count": 16,
+          "enchantments": {
+            "lunatic:soulbound": 1
+          }
+        }
+      ],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:junko",
+      "name": "Junko",
+      "race": "divine_spirit",
+      "color": "#ffa500",
+      "size": 1.0,
+      "chest": "2.0",
+      "starting_items": [],
+      "starting_spells": []
+    },
+    {
+      "id": "lunatic:kudamaki_tsukasa",
+      "name": "Kudamaki Tsukasa",
+      "race": "tube_fox,youkai,",
+      "color": "#008080",
+      "size": 0.88,
+      "chest": "1.2",
+      "starting_items": [],
+      "starting_spells": []
+    }
+  ]
+}

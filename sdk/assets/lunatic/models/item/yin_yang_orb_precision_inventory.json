@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lunatic:item/yin_yang_orb_inventory"
+  }
+}

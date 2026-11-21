@@ -1,0 +1,831 @@
+id = "lunatic"
+name = "Lunatic"
+version = "0.14.0"
+description = "Content from the Lunatic Luanti game, brought to Horizon. Adds Lunatic's items, yin-yang orb weapons and selectable characters."
+authors = ["eltanschauung"]
+api = "0.2"
+side = "both"
+capabilities = ["registries"]
+
+[native]
+game = "26.3"
+horizon = "f4ca44d078d55504aefae11dd7e2fca251cef12e"
+mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
+
+[[native.mixin]]
+id = "held-orb-name-colors"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::titles::Game::held_name"
+helper = "src/mixins/held-name.rs"
+bindings = [{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[native.module]]
+id = "visuals"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_visuals"
+source = "src/mixins/visuals.rs"
+
+[[native.mixin]]
+id = "colored-orb-lights"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_visuals"
+helper = "src/mixins/visual-hook.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="lights",ty="&mut Vec<mod_api::ColoredLight>",value="&mut *lights"},
+]
+
+[[native.module]]
+id = "game"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_orbs"
+source = "src/mixins/runtime.rs"
+
+[[native.module]]
+id = "yuuka"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_yuuka"
+source = "src/mixins/yuuka.rs"
+
+[[native.module]]
+id = "yuuka-flight"
+file = "crates/horizon-client/src/projectiles.rs"
+name = "lunatic_yuuka"
+source = "src/mixins/yuuka-flight.rs"
+visibility = "pub"
+
+[[native.module]]
+id = "motion"
+file = "crates/horizon-client/src/projectiles.rs"
+name = "lunatic_motion"
+source = "src/mixins/motion.rs"
+visibility = "pub"
+
+[[native.mixin]]
+id = "flight"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_lib::projectiles::Projectile::native_tick_override"
+helper = "src/mixins/flight.rs"
+bindings = [
+ {name="projectile",ty="&mut Projectile",value="&mut *self"},
+ {name="world",ty="&dyn ProjectileWorld",value="_world"},
+]
+
+[[native.mixin]]
+id = "lampad-remote-flight"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::remote_projectiles::native_remote_projectile_override"
+helper = "src/mixins/lampad-remote.rs"
+bindings = [
+ {name="p",ty="&mut horizon_client::projectiles::Projectile",value="&mut *_projectile"},
+ {name="world",ty="&dyn horizon_client::projectiles::ProjectileWorld",value="_world"},
+]
+
+[[native.mixin]]
+id = "fire-click"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::remote::interaction_actions::Game::remote_start_attack"
+helper = "src/mixins/attack.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "held-attack"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::remote::interaction_actions::Game::remote_continue_attack"
+helper = "src/mixins/continue.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "ammo-cycle"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::native_hooks::use_item_hand::Game::use_item_in_hand"
+helper = "src/mixins/cycle.rs"
+bindings = [
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+]
+
+[[native.mixin]]
+id = "ammo-cycle-block"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::native_hooks::Game::use_item_on_block"
+helper = "src/mixins/cycle-block.rs"
+bindings = [
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="stack",ty="Option<&ItemStack>",value="stack"},
+ {name="phase",ty="mod_api::UsePhase",value="phase"},
+]
+
+[[native.mixin]]
+id = "network"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_server_tick"
+helper = "src/mixins/network.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "tick-pre"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_level_tick_pre"
+helper = "src/mixins/pre.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "tick-post"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_level_tick_post"
+helper = "src/mixins/post.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "stop"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_server_stopping"
+helper = "src/mixins/stop.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "spatial-sounds"
+kind = "HEAD"
+target = "horizon_client::game::lan_particles::Game::flush_native_sounds"
+helper = "src/mixins/sounds.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "inventory-name-colors"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_tooltip"
+helper = "src/mixins/tooltip.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+ {name="lines",ty="&mut Vec<(Text,u32)>",value="&mut *lines"},
+]
+
+[[native.module]]
+id = "effects"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_effects"
+source = "src/mixins/effects.rs"
+
+[[native.module]]
+id = "particle-factory"
+file = "crates/horizon-client-render/src/particles/native_particles.rs"
+name = "lunatic_particles"
+source = "src/mixins/particle-factory.rs"
+visibility = "pub"
+
+[[native.mixin]]
+id = "particle-tick"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_render::particles::native_particles::tick"
+helper = "src/mixins/particle-tick.rs"
+bindings = [{name="p",ty="&mut crate::particles::Particle",value="&mut *_particle"}]
+
+[[native.mixin]]
+id = "particle-light"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_render::particles::native_particles::light"
+helper = "src/mixins/particle-light.rs"
+bindings = [
+ {name="p",ty="&crate::particles::Particle",value="_particle"},
+ {name="sky",ty="u32",value="_sky"},
+ {name="block",ty="u32",value="_block"},
+]
+
+[[native.mixin]]
+id = "receive-effects"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::client_tick_post::Game::native_client_tick_post"
+helper = "src/mixins/receive-effects.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.module]]
+id = "races"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_races"
+source = "src/mixins/races.rs"
+
+[[native.module]]
+id = "fairy-motion"
+file = "crates/horizon-client/src/motion/native_motion.rs"
+name = "lunatic_fairy"
+source = "src/mixins/fairy-motion.rs"
+visibility = "pub"
+
+[[native.mixin]]
+id = "fairy-predicted-input"
+kind = "HEAD"
+target = "horizon_client_lib::motion::native_motion::player_input"
+helper = "src/mixins/fairy-step.rs"
+bindings = [
+ {name="world",ty="&mut crate::motion::MotionWorld<'_, '_, '_>",value="&mut *_world"},
+ {name="jump",ty="bool",value="_jumping"},
+]
+
+[[native.mixin]]
+id = "character-body-before-input"
+kind = "HEAD"
+target = "horizon_client::game::Game::sync_player_body"
+helper = "src/mixins/race-body.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "fairy-server-input"
+kind = "HEAD"
+target = "horizon_client::game::lan_actions::guest_body::Game::guest_server_tick"
+helper = "src/mixins/race-guest.rs"
+bindings = [
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="conn",ty="u32",value="conn"},
+]
+
+[[native.mixin]]
+id = "races-server-tick"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::base::Game::native_player_tick_post"
+helper = "src/mixins/race-tick.rs"
+bindings = [{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id = "fairy-server-gravity"
+kind = "HEAD"
+target = "horizon_client_lib::motion::native_motion::server_travel"
+helper = "src/mixins/fairy-gravity.rs"
+bindings = [{name="world",ty="&mut crate::motion::MotionWorld<'_, '_, '_>",value="&mut *_world"}]
+
+[[native.mixin]]
+id = "orb-spin"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::super::Game::native_projectile_item_pose"
+helper = "src/mixins/orb-spin.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
+ {name="partial",ty="f64",value="partial"},
+ {name="pose",ty="&mut glam::Mat4",value="&mut *pose"},
+]
+
+[[native.mixin]]
+id = "orb-fullbright"
+kind = "RETURN"
+target = "horizon_client::game::item_draw::Game::resolve_item_in_hand"
+helper = "src/mixins/orb-fullbright.rs"
+bindings = [
+ {name="state",ty="ItemRenderState",value="$value"},
+ {name="stack",ty="&ItemStack",value="stack"},
+]
+
+[[native.mixin]]
+id = "orb-cooldown"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::super::Game::native_projectile_damage_cooldown"
+helper = "src/mixins/orb-cooldown.rs"
+bindings = [
+ {name="p",ty="&horizon_client::projectiles::Projectile",value="projectile"},
+ {name="bypass",ty="&mut bool",value="&mut *bypass"},
+]
+
+[[native.module]]
+id="lampad-game"
+file="crates/horizon-client/src/game.rs"
+name="lampad"
+source="src/mixins/lampad.rs"
+
+[[native.module]]
+id="lampad-motion"
+file="crates/horizon-client/src/projectiles.rs"
+name="lampad_motion"
+source="src/mixins/lampad-motion.rs"
+visibility="pub"
+
+[[native.mixin]]
+id="lampad-particles"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::particles::native_particles::make"
+helper="src/mixins/lampad-particle.rs"
+bindings=[
+ {name="o",ty="&ParticleOptions",value="_options"},
+ {name="p",ty="[f64; 3]",value="_pos"},
+ {name="v",ty="[f64; 3]",value="_velocity"},
+]
+
+[[native.mixin]]
+id="crow-tengu-glider"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::held_items::Game::glider_worn"
+helper="src/mixins/crow-glider.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[native.mixin]]
+id="crow-tengu-glider-wear"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::held_items::Game::wear_glider"
+helper="src/mixins/crow-wear.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[native.module]]
+id="crow-physics"
+file="crates/horizon-client/src/motion/native_motion.rs"
+name="lunatic_crow_physics"
+visibility="pub"
+source="src/mixins/crow-physics.rs"
+
+[[native.mixin]]
+id="crow-lift"
+kind="RETURN"
+target="horizon_client_lib::motion::native_motion::glide_gravity"
+helper="src/mixins/crow-lift.rs"
+bindings=[
+ {name="gravity",ty="f64",value="$value"},
+ {name="world",ty="&crate::motion::MotionWorld<'_, '_, '_>",value="_world"},
+]
+
+[[native.mixin]]
+id="crow-drag"
+kind="RETURN"
+target="horizon_client_lib::motion::native_motion::glide_velocity"
+helper="src/mixins/crow-drag.rs"
+bindings=[
+ {name="value",ty="Vec3",value="$value"},
+ {name="world",ty="&crate::motion::MotionWorld<'_, '_, '_>",value="_world"},
+]
+
+[[native.mixin]]
+id="crow-armor-equipment"
+kind="HEAD"
+target="horizon_client::game::enchant_effects::Game::apply_enchantment_attributes"
+helper="src/mixins/crow-equipment.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id="oni-melee-knockback"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::enchant_effects::Game::extra_knockback"
+helper="src/mixins/oni-knockback.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="target_kind",ty="&str",value="target_kind"},
+ {name="scale",ty="f32",value="scale"},
+]
+
+[[native.mixin]]
+id="gourd-finish-drinking"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_living_entity_use_item_finish"
+helper="src/mixins/gourd-finish.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+ {name="result",ty="&mut Option<ItemStack>",value="&mut *result"},
+ {name="hand",ty="horizon_client::first_person::Hand",value="hand"},
+]
+
+[[native.mixin]]
+id="gourd-random-oni"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_consume_effect"
+helper="src/mixins/gourd-effect.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="kind",ty="&str",value="kind"},
+]
+
+[[native.mixin]]
+id="oni-before-expiry"
+kind="HEAD"
+target="horizon_client::game::potions::Game::tick_mob_effects"
+helper="src/mixins/oni-before-expiry.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id="oni-after-expiry"
+kind="HEAD"
+target="horizon_client::game::potions::Game::apply_effect_status"
+helper="src/mixins/oni-after-expiry.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id="drunk-vanilla-effects"
+kind="HEAD"
+cancellable=true
+target="horizon_client_render::effects::PlayerEffects::native_effect_index"
+helper="src/mixins/drunk-effects.rs"
+bindings=[
+ {name="effects",ty="&PlayerEffects",value="&*self"},
+ {name="id",ty="&str",value="_id"},
+]
+
+[[native.module]]
+id="melee-traits"
+file="crates/horizon-client/src/game.rs"
+name="lunatic_melee"
+source="src/mixins/melee.rs"
+
+[[native.mixin]]
+id="melee-strength"
+kind="RETURN"
+target="horizon_client::game::hand::Game::attack_damage"
+helper="src/mixins/melee-damage.rs"
+bindings=[{name="value",ty="f32",value="$value"},{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[native.mixin]]
+id="punch-explosion"
+kind="HEAD"
+target="horizon_client::game::mace::Game::weapon_hit"
+helper="src/mixins/punch-effects.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="index",ty="usize",value="index"}]
+
+[[native.module]]
+id="parasol-enchantment"
+file="crates/horizon-items/src/item_data.rs"
+name="lunatic_parasol"
+source="src/mixins/parasol.rs"
+visibility="pub"
+
+[[native.mixin]]
+id="parasol-tidy"
+kind="HEAD"
+target="horizon_items::item_data::ItemStack::tidy"
+helper="src/mixins/parasol-mutation.rs"
+bindings=[{name="stack",ty="&mut ItemStack",value="&mut *self"}]
+
+[[native.mixin]]
+id="parasol-enchant"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_data::ItemStack::enchant"
+helper="src/mixins/parasol-enchant.rs"
+bindings=[{name="stack",ty="&mut ItemStack",value="&mut *self"},{name="id",ty="&str",value="id"}]
+
+[[native.mixin]]
+id="parasol-nbt"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_nbt::item_from_nbt"
+helper="src/mixins/parasol-nbt.rs"
+bindings=[{name="tag",ty="&Tag",value="tag"}]
+
+[[native.mixin]]
+id="parasol-command"
+kind="MODIFY_VARIABLE"
+variable={name="stack",ordinal=0,at="STORE"}
+ordinal=0
+require=1
+target="horizon_client::game::commands::items::Game::command_item_stack"
+helper="src/mixins/parasol-command.rs"
+bindings=[{name="value",ty="ItemStack",value="$value"}]
+
+[[native.mixin]]
+id="parasol-grindstone"
+kind="HEAD"
+cancellable=true
+target="horizon_client_lib::stations::grindstone_result"
+helper="src/mixins/parasol-grindstone.rs"
+bindings=[{name="input",ty="Option<&ItemStack>",value="input"},{name="additional",ty="Option<&ItemStack>",value="additional"}]
+
+[[native.mixin]]
+id="parasol-inventory"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_inventory_tick"
+helper="src/mixins/parasol-inventory.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="slot",ty="i32",value="slot"}]
+
+[[native.mixin]]
+id="oni-application-sound"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_mob_effect_added"
+helper="src/mixins/oni-application.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="effect",ty="mod_api::EffectKey",value="effect"},{name="entity",ty="Option<i32>",value="entity"}]
+
+[[native.mixin]]
+id="oni-fov"
+kind="HEAD"
+target="horizon_client::game::native_hooks::compute_fov_modifier::Game::native_compute_fov_modifier"
+helper="src/mixins/oni-fov.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="player",ty="&horizon_client::camera::FovPlayer",value="player"},{name="base",ty="f32",value="base"},{name="modifier",ty="&mut f32",value="&mut *modifier"}]
+
+[[native.module]]
+id="parasol-float"
+file="crates/horizon-client/src/game.rs"
+name="lunatic_parasol"
+source="src/mixins/parasol-float.rs"
+
+[[native.mixin]]
+id="parasol-press"
+kind="HEAD"
+target="horizon_client::game::native_hooks::input_key::Game::native_input_key"
+helper="src/mixins/parasol-key.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="key",ty="&str",value="key"},{name="action",ty="mod_api::KeyAction",value="action"}]
+
+[[native.mixin]]
+id="parasol-use-repeat"
+kind="HEAD"
+target="horizon_client::game::native_hooks::interaction::Game::native_interaction_key_mapping_triggered"
+helper="src/mixins/parasol-use.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="key",ty="InteractionKey",value="key"},{name="swing",ty="&mut bool",value="&mut *swing_hand"},{name="canceled",ty="&mut bool",value="&mut *canceled"}]
+
+[[native.mixin]]
+id="custom-default-heart-icons"
+kind="HEAD"
+target="horizon_client_render::hud::HudAtlas::pack_pixels"
+helper="src/mixins/heart-icons.rs"
+bindings=[{name="atlas",ty="&mut HudAtlas",value="&mut *self"}]
+
+[[native.module]]
+id="confirmed-join-identity"
+file="crates/horizon-client/src/game/network/character_sync.rs"
+name="lunatic_join_identity"
+source="src/mixins/join-identity.rs"
+
+[[native.module]]
+id="gourd"
+file="crates/horizon-client/src/game.rs"
+name="lunatic_gourd"
+source="src/mixins/gourd.rs"
+
+[[native.module]]
+id="gourd-motion"
+file="crates/horizon-client/src/projectiles.rs"
+name="gourd_motion"
+source="src/mixins/gourd-motion.rs"
+visibility="pub"
+
+[[native.mixin]]
+id="gourd-rope"
+kind="HEAD"
+target="horizon_client::game::native_visuals::Game::native_frame_visuals"
+helper="src/mixins/gourd-lines.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"},{name="alpha",ty="f64",value="alpha"},{name="lines",ty="&mut Vec<gizmos::Line>",value="&mut *lines"}]
+
+[[native.mixin]]
+id="gourd-model-property"
+kind="HEAD"
+cancellable=true
+target="horizon_client::game::item_draw::<Env as ItemEnv>::item_model_property"
+helper="src/mixins/gourd-property.rs"
+bindings=[{name="env",ty="&Env<'_, '_>",value="&*self"},{name="property",ty="&str",value="property"}]
+
+[[native.mixin]]
+id="gourd-capsule-bounds"
+kind="RETURN"
+target="horizon_client_lib::projectiles::Projectile::bounds"
+helper="src/mixins/gourd-bounds.rs"
+bindings=[{name="value",ty="Aabb",value="$value"},{name="p",ty="&Projectile",value="&*self"}]
+
+[[native.mixin]]
+id = "bushy-bamboo-worldgen"
+kind = "HEAD"
+target = "horizon_world::worldgen::native_terrain::registry_defaults"
+helper = "src/mixins/bamboo-worldgen.rs"
+bindings = [
+ {name="overrides",ty="&WorldgenOverrides",value="_overrides"},
+ {name="bundle",ty="&str",value="_bundle"},
+ {name="base",ty="&mut BTreeMap<String,String>",value="&mut *_base"},
+]
+
+[[native.mixin]]
+id = "gourd-posed-right-hand"
+kind = "HEAD"
+target = "horizon_client::game::mob_blocks::Game::held_item_geometry"
+helper = "src/mixins/gourd-render-hand.rs"
+bindings = [
+ {name="game",ty="&crate::game::Game<'_>",value="self"},
+ {name="mob",ty="&horizon_client::mobs::Mob",value="mob"},
+ {name="camera",ty="glam::DVec3",value="camera"},
+ {name="alpha",ty="f64",value="alpha"},
+]
+
+[[native.module]]
+id = "chest-render"
+file = "crates/horizon-client/src/mobs/render.rs"
+name = "lunatic_chest"
+source = "src/mixins/chest.rs"
+visibility = "pub"
+
+[[native.mixin]]
+id = "character-chest-layer"
+kind = "HEAD"
+target = "horizon_client_lib::mobs::render::render_character_details"
+helper = "src/mixins/chest-render.rs"
+bindings = [
+ {name="m",ty="&crate::mobs::Mob",value="m"},
+ {name="alpha",ty="f32",value="alpha"},
+ {name="base",ty="glam::Mat4",value="base"},
+ {name="atlas",ty="crate::mobs::render::Atlas<'_>",value="atlas"},
+ {name="light",ty="u32",value="light"},
+ {name="data",ty="&crate::mobs::MobData",value="data"},
+ {name="paint",ty="Option<u32>",value="paint"},
+ {name="out",ty="&mut Vec<crate::mesher::Vertex>",value="&mut *out"},
+]
+
+[[native.mixin]]
+id = "character-chest-preview"
+kind = "RETURN"
+target = "horizon_client_lib::characters::Character::presentation_model"
+helper = "src/mixins/chest-preview.rs"
+bindings = [
+ {name="value",ty="Option<crate::mobs::Part>",value="$value"},
+ {name="character",ty="&crate::characters::Character",value="self"},
+ {name="model",ty="&crate::mobs::Part",value="_model"},
+ {name="slim",ty="bool",value="_slim"},
+]
+
+[[native.mixin]]
+id = "bushy-bamboo-dynamic-shape"
+kind = "HEAD"
+cancellable = true
+target = "horizon_world::dynamic_support::DynamicSupport::from_state"
+helper = "src/mixins/bamboo-shape.rs"
+bindings = [{name="state",ty="&crate::chunk::BlockState",value="state"}]
+
+[[native.mixin]]
+id="gourd-use-start"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_living_entity_use_item_start"
+helper="src/mixins/gourd-use-start.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="stack",ty="&ItemStack",value="stack"},
+ {name="entity",ty="Option<i32>",value="entity"},
+ {name="canceled",ty="&mut bool",value="&mut *canceled"},
+]
+
+[[native.module]]
+id="koishi"
+file="crates/horizon-client/src/game.rs"
+name="koishi"
+source="src/mixins/koishi.rs"
+[[native.module]]
+id="koishi_policy"
+file="crates/horizon-client/src/game.rs"
+name="koishi_policy"
+source="src/mixins/koishi-policy.rs"
+
+[[native.mixin]]
+id="koishi-opacity"
+kind="RETURN"
+target="horizon_client::game::player_presentation::Game::player_presentation_opacity"
+helper="src/mixins/koishi-opacity.rs"
+bindings=[
+ {name="value",ty="f32",value="$value"},
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="m",ty="&Mob",value="_mob"},
+ {name="camera",ty="glam::DVec3",value="_camera"}
+]
+
+[[native.mixin]]
+id="koishi-senses"
+kind="RETURN"
+target="horizon_client::game::player_presentation::Game::player_sensory_visible"
+helper="src/mixins/koishi-senses.rs"
+bindings=[
+ {name="value",ty="bool",value="$value"},
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="uuid",ty="u128",value="_uuid"}
+]
+
+[[native.mixin]]
+id="koishi-mob-hit"
+kind="HEAD"
+target="horizon_client::game::mace::Game::weapon_hit"
+helper="src/mixins/koishi-mob-hit.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="index",ty="usize",value="index"}
+]
+
+[[native.mixin]]
+id="koishi-player-hit"
+kind="HEAD"
+target="horizon_client::game::mace::Game::accepted_player_melee"
+helper="src/mixins/koishi-player-hit.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+ {name="id",ty="u32",value="_id"}
+]
+
+[[native.mixin]]
+id="koishi-bleed"
+kind="HEAD"
+target="horizon_client::game::potions::Game::mod_effect_tick"
+helper="src/mixins/koishi-bleed.rs"
+bindings=[
+ {name="game",ty="&crate::game::Game<'_>",value="&*self"},
+ {name="effect",ty="mod_api::EffectKey",value="effect"},
+ {name="id",ty="Option<i32>",value="entity"},
+ {name="ticks",ty="i32",value="tick_count"},
+]
+
+[[native.mixin]]
+id="koishi-post"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_level_tick_post"
+helper="src/mixins/koishi-post.rs"
+bindings=[
+ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},
+]
+
+[[native.mixin]]
+id="soulbound-foil"
+kind="HEAD"
+cancellable=true
+target="horizon_items::item_data::ItemStack::has_foil"
+helper="src/mixins/soulbound-foil.rs"
+bindings=[{name="stack",ty="&ItemStack",value="self"}]
+
+[[native.mixin]]
+id="soulbound-model-foil"
+kind="HEAD"
+cancellable=true
+target="horizon_assets::item_model::native_model::foil"
+helper="src/mixins/soulbound-model-foil.rs"
+bindings=[{name="components",ty="&ComponentsView<'_>",value="_components"}]
+
+[[native.mixin]]
+id="gourd-disconnect"
+kind="HEAD"
+target="horizon_client::game::native_hooks::client_services::Game::native_client_disconnecting"
+helper="src/mixins/gourd-disconnect.rs"
+bindings=[{name="game",ty="&crate::game::Game<'_>",value="&*self"}]
+
+[[native.mixin]]
+id="gourd-login"
+kind="HEAD"
+target="horizon_client::game::native_hooks::client_player_logging_in::Game::native_client_player_logging_in"
+helper="src/mixins/gourd-login.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}]
+
+[[native.mixin]]
+id="gourd-logout"
+kind="HEAD"
+target="horizon_client::game::native_hooks::base::Game::native_player_logged_out"
+helper="src/mixins/gourd-logout.rs"
+bindings=[{name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"},{name="player",ty="u128",value="player"}]
+
+[[native.module]]
+id = "weapon-definitions"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_weapons"
+source = "src/mixins/weapons.rs"
+
+[[native.module]]
+id = "game-motion"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_projectile_motion"
+source = "src/mixins/motion.rs"
+
+[[native.module]]
+id = "game-lampad-motion"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_lampad_motion"
+source = "src/mixins/lampad-motion.rs"
+
+[[native.module]]
+id = "game-gourd-motion"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_gourd_motion"
+source = "src/mixins/gourd-motion.rs"
+
+[[native.module]]
+id = "game-yuuka-flight"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_yuuka_flight"
+source = "src/mixins/yuuka-flight.rs"
+
+[[native.module]]
+id = "game-fairy-motion"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_fairy_motion"
+source = "src/mixins/fairy-motion.rs"
+
+[[native.module]]
+id = "game-particle-factory"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_particle_factory"
+source = "src/mixins/particle-factory.rs"
+
+[[native.module]]
+id = "game-parasol"
+file = "crates/horizon-client/src/game.rs"
+name = "lunatic_parasol_item"
+source = "src/mixins/parasol.rs"
+
+[[native.module]]
+id = "stations-parasol"
+file = "crates/horizon-client/src/stations.rs"
+name = "lunatic_parasol_item"
+source = "src/mixins/parasol.rs"

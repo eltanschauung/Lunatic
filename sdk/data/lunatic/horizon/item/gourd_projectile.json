@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:snowball",
+  "max_stack_size": 1,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "item.lunatic.ibuki_gourd"
+    }
+  }
+}

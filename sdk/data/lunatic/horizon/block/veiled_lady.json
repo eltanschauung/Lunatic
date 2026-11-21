@@ -1,0 +1,10 @@
+{
+  "template": "minecraft:red_mushroom",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.veiled_lady",
+      "italic": true
+    }
+  }
+}

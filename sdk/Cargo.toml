@@ -1,0 +1,11 @@
+[package]
+name = "mod-lunatic"
+version = "0.14.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+publish = false
+
+[dependencies]
+horizon-mod-api = { path = ".horizon/sdk/api/crates/horizon-mod-api" }
+
+[workspace]

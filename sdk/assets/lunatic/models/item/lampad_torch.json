@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "lunatic:item/mcl_lun_items_lampad_torch"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "lunatic:block/fly_agaric",
+  "textures": {
+    "cap": "lunatic:block/fly_agaric_cap_blue",
+    "particle": "lunatic:block/fly_agaric_cap_blue"
+  }
+}

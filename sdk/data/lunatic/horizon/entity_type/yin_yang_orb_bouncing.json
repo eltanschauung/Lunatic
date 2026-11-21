@@ -1,0 +1,5 @@
+{
+  "template": "minecraft:snowball",
+  "item": "lunatic:yin_yang_orb_bouncing",
+  "damage": 4.0
+}

@@ -1,0 +1,151 @@
+{
+  "item.purification_rod.activate": {
+    "subtitle": "subtitles.lunatic.item.purification_rod.activate",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_option",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "item.purification_rod.no_target": {
+    "subtitle": "subtitles.lunatic.item.purification_rod.no_target",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_ophide",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "entity.yin_yang_orb.shoot": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.shoot",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_plst00",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.bounce": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.bounce",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_graze",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.impact": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.impact",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_kira00",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.yin_yang_orb.close_detonation": {
+    "subtitle": "subtitles.lunatic.entity.yin_yang_orb.close_detonation",
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/mcl_tnt_tnt_explode",
+        "attenuation_distance": 64
+      }
+    ]
+  },
+  "entity.fairy.jump": {
+    "sounds": [
+      {
+        "name": "lunatic:entity/fairy/jump",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "entity.fairy.cancel": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_ophide",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "item.lampad_torch.shoot": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_option",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "entity.player.death": {
+    "subtitle": "subtitles.entity.player.death",
+    "sounds": [
+      {
+        "name": "lunatic:entity/player/pldead00",
+        "volume": 0.5
+      }
+    ]
+  },
+  "entity.explosion_old": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/mcl_tnt_tnt_explode",
+        "attenuation_distance": 64
+      }
+    ]
+  },
+  "entity.gourd.impact": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ]
+  },
+  "item.gourd.fire": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_option"
+      }
+    ]
+  },
+  "item.gourd.reel": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_ophide"
+      }
+    ]
+  },
+  "item.gourd.land": {
+    "sounds": [
+      {
+        "name": "minecraft:block.wood.hit",
+        "type": "event"
+      }
+    ]
+  },
+  "item.gourd.elastic": {
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.guitar",
+        "type": "event"
+      }
+    ]
+  },
+  "item.yuuka_parasol.fire": {
+    "sounds": [
+      {
+        "name": "lunatic:danmaku/se_kira00",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "item.yuuka_parasol.open": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.flap",
+        "type": "event"
+      }
+    ]
+  }
+}

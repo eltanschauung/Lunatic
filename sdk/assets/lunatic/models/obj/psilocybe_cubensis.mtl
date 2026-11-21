@@ -1,0 +1,5 @@
+newmtl cap
+map_Kd #cap
+
+newmtl stem
+map_Kd #stem

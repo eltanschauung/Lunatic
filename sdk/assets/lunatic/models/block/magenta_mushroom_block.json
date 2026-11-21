@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_single_face",
+  "textures": {
+    "texture": "lunatic:block/magenta_mushroom_block",
+    "particle": "lunatic:block/magenta_mushroom_block"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:azalea_leaves",
+  "item": true,
+  "components": {
+    "minecraft:item_name": {
+      "translate": "block.lunatic.bamboo_leaves"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "template": "minecraft:snowball",
+  "item": "lunatic:gourd_projectile",
+  "damage": 18.0
+}
