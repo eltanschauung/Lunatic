@@ -747,6 +747,12 @@ target="horizon_items::item_data::ItemStack::has_foil"
 helper="src/mixins/soulbound-foil.rs"
 bindings=[{name="stack",ty="&ItemStack",value="self"}]
 
+[[native.module]]
+id="soulbound-assets-json"
+file="crates/horizon-assets/src/lib.rs"
+name="json"
+source="src/mixins/assets-json.rs"
+
 [[native.mixin]]
 id="soulbound-model-foil"
 kind="HEAD"
