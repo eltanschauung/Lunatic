@@ -111,7 +111,7 @@ pub fn render_mob(
     visible: bool,
     out: &mut Vec<Vertex>,
 ) {
-    if physics::bust(m.character_chest, m.slim) <= 0.0 || !visible || (m.character_chest > 0.0 && super::chestplate_hides_skin()) {
+    if physics::bust(m.character_chest, m.slim) <= 0.0 || !visible {
         return;
     }
     let (model, poses, _) = super::posed_body(m, alpha, data);
@@ -137,7 +137,9 @@ pub fn render(
         || !visible
         || !matches!(m.kind.id.as_str(), "minecraft:player" | "minecraft:mannequin")
         || m.extra.spectator
-        || (m.character_chest > 0.0 && super::chestplate_hides_skin())
+        || (m.extra.slot_stack(super::super::gear::CHEST).is_some()
+            && super::chestplate_hides_skin())
+
     {
         return;
     }
