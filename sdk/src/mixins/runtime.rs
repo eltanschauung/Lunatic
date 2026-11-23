@@ -82,8 +82,8 @@ impl GameLunaticRuntimeExt for Game<'_> {
         let Some(living) = player_living(self, player) else { return };
         let Some(effect) = self.effect_key(EFFECT) else { return };
         let current = self.living_effect(living, effect);
-        if active && current.as_ref().is_none_or(|effect| effect.duration != -1) {
-            self.living_add_effect(living, &mod_api::ActiveEffect::new(effect, -1, 0, false, false, false));
+        if active && current.as_ref().is_none_or(|effect| effect.duration != -1 || !effect.show_icon) {
+            self.living_add_effect(living, &mod_api::ActiveEffect::new(effect, -1, 0, false, false, true));
         } else if !active && current.is_some() {
             self.living_remove_effect(living, effect);
         }
