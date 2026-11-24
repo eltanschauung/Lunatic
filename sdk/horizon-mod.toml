@@ -835,3 +835,10 @@ id = "stations-parasol"
 file = "crates/horizon-client/src/stations.rs"
 name = "lunatic_parasol_item"
 source = "src/mixins/parasol.rs"
+
+[[native.mixin]]
+id = "honor-authorized-flight"
+kind = "HEAD"
+target = "horizon_client::game::native_player_moves::Game::sync_hub_mod_flags"
+helper = "src/mixins/flight-authorization.rs"
+bindings = [{ name = "hub", ty = "&mut horizon_client_lib::lan::hub::Hub", value = "hub" }]
