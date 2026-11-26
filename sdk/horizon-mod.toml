@@ -837,8 +837,8 @@ name = "lunatic_parasol_item"
 source = "src/mixins/parasol.rs"
 
 [[native.mixin]]
-id = "honor-authorized-flight"
+id = "character-locator-colors"
 kind = "HEAD"
-target = "horizon_client::game::native_player_moves::Game::sync_hub_mod_flags"
-helper = "src/mixins/flight-authorization.rs"
-bindings = [{ name = "hub", ty = "&mut horizon_client_lib::lan::hub::Hub", value = "hub" }]
+target = "horizon_client::game::lan_waypoints::Game::lan_update_waypoints"
+helper = "src/mixins/locator-colors.rs"
+bindings = [{ name = "game", ty = "&mut crate::game::Game<'_>", value = "self" }]
