@@ -1,6 +1,7 @@
 {
   "template": "minecraft:paper",
   "components": {
+    "minecraft:break_sound": "minecraft:entity.item.break",
     "minecraft:max_damage": 250,
     "minecraft:damage": 0,
     "minecraft:item_name": {

@@ -7,6 +7,7 @@
       "color": "gold",
       "italic": false
     },
+    "minecraft:break_sound": "minecraft:entity.item.break",
     "minecraft:max_damage": 250
   },
   "max_stack_size": 1

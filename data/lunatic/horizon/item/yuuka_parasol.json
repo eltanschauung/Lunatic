@@ -10,6 +10,7 @@
     "minecraft:enchantments": {
       "minecraft:knockback": 3
     },
+    "minecraft:break_sound": "minecraft:entity.item.break",
     "minecraft:max_damage": 250
   }
 }

@@ -22,6 +22,7 @@
       "seconds": 240.0,
       "cooldown_group": "lunatic:ibuki_gourd"
     },
+    "minecraft:break_sound": "minecraft:entity.item.break",
     "minecraft:max_damage": 250
   }
 }

@@ -25,7 +25,7 @@ impl GameLunaticLampadExt for Game<'_>{
    self.lampad_spawn(false,dir,side,0);
    STATE.with_borrow_mut(|s|for(color,delay)in[(1,3),(2,6)]{s.shots.push(Shot{world,dim:self.dim.id().into(),owner,due:self.world.game_time+delay,dir,side,color});});
   }
-  if !self.creative {let held=self.held_mut();if let Some(s)=held {s.damage+=1;if s.damage>=300{*held=None;}}}
+  self.damage_held_in_slot(1, self.acting_hand_slot());
  }
  fn lampad_spawn(&mut self,flag:bool,dir:[f64;3],side:bool,color:usize){
   let name=if flag{format!("lunatic:lampad_flag_{}",["red","white","blue"][color])}else{format!("lunatic:lampad_star_{}_{}",if side{"right"}else{"left"},["red","white","blue"][color])};

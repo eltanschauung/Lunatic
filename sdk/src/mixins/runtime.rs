@@ -391,13 +391,7 @@ impl GameLunaticRuntimeExt for Game<'_> {
             return;
         }
         self.lunatic_action_sound(weapons::PURIFICATION_ROD.primary, vec(eye));
-        if !self.creative {
-            let held = self.held_mut();
-            if let Some(stack) = held {
-                stack.damage += 1;
-                if stack.damage >= 250 { *held = None; }
-            }
-        }
+        self.damage_held_in_slot(1, self.acting_hand_slot());
         self.lunatic_spawn(kind, Some(direction));
         let now = self.world.game_time;
         let dimension = self.dim.id().to_owned();

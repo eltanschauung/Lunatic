@@ -7,6 +7,7 @@
       "color": "dark_purple",
       "italic": false
     },
+    "minecraft:break_sound": "minecraft:entity.item.break",
     "minecraft:max_damage": 300
   },
   "max_stack_size": 1
