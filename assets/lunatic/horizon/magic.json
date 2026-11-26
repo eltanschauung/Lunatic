@@ -44,7 +44,6 @@
     {
       "id": "lunatic:reveal",
       "name": "Reveal",
-      "icon": "lunatic:gui/sprites/magic/koishi_spellbook",
       "color": 12223964,
       "kind": "effect",
       "hunger": 2,
@@ -69,7 +68,6 @@
     {
       "id": "lunatic:remilia_bat_transformation",
       "name": "Bat Transformation",
-      "icon": "lunatic:gui/sprites/magic/remilia_spellbook",
       "color": 6591999,
       "kind": "bat",
       "hunger": 8,
@@ -93,7 +91,6 @@
     {
       "id": "lunatic:remilia_bat_cancel",
       "name": "Bat Cancel",
-      "icon": "lunatic:gui/sprites/magic/remilia_spellbook",
       "color": 6591999,
       "kind": "bat_cancel",
       "hunger": 4,
@@ -111,7 +108,6 @@
     {
       "id": "lunatic:flandre_bat_transformation",
       "name": "Bat Transformation",
-      "icon": "lunatic:gui/sprites/magic/flandre_spellbook",
       "color": 16737385,
       "kind": "bat",
       "hunger": 8,
@@ -135,7 +131,6 @@
     {
       "id": "lunatic:flandre_bat_cancel",
       "name": "Bat Cancel",
-      "icon": "lunatic:gui/sprites/magic/flandre_spellbook",
       "color": 16737385,
       "kind": "bat_cancel",
       "hunger": 4,
@@ -153,7 +148,6 @@
     {
       "id": "lunatic:sunflower_uprising",
       "name": "Sunflower Uprising",
-      "icon": "lunatic:gui/sprites/magic/sunflower_uprising",
       "color": 15906365,
       "kind": "effect",
       "hunger": 6,

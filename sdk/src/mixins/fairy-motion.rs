@@ -36,7 +36,7 @@ impl PlayerMotionLunaticFairyMotionExt for PlayerMotion {
         racial_glider: bool,
     ) {
         let size = if size.is_finite() {
-            size.clamp(0.7, 1.2)
+            size.clamp(0.68, 1.2)
         } else {
             1.0
         };

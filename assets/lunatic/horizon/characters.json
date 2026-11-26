@@ -44,6 +44,7 @@
       "id": "lunatic:kirisame_marisa",
       "name": "Kirisame Marisa",
       "race": "human,magician",
+      "spell_sheen": true,
       "color": "yellow",
       "size": 0.8,
       "starting_items": [
@@ -66,6 +67,8 @@
     },
     {
       "id": "lunatic:kazami_yuuka",
+      "spellbook": "yuuka_spellbook.png",
+      "spellbook_name": "Sunflower Magic",
       "name": "Kazami Yuuka",
       "race": "youkai,yuuka",
       "color": "dark_green",
@@ -86,6 +89,7 @@
       "id": "lunatic:alice_margatroid",
       "name": "Alice Margatroid",
       "race": "magician,youkai,puppeteer,former_human",
+      "spell_sheen": true,
       "color": "gold",
       "size": 0.9,
       "starting_items": [],
@@ -135,6 +139,8 @@
     },
     {
       "id": "lunatic:cirno",
+      "spellbook": "cirno_spellbook.png",
+      "spellbook_name": "Ice Fairy Arts",
       "name": "Cirno",
       "race": "fairy,ice_fairy,youkai",
       "color": "aqua",
@@ -189,6 +195,7 @@
       "id": "lunatic:koakuma",
       "name": "Koakuma",
       "race": "youkai,devil,magician",
+      "spell_sheen": true,
       "color": "red",
       "size": 0.85,
       "chest": "1.25",
@@ -197,8 +204,11 @@
     },
     {
       "id": "lunatic:patchouli_knowledge",
+      "spellbook": "patchouli_spellbook.png",
+      "spellbook_name": "Eastern Magic",
       "name": "Patchouli Knowledge",
       "race": "youkai,magician",
+      "spell_sheen": true,
       "color": "light_purple",
       "size": 0.9,
       "chest": "1.85",
@@ -207,6 +217,8 @@
     },
     {
       "id": "lunatic:izayoi_sakuya",
+      "spellbook": "sakuya_spellbook.png",
+      "spellbook_name": "Maid Arts",
       "name": "Izayoi Sakuya",
       "race": "human",
       "color": "gray",
@@ -217,6 +229,8 @@
     },
     {
       "id": "lunatic:remilia_scarlet",
+      "spellbook": "remilia_spellbook.png",
+      "spellbook_name": "Scarlet Arts",
       "name": "Remilia Scarlet",
       "race": "vampire,youkai,remilia",
       "color": "dark_red",
@@ -227,6 +241,8 @@
     },
     {
       "id": "lunatic:flandre_scarlet",
+      "spellbook": "flandre_spellbook.png",
+      "spellbook_name": "Scarlet Arts",
       "name": "Flandre Scarlet",
       "race": "vampire,youkai,flandre",
       "color": "red",
@@ -467,6 +483,8 @@
     },
     {
       "id": "lunatic:komeiji_satori",
+      "spellbook": "satori_spellbook.png",
+      "spellbook_name": "Third Eye Magic",
       "name": "Komeiji Satori",
       "race": "satori,youkai",
       "color": "light_purple",
@@ -477,6 +495,8 @@
     },
     {
       "id": "lunatic:komeiji_koishi",
+      "spellbook": "koishi_spellbook.png",
+      "spellbook_name": "Third Eye Magic",
       "name": "Komeiji Koishi",
       "race": "satori,youkai,koishi",
       "color": "green",
@@ -618,6 +638,50 @@
       "chest": "1.2",
       "starting_items": [],
       "starting_spells": []
+    },
+    {
+      "id": "lunatic:rumia",
+      "name": "Rumia",
+      "race": "youkai,rumia",
+      "color": "red",
+      "size": 0.78,
+      "starting_items": [
+        {
+          "item": "minecraft:leather",
+          "min_count": 2,
+          "max_count": 4
+        },
+        {
+          "item": "minecraft:beef",
+          "min_count": 2,
+          "max_count": 4
+        },
+        {
+          "item": "minecraft:chicken",
+          "min_count": 2,
+          "max_count": 4
+        },
+        {
+          "item": "minecraft:feather",
+          "min_count": 2,
+          "max_count": 4
+        }
+      ]
+    },
+    {
+      "id": "lunatic:moriya_suwako",
+      "name": "Moriya Suwako",
+      "race": "god,lake_mountain_god",
+      "color": "yellow",
+      "size": 0.68
+    },
+    {
+      "id": "lunatic:tatara_kogasa",
+      "name": "Tatara Kogasa",
+      "race": "youkai,karakase_obake",
+      "color": "blue",
+      "size": 0.85,
+      "chest": "1.4"
     }
   ]
 }
